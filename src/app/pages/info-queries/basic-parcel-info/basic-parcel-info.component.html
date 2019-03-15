@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="">
+        <br>
+        <h6>Se requiere alguno de los siguientes valores para realizar la consulta:</h6>
+        <br>
+        <h5>Nupre: </h5><input type="text" name="nupre" value="">
+        <h5>Codigo de catastral: </h5><input type="text" name="codCatrastral" value="">
+        <h5>Folio Matricula: </h5><input type="text" name="folio" value="">
+    
+      </div>
+</div>
+
+<div *ngFor="let info of basicParcelInfo | async">
+  {{info.attributes["Área de terreno"]}}  
+</div>

@@ -1,15 +1,73 @@
 <div class="container">
-    <div class="">
-        <br>
-        <h6>Se requiere alguno de los siguientes valores para realizar la consulta:</h6>
-        <br>
-        <h5>Nupre: </h5><input type="text" name="nupre" value="">
-        <h5>Codigo de catastral: </h5><input type="text" name="codCatrastral" value="">
-        <h5>Folio Matricula: </h5><input type="text" name="folio" value="">
-    
+  <div>
+    <div class="form-group row">
+      <label for="inputNupre" class="col-sm-2 col-form-label">Nupre:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre" placeholder="">
       </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="inputFMI" class="col-sm-2 col-form-label">Folio Matrícula:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="inputCadastralCode" class="col-sm-2 col-form-label">Número Predial:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode" placeholder="">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button (click)="search()" type="submit" class="btn btn-primary">Buscar</button>
+      </div>
+    </div>
+
+  </div>
+  <hr>
+  <div *ngIf="showResult">
+    <div *ngFor="let info of basicParcelInfo | async">
+      <div class="card">
+        <div class="card-header">Información del Predio</div>
+        <div class="card-body">
+          <img src="/assets/imagen_predio_prueba.png" alt="">
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"> <b>Departamento:</b> {{info.attributes.predio[0].attributes.Departamento}}</li>
+          <li class="list-group-item"> <b>Municipio:</b> {{info.attributes.predio[0].attributes.Municipio}}</li>
+          <li class="list-group-item"> <b>Zona:</b> {{info.attributes.predio[0].attributes.Zona}}</li>
+          <li class="list-group-item"> <b>NUPRE:</b> {{info.attributes.predio[0].attributes.NUPRE}}</li>
+          <li class="list-group-item"> <b>FMI:</b> {{info.attributes.predio[0].attributes.FMI}}</li>
+          <li class="list-group-item"> <b>Número predial:</b>
+            {{info.attributes.predio[0].attributes['Número predial']}}
+          </li>
+          <li class="list-group-item"> <b>Número predial anterior:</b>
+            {{info.attributes.predio[0].attributes['Número predial anterior']}}</li>
+          <li class="list-group-item"> <b>Tipo:</b> {{info.attributes.predio[0].attributes.Tipo}}</li>
+          <li class="list-group-item"> <b>Área de terreno:</b> {{info.attributes['Área de terreno']}}</li>
+          <li class="list-group-item"><b>DIRECCIONES</b>
+            <div class="row">
+              <div class="card col-4" *ngFor="let address of info.attributes.extdireccion; let i = index">
+                <div class="card-header">Dirección {{i+1}}</div>
+                <div class="list-group list-group-flush">
+          <li class="list-group-item"><b>País:</b> {{address.attributes['País']}}</li>
+          <li class="list-group-item"><b>Departamento</b>: {{address.attributes.Departamento}}</li>
+          <li class="list-group-item"><b>Ciudad:</b> {{address.attributes.Ciudad}}</li>
+          <li class="list-group-item"><b>Código postal:</b> {{address.attributes['Código postal']}}</li>
+          <li class="list-group-item"><b>Apartado correo:</b> {{address.attributes['Apartado correo']}}</li>
+          <li class="list-group-item"><b>Nombre calle:</b> {{address.attributes['Nombre calle']}}</li>
+      </div>
+    </div>
+  </div>
+  </li>
+  </ul>
+
 </div>
 
-<!-- <div *ngFor="let info of basicParcelInfo | async">
-  
-</div> -->
+</div>
+</div>
+</div>

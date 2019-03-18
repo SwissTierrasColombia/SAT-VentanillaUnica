@@ -11,6 +11,9 @@ export class BasicParcelInfoComponent implements OnInit {
 
   showResult:boolean = false;
   basicParcelInfo:Observable<any>;
+  inputNupre:string;
+  inputFMI:string;
+  inputCadastralCode:string;
 
   constructor(private parcelConsultService:ParcelConsultService) { }
 
@@ -23,7 +26,13 @@ export class BasicParcelInfoComponent implements OnInit {
   }
 
   search(){
-    this.showResult = !this.showResult;
+    console.log(this.inputNupre);
+    if(this.inputNupre || this.inputFMI || this.inputCadastralCode){
+      this.showResult = true;
+    }else{
+      this.showResult = false;
+    }
+    
   }
 
 

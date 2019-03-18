@@ -7,6 +7,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { InfoQueriesComponent } from './pages/info-queries/info-queries.component';
 import { BasicParcelInfoComponent } from './pages/info-queries/basic-parcel-info/basic-parcel-info.component';
 import { HttpClientModule } from '@angular/common/http';
+import { InstitutionalParcelInfoComponent } from './pages/info-queries/institutional-parcel-info/institutional-parcel-info.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     HomeComponent,
     InfoQueriesComponent,
-    BasicParcelInfoComponent
+    BasicParcelInfoComponent,
+    InstitutionalParcelInfoComponent
   ],
   imports: [
     BrowserModule,

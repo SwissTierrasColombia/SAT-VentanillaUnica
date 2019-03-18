@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class BasicParcelInfoComponent implements OnInit {
 
+  showResult:boolean = false;
   basicParcelInfo:Observable<any>;
 
   constructor(private parcelConsultService:ParcelConsultService) { }
@@ -21,6 +22,9 @@ export class BasicParcelInfoComponent implements OnInit {
     this.basicParcelInfo = this.parcelConsultService.getParcelBasicInfo();
   }
 
+  search(){
+    this.showResult = !this.showResult;
+  }
 
 
 }

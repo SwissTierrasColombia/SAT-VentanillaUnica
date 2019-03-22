@@ -1,0 +1,39 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-magnifier"></i> Consulta
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="inputNupre">NUPRE</label>
+        <input type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre"
+          placeholder="AAAA-00000000000-00">
+      </div>
+      <div class="form-group">
+        <label for="inputCadastralCode">Número Predial</label>
+        <input type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode"
+          placeholder="00000000000000000000">
+      </div>
+      <div class="form-group">
+        <label for="inputFMI">Número Predial</label>
+        <input type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+      </div>
+
+      <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+  </div>
+
+
+  
+  <div class="card" *ngIf="showResult">
+    <div class="card-header">
+      <i class="icon-book-open"></i> Información del Predio
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        
+
+      </div>
+    </div>
+  </div>
+</div>

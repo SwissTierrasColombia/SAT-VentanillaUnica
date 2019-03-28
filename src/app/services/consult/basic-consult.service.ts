@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BasicConsult } from '../../models/basic-parcel-info.interface';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 
 export class BasicConsultService {
-  
-  apiURL: string = environment.url+"/consultageneral/"+1+"/";
+  inputNupre: string;
+  apiURL: string = environment.url+"/consultageneral/"+this.inputNupre+"/";
 
-  public getBasicConsultNupre(id: String){
+  public getBasicConsultNupre(id: string){
     return this.httpClient.get(`${this.apiURL}`);
   }
-  public getBasicConsultNumPredial<BasicConsult>(id: String){
+  public getBasicConsultNumPredial<BasicConsult>(id: string){
+    this.inputNupre = id;
     return this.httpClient.get<BasicConsult>(`${this.apiURL}`);
   }
-  public getBasicConsultFMI(id: String){
+  public getBasicConsultFMI(id: string){
     return this.httpClient.get(`${this.apiURL}`);    
   }
   constructor(private httpClient: HttpClient) { }

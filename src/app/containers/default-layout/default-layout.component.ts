@@ -1,13 +1,13 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItems } from '../../_nav';
-import * as myGlobals from 'src/globals'; //<==== this one
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnDestroy {
-  public logeado = myGlobals.logeado;
+  public ver = sessionStorage.getItem("mostrar");
   public navItems = navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;

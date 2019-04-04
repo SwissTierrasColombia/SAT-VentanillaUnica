@@ -9,6 +9,6 @@ export class ParcelConsultService {
   constructor(private http: HttpClient) { }
 
   getParcelBasicInfo(){
-    return this.http.get<any>('/assets/data/info_basica.json');
+    return this.http.get<any>('/assets/fake/data/info_basica.json');
   }
 }

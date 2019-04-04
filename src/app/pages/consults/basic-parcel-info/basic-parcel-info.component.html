@@ -1,0 +1,109 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-magnifier"></i> Consulta
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="inputNupre">NUPRE</label>
+        <input type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre"
+          placeholder="AAAA-00000000000-00">
+      </div>
+      <div class="form-group">
+        <label for="inputCadastralCode">Número Predial</label>
+        <input type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode"
+          placeholder="00000000000000000000">
+      </div>
+      <div class="form-group">
+        <label for="inputFMI">Folio de Matricula Inmobiliaria</label>
+        <input type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+      </div>
+
+      <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+  </div>
+
+
+
+  <div class="card" *ngIf="showResult">
+    <div class="card-header">
+      <i class="icon-book-open"></i> Información del Predio
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <table class="table" style="width: 100%">
+          <thead>
+            <th>Departamento</th>
+            <th>Municipio</th>
+            <th>zona</th>
+            <th>nupre</th>
+            <th>fmi</th>
+            <th>tipo</th>
+            <th>número predial</th>
+            <th>número predial anterior</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{basicConsult.predio.Departamento}}</td>
+              <td>{{basicConsult.predio.Municipio}}</td>
+              <td>{{basicConsult.predio.zona}}</td>
+              <td>{{basicConsult.predio.nupre}}</td>
+              <td>{{basicConsult.predio.fmi}}</td>
+              <td>{{basicConsult.predio.tipo}}</td>
+              <td>{{basicConsult.predio.numero_predial}}</td>
+              <td>{{basicConsult.predio.numero_predial_anterior}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="showResult">
+    <div class="card-header">
+      <i class="icon-book-open"></i> Información del Terreno
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <table class="table" style="width: 100%">
+          <thead>
+            <th>Area de terreno</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{basicConsult.terreno.area_de_terreno}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="showResult">
+    <div class="card-header">
+      <i class="icon-book-open"></i> Direcciones
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <table class="table" style="width: 100%">
+          <thead>
+            <th>pais</th>
+            <th>departamento</th>
+            <th>ciudad</th>
+            <th>codigo_postal</th>
+            <th>apartado_correo</th>
+            <th>nombre_calle</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of basicConsult.terreno.direccion">
+              <td>{{item.pais}}</td>
+              <td>{{item.departamento}}</td>
+              <td>{{item.ciudad}}</td>
+              <td>{{item.codigo_postal}}</td>
+              <td>{{item.apartado_correo}}</td>
+              <td>{{item.nombre_calle}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

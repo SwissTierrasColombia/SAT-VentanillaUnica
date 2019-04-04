@@ -27,6 +27,7 @@ export class DefaultLayoutComponent implements OnDestroy {
   logout(){
     sessionStorage.removeItem("mostrar");
     this.serviceLogin.logout();
+    window.location.reload()
   }
   ngOnDestroy(): void {
     this.changes.disconnect();

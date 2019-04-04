@@ -1,6 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ParcelConsultService } from 'src/app/services/parcel-consult.service';
-import { Observable } from 'rxjs';
 import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
 import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 

@@ -51,5 +51,20 @@ export const navItems: NavData[] = [
   },
   {
     divider: true
+  },
+  {
+    title: true,
+    name: 'Trámites'
+  },
+  {
+    name: 'Solicitud Trámite',
+    url: '/procedures/procedure-request',
+    icon: 'icon-doc'
+  },
+  {
+    name: 'Gestión de Trámites',
+    url: '/procedures/procedure-management',
+    icon: 'icon-control-play'
   }
+
 ];

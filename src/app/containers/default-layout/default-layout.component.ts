@@ -2,12 +2,12 @@ import { Component, OnDestroy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItems } from '../../_nav';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnDestroy {
+  public ver = sessionStorage.getItem("mostrar");
   public navItems = navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;

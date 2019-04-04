@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">Solicitud de Trámite</div>
+        <div class="card-body">
+            <form >
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" id="tipo_solicitud" type="text" [(ngModel)]="formData.tipo_solicitud" name="tipo_solicitud"
+                            placeholder="Tipo de Solicitud" autocomplete="name">
+                            <option value="vender">Vender mi predio</option>
+                            <option value="dividir">Dividir mi predio</option>
+                            <option value="dividir_vender">Dividir y Vender mi predio</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <textarea class="form-control" id="descripcion" type="text" name="descripcion" [(ngModel)]="formData.descripcion"
+                            placeholder="Descripción de la solicitud"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" id="nombre_completo" type="text" name="nombre_completo" [(ngModel)]="formData.nombre_completo"
+                            placeholder="Nombre del solicitante">
+                        <div class="input-group-append">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" id="tipo_documento" type="text" name="tipo_documento" [(ngModel)]="formData.tipo_documento"
+                            placeholder="Tipo de documento">
+                            <option value="cc">C.C.</option>
+                            <option value="ce">C.E.</option>
+                            <option value="NUIP">NUIP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" id="numero_documento" type="text" name="numero_documento" [(ngModel)]="formData.numero_documento"
+                            placeholder="Número de Documento">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" id="soporte1_tipo" type="text" name="soporte1_tipo" [(ngModel)]="formData.soporte1_tipo"
+                            placeholder="Tipo de Soporte">
+                            <option value="certificado_libertad_tradicion">Certificado de Libertad y Tradición</option>
+                            <option value="documento_identidad">Documento de Identidad</option>
+                            <option value="escritura">Escritura</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" id="soporte1_url" type="url" name="soporte1_url" [(ngModel)]="formData.soporte1_url"
+                            placeholder="Soporte">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" id="soporte2_tipo" type="text" name="soporte2_tipo" [(ngModel)]="formData.soporte2_tipo"
+                            placeholder="Tipo de Soporte">
+                            <option value="certificado_libertad_tradicion">Certificado de Libertad y Tradición</option>
+                            <option value="documento_identidad">Documento de Identidad</option>
+                            <option value="escritura">Escritura</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" id="soporte2_url" type="url" name="soporte2_url" [(ngModel)]="formData.soporte2_url"
+                            placeholder="Soporte">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <select class="form-control" id="soporte3_tipo" type="text" name="soporte3_tipo" [(ngModel)]="formData.soporte3_tipo"
+                            placeholder="Tipo de Soporte">
+                            <option value="certificado_libertad_tradicion">Certificado de Libertad y Tradición</option>
+                            <option value="documento_identidad">Documento de Identidad</option>
+                            <option value="escritura">Escritura</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" id="soporte3_url" type="url" name="soporte3_url" [(ngModel)]="formData.soporte3_url"
+                            placeholder="Soporte">
+                    </div>
+                </div>
+
+
+                <div class="form-group form-actions">
+                    <button (click)="solicitar()" class="btn btn-sm btn-primary" type="submit">Solicitar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -57,6 +57,10 @@ export const routes: Routes = [
       {
         path: 'consults',
         loadChildren: './pages/consults/consults.module#ConsultsModule'
+      },
+      {
+        path: 'procedures',
+        loadChildren: './pages/procedures/procedures.module#ProceduresModule'
       }
     ]
   },

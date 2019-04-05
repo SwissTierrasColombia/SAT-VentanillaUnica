@@ -34,7 +34,9 @@
               "includePaths": ["./node_modules"]
             },
             "scripts": [
-              "node_modules/chart.js/dist/Chart.min.js"
+              "node_modules/chart.js/dist/Chart.min.js",
+              "src/assets/js/xepOnline.jqPlugin.js",
+              "node_modules/jquery/dist/jquery.min.js"
             ],
             "es5BrowserSupport": true
           },

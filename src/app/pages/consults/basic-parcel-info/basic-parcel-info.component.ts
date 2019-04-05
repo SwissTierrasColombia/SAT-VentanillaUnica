@@ -5,7 +5,7 @@ import { BasicConsult } from "src/app/models/basic-parcel-info.interface";
 declare var xepOnline: any;
 
 @Component({
-  templateUrl: "basic-parcel-info.component.html"
+  templateUrl: 'basic-parcel-info.component.html'
 })
 export class BasicParcelInfoComponent implements OnInit {
   showResult = false;
@@ -38,7 +38,7 @@ export class BasicParcelInfoComponent implements OnInit {
         }
       );
   }
-  downloadPDF(){
-    return xepOnline.Formatter.Format('contentPDF',{render:'download'});
+  downloadPDF() {
+    return xepOnline.Formatter.Format('contentPDF', { render: 'download'});
   }
 }

@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
 import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
+declare var xepOnline: any;
+
 @Component({
   templateUrl: 'basic-parcel-info.component.html'
 })
@@ -31,5 +33,8 @@ export class BasicParcelInfoComponent implements OnInit {
       this.basicConsult = data;
       console.log(data);
     });
+  }
+  downloadPDF(){
+    return xepOnline.Formatter.Format('contentPDF',{render:'download'});
   }
 }

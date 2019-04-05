@@ -1,35 +1,39 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
-import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
+import { Component, Inject, OnInit } from "@angular/core";
+import { BasicConsultService } from "src/app/services/consult/basic-consult.service";
+import { BasicConsult } from "src/app/models/basic-parcel-info.interface";
 
 @Component({
-  templateUrl: 'basic-parcel-info.component.html'
+  templateUrl: "basic-parcel-info.component.html"
 })
 export class BasicParcelInfoComponent implements OnInit {
-
-  showResult: boolean = false;
+  showResult = false;
   inputNupre: string;
   inputFMI: string;
   inputCadastralCode: string;
   basicConsult: BasicConsult;
-  constructor(private service: BasicConsultService) { }
+  constructor(private service: BasicConsultService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   search() {
-    console.log(this.showResult)
+    console.log(this.showResult);
     if (this.inputNupre || this.inputCadastralCode || this.inputFMI) {
-      this.showResult = true;
       this.getBasicInfo();
     } else {
       this.showResult = false;
     }
   }
   getBasicInfo() {
-    this.service.getBasicConsultNumPredial<BasicConsult>(this.inputNupre).subscribe(data => {
-      this.basicConsult = data;
-      console.log(data);
-    });
+    this.service
+      .getBasicConsultNumPredial<BasicConsult>(this.inputNupre)
+      .subscribe(
+        data => {
+          this.basicConsult = data;
+          this.showResult = true;
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 }

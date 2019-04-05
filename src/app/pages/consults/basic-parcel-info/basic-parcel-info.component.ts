@@ -13,12 +13,11 @@ export class BasicParcelInfoComponent implements OnInit {
   inputFMI: string;
   inputCadastralCode: string;
   basicConsult: BasicConsult;
-  constructor(private service: BasicConsultService) {}
+  constructor(private service: BasicConsultService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   search() {
-    console.log(this.showResult);
     if (this.inputNupre || this.inputCadastralCode || this.inputFMI) {
       this.getBasicInfo();
     } else {
@@ -38,7 +37,8 @@ export class BasicParcelInfoComponent implements OnInit {
         }
       );
   }
-  downloadPDF() {
-    return xepOnline.Formatter.Format('contentPDF', { render: 'download'});
+  public downloadPDF() {
+    // $( 'div' ).removeClass( "Tables card" );
+    return xepOnline.Formatter.Format('Tables', { render: 'download', filename: 'ConsultaGeneral' });
   }
 }

@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LoginService {
-  apiURL: string = environment.urlLogin;
+  apiURL: string = environment.KEYCLOAK_URL;
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
   });
@@ -18,7 +18,7 @@ export class LoginService {
       .set("client_secret", "ef705ea9-754b-4178-bcd7-80920c0adb7d")
       .set("username", username)
       .set("password", password)
-    return this.httpClient.post<{ access_token: string }>(this.apiURL + '/auth/realms/SAT/protocol/openid-connect/token', parametros, { headers: this.httpHeaders }).subscribe((res => {
+    return this.httpClient.post<{ access_token: string }>(this.apiURL + '/realms/SAT/protocol/openid-connect/token', parametros, { headers: this.httpHeaders }).subscribe((res => {
       sessionStorage.setItem('access_token', res.access_token);
     }))
   }

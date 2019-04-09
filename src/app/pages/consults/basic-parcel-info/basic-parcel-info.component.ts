@@ -37,8 +37,12 @@ export class BasicParcelInfoComponent implements OnInit {
         }
       );
   }
+  public pdf(){
+    xepOnline.Formatter.Format('Tables', { render: 'download', filename: 'ConsultaGeneral' });
+  }
   public downloadPDF() {
-    // $( 'div' ).removeClass( "Tables card" );
-    return xepOnline.Formatter.Format('Tables', { render: 'download', filename: 'ConsultaGeneral' });
+    $( 'div[id=card]' ).removeClass( "Tables card" );
+    this.pdf()
+    $( 'div[id=card]' ).addClass( "Tables card" );    
   }
 }

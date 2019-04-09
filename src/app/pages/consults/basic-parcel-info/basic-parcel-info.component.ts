@@ -5,7 +5,8 @@ import { BasicConsult } from "src/app/models/basic-parcel-info.interface";
 declare var xepOnline: any;
 
 @Component({
-  templateUrl: 'basic-parcel-info.component.html'
+  templateUrl: 'basic-parcel-info.component.html',
+  styleUrls: ['./basic-parcel-info.component.scss']
 })
 export class BasicParcelInfoComponent implements OnInit {
   showResult = false;
@@ -43,6 +44,6 @@ export class BasicParcelInfoComponent implements OnInit {
   public downloadPDF() {
     $( 'div[id=card]' ).removeClass( "Tables card" );
     this.pdf()
-    $( 'div[id=card]' ).addClass( "Tables card" );    
+    $( 'div[id=card]' ).addClass( "Tables card" );
   }
 }

@@ -25,69 +25,47 @@
 
 
   <div *ngIf="showResult">
-    <div id="Tables">
-      <div id="card" class="card">
-        <div class="card-header">
-          <i class="icon-book-open"></i> Información del Predio
-        </div>
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-sm-10"><b><span class="">Departamento: </span> </b> {{basicConsult.predio.Departamento}}
-            </div>
-            <div class="col-sm-10"><b><span class="">Municipio: </span> </b> {{basicConsult.predio.Municipio}} </div>
-            <div class="col-sm-10"><b><span class="">zona: </span> </b> {{basicConsult.predio.zona}} </div>
-            <div class="col-sm-10"><b><span class="">nupre: </span> </b> {{basicConsult.predio.nupre}} </div>
-            <div class="col-sm-10"><b><span class="">fmi: </span> </b> {{basicConsult.predio.fmi}} </div>
-            <div class="col-sm-10"><b><span class="">tipo: </span> </b> {{basicConsult.predio.tipo}} </div>
-            <div class="col-sm-10"><b><span class="">número predial: </span> </b> {{basicConsult.predio.numero_predial}}
-            </div>
-            <div class="col-sm-10"><b><span class="">número predial anterior: </span> </b>
-              {{basicConsult.predio.numero_predial_anterior}}</div>
+    <div id="card" class="card" *ngFor="let item of basicConsult">
+      <div class="card-header">Predio {{item.id}}</div>
+      <div class="card-body">
+        <div id="Tables" class="row">
+          <div class="col-xs-12 col-md-6 col-sm-12">
+            <div id="map{{item.id}}" class="map" tabindex="0"></div>
           </div>
-        </div>
-      </div>
-      <div id="card" class="card">
-        <div class="card-header">
-          <i class="icon-book-open"></i> Información del Terreno
-        </div>
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-sm-10"><b><span class="">Area de terreno: </span> </b>
-              {{basicConsult.terreno.area_de_terreno}} </div>
-          </div>
-        </div>
-      </div>
-      <div id="card" class="card">
-        <div class="card-header">
-          <i class="icon-book-open"></i> Direcciones
-        </div>
-        <div class="card-body">
-          <div class="row mb-3">
-            <table class="table">
-              <thead>
-                <th>pais</th>
-                <th>departamento</th>
-                <th>ciudad</th>
-                <th>codigo_postal</th>
-                <th>apartado_correo</th>
-                <th>nombre_calle</th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of basicConsult.terreno.direccion">
-                  <td>{{item.pais}}</td>
-                  <td>{{item.departamento}}</td>
-                  <td>{{item.ciudad}}</td>
-                  <td>{{item.codigo_postal}}</td>
-                  <td>{{item.apartado_correo}}</td>
-                  <td>{{item.nombre_calle}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="col-xs-12 col-md-6 col-sm-12">
+            <h3>Predio: </h3>
+            <div *ngFor="let predio of item.attributes.predio" class="bc-result-parcel">
+              <div>Tipo: {{predio.attributes["Tipo"]}}</div>
+              <div>Nombre: {{predio.attributes["Nombre"]}}</div>
+              <div>Departamento: {{predio.attributes["Departamento"]}}</div>
+              <div>Municipio: {{predio.attributes["Municipio"]}}</div>
+              <div>Zona: {{predio.attributes["Zona"]}}</div>
+              <div>Nupre: {{predio.attributes["NUPRE"]}}</div>
+              <div>FMI: {{predio.attributes["FMI"]}}</div>
+              <div>Número Predial: {{predio.attributes["Número predial"]}}</div>
+              <div>Número Predial Anterior: {{predio.attributes["Número predial anterior"]}}</div>
+            </div>
+            <h3>Terreno: </h3>
+            <div class="bc-result-parcel">
+              <div>Área de terreno [m2]: {{item.attributes["Área de terreno [m2]"]}}</div>
+            </div>
+            <h3>Direcciones: </h3>
+            <div class="bc-result-parcel">
+              <div *ngFor="let direccion of item.attributes.extdireccion">
+                <div>País: {{direccion.attributes["País"]}}</div>
+                <div>Departamento: {{direccion.attributes["Departamento"]}}</div>
+                <div>Ciudad: {{direccion.attributes["Ciudad"]}}</div>
+                <div>Código postal: {{direccion.attributes["Código postal"]}}</div>
+                <div>Apartado correo: {{direccion.attributes["Apartado correo"]}}</div>
+                <div>Nombre calle: {{direccion.attributes["Nombre calle"]}}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <div *ngIf="showResult">
     <button class="btn btn-secondary btn-lg btn-block" (click)="downloadPDF()">Descargar Reporte</button>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
 import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
@@ -14,9 +14,11 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
 import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
-declare var xepOnline: any;
-declare var jQuery: any;
+// declare var xepOnline: any;
+// declare var jQuery: any;
 
 @Component({
   templateUrl: 'basic-parcel-info.component.html',
@@ -59,17 +61,6 @@ export class BasicParcelInfoComponent implements OnInit {
         }
       );
   }
-
-  public pdf() {
-    xepOnline.Formatter.Format('Tables', { render: 'download', filename: 'ConsultaGeneral' });
-  }
-
-  public downloadPDF() {
-    jQuery('div[id=card]').removeClass('Tables card');
-    this.pdf();
-    jQuery('div[id=card]').addClass('Tables card');
-  }
-
   private getBaseMap(type: string) {
     let source = '';
     switch (type) {
@@ -140,7 +131,6 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    //transform(polygon, 'EPSG:3116', 'EPSG:900913')
     const m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
@@ -163,5 +153,20 @@ export class BasicParcelInfoComponent implements OnInit {
 
     return m;
 
+  }
+  public captureScreen() {
+    const data = document.getElementById('contentToConvert');
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options 216 x 279 tamaño carta
+      const imgWidth = 200;
+      const pageHeight = 270;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
+      const contentDataURL = canvas.toDataURL('image/jpeg');
+      const position = 5;
+      const pdf = new jspdf('A4');
+      pdf.addImage(contentDataURL, 'JPEG', 1, position, imgWidth, imgHeight);
+      pdf.save('ConsultaGeneral.pdf'); // Generated PDF
+    });
   }
 }

@@ -24,12 +24,12 @@
   </div>
 
 
-  <div *ngIf="showResult">
+  <div id="contentToConvert" *ngIf="showResult">
     <div id="card" class="card" *ngFor="let item of basicConsult">
       <form>
         <div class="card-header">Predio {{item.id}}</div>
         <div class="card-body">
-          <div id="Tables" class="row">
+          <div class="row">
             <div class="col-xs-12 col-md-6 col-sm-12">
               <div id="map{{item.id}}" class="map" tabindex="0"></div>
             </div>
@@ -147,6 +147,6 @@
   </div>
 
   <div *ngIf="showResult">
-    <button class="btn btn-secondary btn-lg btn-block" (click)="downloadPDF()">Descargar Reporte</button>
+    <button class="btn btn-secondary btn-lg btn-block" (click)="captureScreen()">Descargar Reporte</button>
   </div>
 </div>

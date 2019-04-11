@@ -26,43 +26,123 @@
 
   <div *ngIf="showResult">
     <div id="card" class="card" *ngFor="let item of basicConsult">
-      <div class="card-header">Predio {{item.id}}</div>
-      <div class="card-body">
-        <div id="Tables" class="row">
-          <div class="col-xs-12 col-md-6 col-sm-12">
-            <div id="map{{item.id}}" class="map" tabindex="0"></div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-sm-12">
-            <h3>Predio: </h3>
-            <div *ngFor="let predio of item.attributes.predio" class="bc-result-parcel">
-              <div>Tipo: {{predio.attributes["Tipo"]}}</div>
-              <div>Nombre: {{predio.attributes["Nombre"]}}</div>
-              <div>Departamento: {{predio.attributes["Departamento"]}}</div>
-              <div>Municipio: {{predio.attributes["Municipio"]}}</div>
-              <div>Zona: {{predio.attributes["Zona"]}}</div>
-              <div>Nupre: {{predio.attributes["NUPRE"]}}</div>
-              <div>FMI: {{predio.attributes["FMI"]}}</div>
-              <div>Número Predial: {{predio.attributes["Número predial"]}}</div>
-              <div>Número Predial Anterior: {{predio.attributes["Número predial anterior"]}}</div>
+      <form>
+        <div class="card-header">Predio {{item.id}}</div>
+        <div class="card-body">
+          <div id="Tables" class="row">
+            <div class="col-xs-12 col-md-6 col-sm-12">
+              <div id="map{{item.id}}" class="map" tabindex="0"></div>
             </div>
-            <h3>Terreno: </h3>
-            <div class="bc-result-parcel">
-              <div>Área de terreno [m2]: {{item.attributes["Área de terreno [m2]"]}}</div>
-            </div>
-            <h3>Direcciones: </h3>
-            <div class="bc-result-parcel">
-              <div *ngFor="let direccion of item.attributes.extdireccion">
-                <div>País: {{direccion.attributes["País"]}}</div>
-                <div>Departamento: {{direccion.attributes["Departamento"]}}</div>
-                <div>Ciudad: {{direccion.attributes["Ciudad"]}}</div>
-                <div>Código postal: {{direccion.attributes["Código postal"]}}</div>
-                <div>Apartado correo: {{direccion.attributes["Apartado correo"]}}</div>
-                <div>Nombre calle: {{direccion.attributes["Nombre calle"]}}</div>
+            <div class="col-xs-12 col-md-6 col-sm-12">
+              <h3>Predio: </h3>
+              <div *ngFor="let predio of item.attributes.predio" class="bc-result-parcel">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Tipo:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Tipo"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Nombre:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Nombre"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Departamento:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Departamento"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Municipio:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Municipio"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Zona:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Zona"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">NUPRE:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["NUPRE"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">FMI:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["FMI"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Número predial:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Número predial"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Número predial anterior:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{predio.attributes["Número predial anterior"]}}</div>
+                  </div>
+                </div>
+              </div>
+              <h3>Terreno: </h3>
+              <div class="bc-result-parcel">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Área de terreno [m2]:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{item.attributes["Área de terreno [m2]"]}}</div>
+                  </div>
+                </div>
+              </div>
+              <h3>Direcciones: </h3>
+              <div *ngFor="let direccion of item.attributes.extdireccion" class="bc-result-parcel">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">País:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["País"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Departamento:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["Departamento"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Ciudad:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["Ciudad"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Código postal:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["Código postal"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Apartado correo:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["Apartado correo"]}}</div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Nombre calle:</label>
+                  <div class="col-sm-8">
+                    <div class="form-control">{{direccion.attributes["Nombre calle"]}}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 

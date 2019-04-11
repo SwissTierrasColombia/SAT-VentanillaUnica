@@ -12,7 +12,8 @@ import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
-import {transform} from 'ol/proj';
+import { transform } from 'ol/proj';
+import TileWMS from 'ol/source/TileWMS.js';
 
 declare var xepOnline: any;
 declare var jQuery: any;
@@ -99,11 +100,25 @@ export class BasicParcelInfoComponent implements OnInit {
       features: (new GeoJSON()).readFeatures(geom)
     });
 
+    const sterreno = new TileWMS({
+      url: 'http://localhost:8080/geoserver/LADM/wms',
+      params: { LAYERS: 'LADM:vista_terreno', TILED: true },
+      serverType: 'geoserver',
+      crossOrigin: 'anonymous'
+    });
+
+    const terreno = new LayerTile({
+      title: 'Terreno',
+      source: sterreno,
+      opacity: 0.5
+    });
+
+
     const vl = new VectorLayer({
       source: vs,
       style: new Style({
         fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.6)'
+          color: 'rgba(100, 255, 100, 0.6)'
         }),
         stroke: new Stroke({
           color: '#319FD3',
@@ -122,7 +137,7 @@ export class BasicParcelInfoComponent implements OnInit {
       })
     });
 
-    const v = new View({projection: 'EPSG:900913'});
+    const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
     //transform(polygon, 'EPSG:3116', 'EPSG:900913')
@@ -140,6 +155,7 @@ export class BasicParcelInfoComponent implements OnInit {
       target: 'map' + this.basicConsult[0].id,
       layers: [
         this.getBaseMap('googleLayerHybrid'),
+        terreno,
         vl
       ],
       view: v

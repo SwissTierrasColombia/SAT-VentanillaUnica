@@ -17,7 +17,7 @@ export class BasicConsultService {
     return this.httpClient.get<BasicConsult>(`${this.apiURL}/query/parcel?fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`);
   }
 
-  public getParcelGeometry(id: string) {
+  public getParcelGeometry(id: number) {
     return this.httpClient.get<any>(`${this.apiURL}/query/parcel/geometry?id=${id}`);
   }
 }

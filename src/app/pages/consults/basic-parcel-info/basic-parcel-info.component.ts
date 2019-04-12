@@ -1,6 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
-import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
+// import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
+
 
 import PluggableMap from 'ol/PluggableMap.js';
 import Map from 'ol/Map';
@@ -17,8 +18,13 @@ import TileWMS from 'ol/source/TileWMS.js';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 
+
+//import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
+
+
 // declare var xepOnline: any;
 // declare var jQuery: any;
+// declare var L: any;
 
 @Component({
   templateUrl: 'basic-parcel-info.component.html',
@@ -29,7 +35,7 @@ export class BasicParcelInfoComponent implements OnInit {
   inputNupre: string;
   inputFMI = '167-15523';
   inputCadastralCode: string;
-  basicConsult: BasicConsult;
+  basicConsult: any;
 
   constructor(private service: BasicConsultService) { }
 
@@ -50,17 +56,25 @@ export class BasicParcelInfoComponent implements OnInit {
       .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
       .subscribe(
         data => {
-          this.basicConsult = data;
-          this.service.getParcelGeometry(this.basicConsult[0].id).subscribe(geom => {
-            this.drawGeometry(geom);
-          });
-          this.showResult = true;
+          if (data['error']) {
+            console.log(data['error']);
+            this.showResult = false;
+          } else {
+            this.basicConsult = [data[0]];
+            console.log(this.basicConsult, "DATA", data);
+            this.service.getParcelGeometry(this.basicConsult[0].id).subscribe(geom => {
+              this.drawGeometry(geom);
+            });
+            this.showResult = true;
+          }
         },
         error => {
           console.log(error);
+          this.showResult = false;
         }
       );
   }
+
   private getBaseMap(type: string) {
     let source = '';
     switch (type) {
@@ -86,6 +100,32 @@ export class BasicParcelInfoComponent implements OnInit {
   }
 
   private drawGeometry(geom: any) {
+
+    /*
+    const m = new Map('map' + this.basicConsult[0].id, {
+      crs: CRS.EPSG3857
+    });
+
+    new TileLayer('http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}', {
+      crs: CRS.EPSG3857
+    }).addTo(m);
+
+    const parcel = geoJSON(geom, {
+      style: {
+        fillColor: '#BD0026',
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+      }
+    }).addTo(m);
+
+    m.fitBounds(parcel.getBounds());
+
+    //LADM:vw_terreno
+
+    */
 
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)
@@ -154,6 +194,7 @@ export class BasicParcelInfoComponent implements OnInit {
     return m;
 
   }
+
   public captureScreen() {
     const data = document.getElementById('contentToConvert');
     html2canvas(data).then(canvas => {

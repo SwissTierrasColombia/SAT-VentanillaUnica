@@ -33,6 +33,7 @@
     "html2canvas": "^1.0.0-rc.1",
     "jquery": "^3.3.1",
     "jspdf": "^1.5.3",
+    "leaflet": "^1.4.0",
     "moment": "^2.24.0",
     "mutationobserver-shim": "^0.3.3",
     "ng2-charts": "^1.6.0",

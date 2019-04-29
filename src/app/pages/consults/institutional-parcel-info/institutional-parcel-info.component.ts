@@ -1,25 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   templateUrl: 'institutional-parcel-info.component.html'
 })
-export class InstitutionalParcelInfoComponent {
+export class InstitutionalParcelInfoComponent implements OnInit {
 
-  showResult:boolean = false;
-  inputNupre:string;
-  inputFMI:string;
-  inputCadastralCode:string;
+  showResult = false;
+  inputNupre;
+  inputFMI;
+  inputCadastralCode;
+  tab = 1;
+  tipoBusqueda = 1;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  search(){
+  selectTypeSearch(id) {
+    this.inputCadastralCode = '';
+    this.inputFMI = '';
+    this.inputNupre = '';
+    this.tipoBusqueda = id;
+  }
+
+  search() {
     console.log(this.inputNupre);
-    if(this.inputNupre || this.inputFMI || this.inputCadastralCode){
+    if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
       this.showResult = true;
-    }else{
+    } else {
       this.showResult = false;
     }
   }

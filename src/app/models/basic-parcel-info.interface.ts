@@ -59,7 +59,7 @@ export interface Predio {
 
 
 
-export interface BasicConsult {
+export interface BasicParcelInfo {
   id: number;
   attributes: Attributes5;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BasicConsultService } from 'src/app/services/consult/basic-consult.service';
+import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
@@ -37,7 +37,7 @@ export class BasicParcelInfoComponent implements OnInit {
   inputCadastralCode: string;
   basicConsult: any;
 
-  constructor(private service: BasicConsultService) { }
+  constructor(private service: QueryService) { }
 
   ngOnInit() {
 

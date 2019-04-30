@@ -8,7 +8,7 @@ import { LoginService } from 'src/app/services/login/login.service'
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnDestroy {
-  public ver = sessionStorage.getItem("mostrar");
+  public ver = sessionStorage.getItem("access_token");
   public navItems = navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
@@ -25,7 +25,6 @@ export class DefaultLayoutComponent implements OnDestroy {
     });
   }
   logout(){
-    sessionStorage.removeItem("mostrar");
     this.serviceLogin.logout();
     window.location.reload()
   }

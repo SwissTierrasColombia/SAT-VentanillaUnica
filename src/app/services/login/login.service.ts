@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class LoginService {
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
   });
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private route:Router) { 
+
+  }
   login(username: string, password: string) {
     let parametros = new HttpParams()
       .set("grant_type", "password")
@@ -25,7 +28,7 @@ export class LoginService {
       this.data=JSON.parse(atob(res.access_token.split('.')[1]))
       console.log(this.data);
       sessionStorage.setItem('access_token',res.access_token);
-      
+      this.route.navigate(['inicio']);
     }),error => {
       console.log("error", error);
       

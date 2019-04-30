@@ -12,7 +12,6 @@ export class LoginComponent {
   constructor(private service: LoginService) { }
 
   public login() {
-    sessionStorage.setItem("mostrar", "true");
     this.service.login(this.loginData.username, this.loginData.password);
   }
 }

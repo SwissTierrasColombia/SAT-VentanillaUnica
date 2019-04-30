@@ -1,188 +1,256 @@
+<style>
+    .map {
+        max-height: 500px;
+    }
+
+    @media (min-width: 576px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="animated fadeIn">
     <div class="card">
         <div class="card-header">
             <i class="icon-magnifier"></i> Consulta
         </div>
-        <div class="card-body">
-            <div class="form-group">
+        <div class="card-body row">
+            <div class="form-group col-12">
+                <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
                 <label for="inputNupre">NUPRE</label>
                 <input type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre"
                     placeholder="AAAA-00000000000-00">
             </div>
-            <div class="form-group">
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=2">
                 <label for="inputCadastralCode">Número Predial</label>
                 <input type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode"
                     placeholder="00000000000000000000">
             </div>
-            <div class="form-group">
-                <label for="inputFMI">Número Predial</label>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=3">
+                <label for="inputFMI">Folio de Matrícula Inmobiliaria</label>
                 <input type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
             </div>
-
-            <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+            <div class="text-center col-12">
+                <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+            </div>
         </div>
     </div>
-    <hr>
 
     <div *ngIf="showResult">
 
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h3 class="text-center">Verdad Jurídica</h3>
-                <table class="table" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th scope="col">NUPRE</th>
-                            <th scope="col">Folio de Matrícula Inmobiliaria</th>
-                            <th scope="col">Círculo Registral</th>
-                            <th scope="col">Área Registral</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">123</th>
-                            <td>123456789</td>
-                            <td>10</td>
-                            <td>32.1564</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <div class="card">
+            <div class="card-header">Terreno</div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab"
+                            (click)="tab=1" aria-controls="home">
+                            <i class="fa fa-legal fa-lg"></i> Verdad Jurídica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab"
+                            (click)="tab=2" aria-controls="profile">
+                            <i class="fa fa-map-o fa-lg"></i> Verdad Física</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab"
+                            (click)="tab=3" aria-controls="messages">
+                            <i class="fa fa-group fa-lg"></i> Partes Interesadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab"
+                            (click)="tab=4" aria-controls="messages">
+                            <i class="fa fa-institution fa-lg"></i> Verdad Administrativa</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Verdad Jurídica</h3>
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NUPRE</th>
+                                        <th scope="col">Folio de Matrícula Inmobiliaria</th>
+                                        <th scope="col">Círculo Registral</th>
+                                        <th scope="col">Área Registral</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">123</th>
+                                        <td>123456789</td>
+                                        <td>10</td>
+                                        <td>32.1564</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h3 class="text-center">Verdad Física</h3>
-                <hr>
-                <div class="col-sm-12">
-                    <img src="/assets/imagen_predio_prueba.png" alt="">
+                    <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
+                        <h3 class="text-center">Verdad Física</h3>
+                        <hr>
+                        <div class="col-sm-12">
+                            <div id="map" class="map" tabindex="0"></div>
+                        </div>
+                        <table class="table" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Delegación Catastral</th>
+                                    <th scope="col">Departamento</th>
+                                    <th scope="col">Municipio</th>
+                                    <th scope="col">Direcciones</th>
+                                    <th scope="col">Nombre del predio</th>
+                                    <th scope="col">Número predial</th>
+                                    <th scope="col">Número predial anterior</th>
+                                    <th scope="col">Área calculada</th>
+                                    <th scope="col">Tipo de predio</th>
+                                    <th scope="col">Avalúo</th>
+                                    <th scope="col">Origen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IGAC</td>
+                                    <td>Antioquia</td>
+                                    <td>Medellín</td>
+                                    <td>Cll f # 123</td>
+                                    <td></td>
+                                    <td>3210658616840536101203</td>
+                                    <td>321001321523130</td>
+                                    <td>32.1564</td>
+                                    <td>NPH</td>
+                                    <td>320.156.400</td>
+                                    <td>--</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Interesados</h3>
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Completo</th>
+                                        <th scope="col">Tipo de Documento</th>
+                                        <th scope="col">Número de Documento</th>
+                                        <th scope="col">Tipo de Derecho</th>
+                                        <th scope="col">% de Derecho</th>
+                                        <th scope="col">Fecha Derecho</th>
+                                        <th scope="col">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Juan Felipe Pataquiva López</td>
+                                        <td>C.C.</td>
+                                        <td>101224934348</td>
+                                        <td>Dominio</td>
+                                        <td>100%</td>
+                                        <td>20 Feb 1985</td>
+                                        <td>Activo</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Luis Alberto Gómez Arevalo</td>
+                                        <td>C.C.</td>
+                                        <td>1034243548</td>
+                                        <td>Dominio</td>
+                                        <td>100%</td>
+                                        <td>08 Oct 1982</td>
+                                        <td>Inactivo</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Afectaciones</h3>
+                            <hr>
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Código</th>
+                                        <th scope="col">Objeto que afecta</th>
+                                        <th scope="col">Área afectada</th>
+                                        <th scope="col">% de afectación</th>
+                                        <th scope="col">Fecha constitución</th>
+                                        <th scope="col">Fecha expiración</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Detalle Afectación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>??</td>
+                                        <td>Ordenamiento Territorial</td>
+                                        <td>1,300</td>
+                                        <td>100%</td>
+                                        <td>16 Feb 2016</td>
+                                        <td>--</td>
+                                        <td>Activo</td>
+                                        <td>Link</td>
+                                    </tr>
+                                    <tr>
+                                        <td>??</td>
+                                        <td>Amenaza y Riesgo</td>
+                                        <td>1,301</td>
+                                        <td>50%</td>
+                                        <td>10 Feb 2016</td>
+                                        <td>--</td>
+                                        <td>Activo</td>
+                                        <td>Link</td>
+                                    </tr>
+                                    <tr>
+                                        <td>??</td>
+                                        <td>Parques Nacionales Naturales</td>
+                                        <td>901</td>
+                                        <td>80%</td>
+                                        <td>20 Abr 2014</td>
+                                        <td>--</td>
+                                        <td>Activo</td>
+                                        <td>Link</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <table class="table" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th scope="col">Delegación Catastral</th>
-                            <th scope="col">Departamento</th>
-                            <th scope="col">Municipio</th>
-                            <th scope="col">Direcciones</th>
-                            <th scope="col">Nombre del predio</th>
-                            <th scope="col">Número predial</th>
-                            <th scope="col">Número predial anterior</th>
-                            <th scope="col">Área calculada</th>
-                            <th scope="col">Tipo de predio</th>
-                            <th scope="col">Avalúo</th>
-                            <th scope="col">Origen</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>IGAC</td>
-                            <td>Antioquia</td>
-                            <td>Medellín</td>
-                            <td>Cll f # 123</td>
-                            <td></td>
-                            <td>3210658616840536101203</td>
-                            <td>321001321523130</td>
-                            <td>32.1564</td>
-                            <td>NPH</td>
-                            <td>320.156.400</td>
-                            <td>--</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <h3 class="text-center">Interesados</h3>
-                    <table class="table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nombre Completo</th>
-                                <th scope="col">Tipo de Documento</th>
-                                <th scope="col">Número de Documento</th>
-                                <th scope="col">Tipo de Derecho</th>
-                                <th scope="col">% de Derecho</th>
-                                <th scope="col">Fecha Derecho</th>
-                                <th scope="col">Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Juan Felipe Pataquiva López</td>
-                                <td>C.C.</td>
-                                <td>101224934348</td>
-                                <td>Dominio</td>
-                                <td>100%</td>
-                                <td>20 Feb 1985</td>
-                                <td>Activo</td>
-                            </tr>
-
-                            <tr>
-                                <td>Luis Alberto Gómez Arevalo</td>
-                                <td>C.C.</td>
-                                <td>1034243548</td>
-                                <td>Dominio</td>
-                                <td>100%</td>
-                                <td>08 Oct 1982</td>
-                                <td>Inactivo</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <h3 class="text-center">Afectaciones</h3>
-                    <hr>
-                    <table class="table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th scope="col">Código</th>
-                                <th scope="col">Objeto que afecta</th>
-                                <th scope="col">Área afectada</th>
-                                <th scope="col">% de afectación</th>
-                                <th scope="col">Fecha constitución</th>
-                                <th scope="col">Fecha expiración</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Detalle Afectación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>??</td>
-                                <td>Ordenamiento Territorial</td>
-                                <td>1,300</td>
-                                <td>100%</td>
-                                <td>16 Feb 2016</td>
-                                <td>--</td>
-                                <td>Activo</td>
-                                <td>Link</td>
-                            </tr>
-                            <tr>
-                                <td>??</td>
-                                <td>Amenaza y Riesgo</td>
-                                <td>1,301</td>
-                                <td>50%</td>
-                                <td>10 Feb 2016</td>
-                                <td>--</td>
-                                <td>Activo</td>
-                                <td>Link</td>
-                            </tr>
-                            <tr>
-                                <td>??</td>
-                                <td>Parques Nacionales Naturales</td>
-                                <td>901</td>
-                                <td>80%</td>
-                                <td>20 Abr 2014</td>
-                                <td>--</td>
-                                <td>Activo</td>
-                                <td>Link</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
     </div>
+</div>

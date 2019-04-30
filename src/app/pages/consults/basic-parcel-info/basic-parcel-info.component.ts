@@ -15,8 +15,8 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
 import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
+// import * as jspdf from 'jspdf';
+// import html2canvas from 'html2canvas';
 
 
 //import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
@@ -195,7 +195,7 @@ export class BasicParcelInfoComponent implements OnInit {
 
   }
 
-  public captureScreen() {
+/*   public captureScreen() {
     const data = document.getElementById('contentToConvert');
     html2canvas(data).then(canvas => {
       // Few necessary setting options 216 x 279 tamaño carta
@@ -209,5 +209,5 @@ export class BasicParcelInfoComponent implements OnInit {
       pdf.addImage(contentDataURL, 'JPEG', 1, position, imgWidth, imgHeight);
       pdf.save('ConsultaGeneral.pdf'); // Generated PDF
     });
-  }
+  } */
 }

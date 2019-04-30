@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-
+import { LoginService } from 'src/app/services/login/login.service'
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'
 })
 export class LoginComponent {
+  loginData = {
+    username: "",
+    password: ""
+  }
+  constructor(private service: LoginService) { }
 
-  /**
-   * changeStateLogin
-   */
-  public changeStateLogin() {
-    sessionStorage.setItem("mostrar", "true");
+  public login() {
+    this.service.login(this.loginData.username, this.loginData.password);
   }
 }

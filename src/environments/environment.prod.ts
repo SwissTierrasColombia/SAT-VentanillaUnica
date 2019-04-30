@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  url: 'http://192.168.98.51:9090'
+  url: 'http://192.168.98.69:8000/rdm',
+  KEYCLOAK_URL: 'http://192.168.98.69:8080/auth'
 };

@@ -1,3 +1,37 @@
+<style>
+    .map {
+        max-height: 500px;
+    }
+
+    @media (min-width: 576px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .map {
+            height: 200px;
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="animated fadeIn">
     <div class="card">
         <div class="card-header">
@@ -6,9 +40,12 @@
         <div class="card-body row">
             <div class="form-group col-12">
                 <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
-                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input" (click)="selectTypeSearch(1)" >NUPRE&nbsp;&nbsp;
-                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
-                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
             </div>
             <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
                 <label for="inputNupre">NUPRE</label>
@@ -86,7 +123,7 @@
                         <h3 class="text-center">Verdad Física</h3>
                         <hr>
                         <div class="col-sm-12">
-                            <img src="/assets/imagen_predio_prueba.png" alt="">
+                            <div id="map" class="map" tabindex="0"></div>
                         </div>
                         <table class="table" style="width: 100%">
                             <thead>

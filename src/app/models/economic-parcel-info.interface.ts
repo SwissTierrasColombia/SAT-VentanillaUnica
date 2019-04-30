@@ -1,4 +1,4 @@
-interface EconomicParcelInfo {
+export interface EconomicParcelInfo {
   id: number;
   attributes: Attributes8;
 }

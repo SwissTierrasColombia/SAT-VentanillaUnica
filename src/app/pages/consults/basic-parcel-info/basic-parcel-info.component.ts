@@ -62,7 +62,7 @@ export class BasicParcelInfoComponent implements OnInit {
           } else {
             this.basicConsult = [data[0]];
             console.log(this.basicConsult, "DATA", data);
-            this.service.getParcelGeometry(this.basicConsult[0].id).subscribe(geom => {
+            this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
               this.drawGeometry(geom);
             });
             this.showResult = true;

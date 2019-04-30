@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { BasicParcelInfo } from 'src/app/models/basic-parcel-info.interface';
 import { LegalParcelInfo } from 'src/app/models/legal-parcel-info.interface';
 import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
+import { EconomicParcelInfo } from 'src/app/models/economic-parcel-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class QueryService {
 
   public getBasicConsult(fmi: string, cadastralCode: string, nupre: string) {
     return this.httpClient.get<BasicParcelInfo>(`${this.apiURL}/query/parcel?fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`);
+  }
+
+  public getTerrainGeometry(id: number) {
+    return this.httpClient.get<any>(`${this.apiURL}/query/terrain/geometry?id=${id}`);
   }
 
   public getParcelGeometry(id: number) {

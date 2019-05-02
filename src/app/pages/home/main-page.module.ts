@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-
+import { CommonModule } from "@angular/common"
 import { MainPageComponent } from './main-page.component';
 import { MainPageRoutingModule } from './main-page-routing.module';
 
@@ -13,8 +13,11 @@ import { MainPageRoutingModule } from './main-page-routing.module';
     MainPageRoutingModule,
     ChartsModule,
     BsDropdownModule,
+    CommonModule,
     ButtonsModule.forRoot()
   ],
-  declarations: [ MainPageComponent ]
+  declarations: [
+    MainPageComponent
+  ]
 })
 export class MainPageModule { }

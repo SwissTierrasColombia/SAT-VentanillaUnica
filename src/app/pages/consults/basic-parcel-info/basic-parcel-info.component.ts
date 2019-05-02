@@ -27,6 +27,7 @@ import TileWMS from 'ol/source/TileWMS.js';
 // declare var L: any;
 
 @Component({
+  selector: 'app-basic-parcel-info',
   templateUrl: 'basic-parcel-info.component.html',
   styleUrls: ['./basic-parcel-info.component.scss']
 })

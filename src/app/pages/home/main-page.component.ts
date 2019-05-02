@@ -8,7 +8,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements OnInit {
-
+  tab=1;
   ngOnInit(): void {
    /*  throw new Error("Method not implemented."); */
   }

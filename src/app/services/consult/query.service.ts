@@ -20,7 +20,7 @@ export class QueryService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Barer ' + this.token
+        'Authorization': 'Bearer ' + this.token
       })
     };
   }

@@ -14,6 +14,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
 import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
+import { environment } from 'src/environments/environment';
 // import * as jspdf from 'jspdf';
 // import html2canvas from 'html2canvas';
 
@@ -29,6 +30,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   tab = 1;
   tipoBusqueda = 1;
   physicalInfo: PhysicalParcelInfo;
+  urlGeoserver: string = environment.geoserver;
 
   constructor(private service: QueryService) { }
 
@@ -77,7 +79,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     });
 
     const sterreno = new TileWMS({
-      url: 'http://localhost:8080/geoserver/LADM/wms',
+      url: this.urlGeoserver+'LADM/wms',
       params: { LAYERS: 'LADM:vista_terreno', TILED: true },
       serverType: 'geoserver',
       crossOrigin: 'anonymous'

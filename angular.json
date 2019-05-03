@@ -28,13 +28,21 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/simple-line-icons/css/simple-line-icons.css",
               "src/scss/style.scss",
-              "src/scss/animate.css"
+              "src/scss/animate.css",
+              "node_modules/ol/ol.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
             },
             "scripts": [
-              "node_modules/chart.js/dist/Chart.min.js"
+              "node_modules/chart.js/dist/Chart.min.js",
+              "src/assets/js/xepOnline.jqPlugin.js",
+              "node_modules/ol/PluggableMap.js",
+              "node_modules/ol/Map.js",
+              "node_modules/ol/View.js",
+              "node_modules/ol/layer/Tile.js",
+              "node_modules/ol/source/XYZ.js",
+              "node_modules/ol/proj.js"
             ],
             "es5BrowserSupport": true
           },
@@ -99,7 +107,8 @@
               "includePaths": ["./node_modules"]
             },
             "scripts": [
-              "node_modules/chart.js/dist/Chart.min.js"
+              "node_modules/chart.js/dist/Chart.min.js",
+              "node_modules/leaflet/dist/leaflet-src.esm.js"
             ],
             "assets": [
               "src/favicon.ico",

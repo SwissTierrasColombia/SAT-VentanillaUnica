@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -ex
+#!/bin/bash -ex
 if which n >/dev/null; then
   n 10.15.1
 else

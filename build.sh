@@ -1,4 +1,5 @@
 #!/bin/bash -ex
+echo "Ejecutando con usuario: $USER y grupo: $GROUPS"
 if which n >/dev/null; then
   n 10.15.1
 else

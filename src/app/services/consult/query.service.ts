@@ -30,11 +30,11 @@ export class QueryService {
   }
 
   public getTerrainGeometry(id: number) {
-    return this.httpClient.get<any>(`${this.apiURL}/private/terrain/geometry?id=${id}`, this.httpOptions);
+    return this.httpClient.get<any>(`${this.apiURL}/public/terrain/geometry?id=${id}`, this.httpOptions);
   }
 
   public getParcelGeometry(id: number) {
-    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/geometry?id=${id}`, this.httpOptions);
+    return this.httpClient.get<any>(`${this.apiURL}/public/parcel/geometry?id=${id}`, this.httpOptions);
   }
 
   public getParcelEconomicQuery(fmi: string, cadastralCode: string, nupre: string) {

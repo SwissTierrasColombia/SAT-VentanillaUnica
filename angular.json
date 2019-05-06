@@ -36,7 +36,6 @@
             },
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js",
-              "src/assets/js/xepOnline.jqPlugin.js",
               "node_modules/ol/PluggableMap.js",
               "node_modules/ol/Map.js",
               "node_modules/ol/View.js",

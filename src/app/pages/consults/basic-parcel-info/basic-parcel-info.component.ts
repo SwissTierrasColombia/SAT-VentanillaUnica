@@ -247,7 +247,7 @@ export class BasicParcelInfoComponent implements OnInit {
         })
         // Few necessary setting options 216 x 279 tamaño carta
         const doc = new jspdf('portrait', 'px', 'a4');
-        doc.addImage(newImg, 'PNG', 0, 0);
+        doc.addImage(newImg, 'PNG', 30, 30, 300, 200);
         doc.autoTable({ html: '.contentToConvert' });
         // From Javascript
         let finalY = doc.previousAutoTable.finalY;

@@ -31,6 +31,8 @@
     "core-js": "^2.6.5",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
+    "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.1.1",
     "moment": "^2.24.0",
     "mutationobserver-shim": "^0.3.3",
     "ng2-charts": "^1.6.0",

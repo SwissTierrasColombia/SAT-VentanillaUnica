@@ -16,10 +16,10 @@ import { defaults as defaultInteractions } from 'ol/interaction.js';
 import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
-// import * as jspdf from 'jspdf';
-// import html2canvas from 'html2canvas';
-
-
+import * as jspdf from 'jspdf';
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+import { discardPeriodicTasks } from '@angular/core/testing';
 //import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
 
@@ -38,8 +38,8 @@ export class BasicParcelInfoComponent implements OnInit {
   inputFMI = '167-15523';
   inputCadastralCode: string;
   basicConsult: any;
+  image: any;
   urlGeoserver: string = environment.geoserver;
-
   constructor(private service: QueryService) { }
 
   ngOnInit() {
@@ -59,12 +59,13 @@ export class BasicParcelInfoComponent implements OnInit {
       .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
       .subscribe(
         data => {
+
           if (data['error']) {
             console.log(data['error']);
             this.showResult = false;
           } else {
             this.basicConsult = [data[0]];
-            console.log(this.basicConsult, "DATA", data);
+            console.log('Consulta basica: ', this.basicConsult, " DATA: ", data);
             this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
               this.drawGeometry(geom);
             });
@@ -135,7 +136,7 @@ export class BasicParcelInfoComponent implements OnInit {
     });
 
     const sterreno = new TileWMS({
-      url: this.urlGeoserver+'LADM/wms',
+      url: this.urlGeoserver + 'LADM/wms',
       params: { LAYERS: 'LADM:vista_terreno', TILED: true },
       serverType: 'geoserver',
       crossOrigin: 'anonymous'
@@ -174,7 +175,7 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    const m = new Map({
+    var m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
         dragAndDrop: true,
@@ -198,19 +199,83 @@ export class BasicParcelInfoComponent implements OnInit {
 
   }
 
-/*   public captureScreen() {
-    const data = document.getElementById('contentToConvert');
-    html2canvas(data).then(canvas => {
-      // Few necessary setting options 216 x 279 tamaño carta
-      const imgWidth = 200;
-      const pageHeight = 270;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      const heightLeft = imgHeight;
-      const contentDataURL = canvas.toDataURL('image/jpeg');
-      const position = 5;
-      const pdf = new jspdf('A4');
-      pdf.addImage(contentDataURL, 'JPEG', 1, position, imgWidth, imgHeight);
-      pdf.save('ConsultaGeneral.pdf'); // Generated PDF
-    });
-  } */
+  public captureScreen() {
+    var newImg = new Image;
+    newImg.onload = function() {
+        console.log(this);
+        var tipo = ''
+        var nombre = ''
+        var departamento = ''
+        var Municipio = ''
+        var Zona = ''
+        var NUPRE = ''
+        var FMI = ''
+        var Npredial = ''
+        var NpredialAnterior = ''
+        var terreno = ''
+        var País = ''
+        var Departamento = ''
+        var Ciudad = ''
+        var Código_postal = ''
+        var Apartado_correo = ''
+        var Nombre_calle = ''
+    
+        this.basicConsult.forEach(element => {
+          //Terreno
+          terreno = element.attributes['Área de terreno [m2]']
+          element.attributes.predio.forEach(element => {
+            //Predio
+            tipo = element.attributes["Tipo"]
+            nombre = element.attributes["Nombre"]
+            departamento = element.attributes["Departamento"]
+            Municipio = element.attributes["Municipio"]
+            Zona = element.attributes["Zona"]
+            NUPRE = element.attributes["NUPRE"]
+            FMI = element.attributes["FMI"]
+            Npredial = element.attributes["Número predial"]
+            NpredialAnterior = element.attributes["Número predial anterior"]
+          });
+          element.attributes.extdireccion.forEach(element => {
+            //Direcciones
+            País = element.attributes["País"]
+            Departamento = element.attributes["Departamento"]
+            Ciudad = element.attributes["Ciudad"]
+            Código_postal = element.attributes["Código postal"]
+            Apartado_correo = element.attributes["Apartado correo"]
+            Nombre_calle = element.attributes["Nombre calle"]
+          });
+        })
+        // Few necessary setting options 216 x 279 tamaño carta
+        const doc = new jspdf('portrait', 'px', 'a4');
+        doc.addImage(newImg, 'PNG', 0, 0);
+        doc.autoTable({ html: '.contentToConvert' });
+        // From Javascript
+        let finalY = doc.previousAutoTable.finalY;
+        doc.text("Predio", 30, finalY + 10);
+        doc.autoTable({
+          head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
+          body: [
+            [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
+          ]
+        });
+        doc.text("Terreno", 30, finalY + 85);
+        doc.autoTable({
+          head: [['Terreno']],
+          body: [
+            [terreno]
+          ]
+        });
+        doc.text("Direcciones", 30, finalY + 132);
+        doc.autoTable({
+          head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
+          body: [
+            [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
+          ]
+        }); 
+        doc.save('ConsultaGeneral.pdf'); // Generated PDF
+    }.bind(this);
+    newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
+    
+  }
+
 }

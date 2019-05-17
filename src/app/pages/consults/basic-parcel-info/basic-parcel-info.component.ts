@@ -37,8 +37,7 @@ export class BasicParcelInfoComponent implements OnInit {
   inputCadastralCode: string;
   basicConsult: any;
   image: any;
-  // Few necessary setting options 216 x 279 tamaño carta
-  doc = new jspdf('portrait', 'px', 'a4');
+  docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
   constructor(private service: QueryService) { }
@@ -200,10 +199,11 @@ export class BasicParcelInfoComponent implements OnInit {
 
   }
   public xOffset(text) {
-    return (this.doc.internal.pageSize.width / 2) - (this.doc.getStringUnitWidth(text) * this.doc.internal.getFontSize() / 2);
+    return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
-
   public captureScreen() {
+    // Few necessary setting options 216 x 279 tamaño carta
+    let doc = new jspdf('portrait', 'px', 'a4');
     let newImg = new Image();
     newImg.onload = function () {
       console.log(this);
@@ -256,34 +256,60 @@ export class BasicParcelInfoComponent implements OnInit {
       qr.make();
       let text = "SAT Consulta Basica"
       let Imageqr = qr.createDataURL();
-      this.doc.addImage(Imageqr, 10, 15);
-      this.doc.text(text, this.xOffset(text) + 10, 15);
-      this.doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 20, 300, 200);
-      this.doc.autoTable({ html: '.contentToConvert' });
-      this.doc.text("Predio", 30, this.xOffset(newImg) + 15);
-      this.doc.autoTable({
-        startY: this.xOffset(newImg) + 20,
+      var imagenlogo = new Image();
+      imagenlogo.src = "assets/img/brand/logo.png";
+      // horizontal line margen
+      doc.setLineWidth(1);
+      doc.line(10, 10, 426.46, 10);
+      doc.line(10, 611.4175, 426.46, 611.4175);
+      // vertical line margen
+      doc.line(10, 611.4175, 10, 10);
+      doc.line(426.46, 611.4175, 426.46, 10);
+      // horizontal margen titulo
+      doc.line(10, 85, 426.46, 85);
+      // image LOGO SAT
+      doc.addImage(imagenlogo, 30, 30, 100, 40);
+      // titulo pdf
+      doc.text(text, this.xOffset(text) + 5, 80);
+      // imagen QR
+      doc.addImage(Imageqr, 330, 30);
+      //MAPA
+      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
+      // horizantal mapa
+      doc.line(10, 320, 426.46, 320);
+      //Generacion de las tablas
+      doc.autoTable({ html: '.contentToConvert' });
+      doc.text("Predio", 20, 335);
+      doc.autoTable({
+        margin: 20,
+        startY: 340,
+        tableWidth: 396.46,
         head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
         body: [
           [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
         ]
       });
-      this.doc.text("Terreno", 30, 90 + this.xOffset(newImg));
-      this.doc.autoTable({
+      doc.text("Terreno", 20, 400);
+      doc.autoTable({
+        margin: 20,
+        tableWidth: 396.46,
         head: [['Terreno']],
         body: [
           [terreno]
         ]
       });
-      this.doc.text("Direcciones", 30, 138 + this.xOffset(newImg));
-      this.doc.autoTable({
+      doc.text("Direcciones", 20, 450);
+      doc.autoTable({
+        margin: 20,
+        tableWidth: 396.46,
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
           [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
         ]
       });
-      //this.doc.text('Footer Text', 216, 279);
-      this.doc.save('ConsultaGeneral.pdf'); // Generated PDF
+      doc.setFontSize(9);
+      doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
+      doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
   }

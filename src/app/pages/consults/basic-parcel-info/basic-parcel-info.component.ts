@@ -3,7 +3,6 @@ import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
-import PluggableMap from 'ol/PluggableMap.js';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
@@ -13,19 +12,18 @@ import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
-import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
-import { UserOptions } from 'jspdf-autotable';
-import { discardPeriodicTasks } from '@angular/core/testing';
-//import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
+
+// import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
 
 // declare var xepOnline: any;
 // declare var jQuery: any;
 // declare var L: any;
+declare var qrcode: any;
 
 @Component({
   selector: 'app-basic-parcel-info',
@@ -205,7 +203,11 @@ export class BasicParcelInfoComponent implements OnInit {
   }
 
   public captureScreen() {
+<<<<<<< HEAD
     var newImg = new Image;
+=======
+    var newImg = new Image();
+>>>>>>> 371b1bada044ae0185ddce4d3a310b4048b28e40
     newImg.onload = function () {
       console.log(this);
       var tipo = ''
@@ -257,11 +259,14 @@ export class BasicParcelInfoComponent implements OnInit {
       this.doc.text("Predio", 30, this.xOffset(newImg) + 15);
       this.doc.autoTable({
         startY: this.xOffset(newImg) + 20,
-        head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
-        body: [
-          [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
-        ]
-      });
+
+      const typeNumber = 4;
+      const errorCorrectionLevel = 'L';
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(environment.qr_base_url + '?fmi=' + FMI);
+      qr.make();
+      console.log(qr.createDataURL());
+
       this.doc.text("Terreno", 30, 90 + this.xOffset(newImg));
       this.doc.autoTable({
         head: [['Terreno']],

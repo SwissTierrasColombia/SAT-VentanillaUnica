@@ -20,10 +20,10 @@ import 'jspdf-autotable';
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
 
-// declare var xepOnline: any;
-// declare var jQuery: any;
-// declare var L: any;
-declare var qrcode: any;
+// declare let xepOnline: any;
+// declare let jQuery: any;
+// declare let L: any;
+declare let qrcode: any;
 
 @Component({
   selector: 'app-basic-parcel-info',
@@ -37,9 +37,9 @@ export class BasicParcelInfoComponent implements OnInit {
   inputCadastralCode: string;
   basicConsult: any;
   image: any;
-  // Few necessary setting options 216 x 279 tamaño carta
-  doc = new jspdf('portrait', 'px', 'a4');
+  docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
+  urlQR: string = environment.qr_base_url;
   constructor(private service: QueryService) { }
 
   ngOnInit() {
@@ -175,7 +175,7 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    var m = new Map({
+    let m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
         dragAndDrop: true,
@@ -199,93 +199,117 @@ export class BasicParcelInfoComponent implements OnInit {
 
   }
   public xOffset(text) {
-    return (this.doc.internal.pageSize.width / 2) - (this.doc.getStringUnitWidth(text) * this.doc.internal.getFontSize() / 2);
+    return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
-
   public captureScreen() {
-<<<<<<< HEAD
-    var newImg = new Image;
-=======
-    var newImg = new Image();
->>>>>>> 371b1bada044ae0185ddce4d3a310b4048b28e40
+    // Few necessary setting options 216 x 279 tamaño carta
+    let doc = new jspdf('portrait', 'px', 'a4');
+    let newImg = new Image();
     newImg.onload = function () {
       console.log(this);
-      var tipo = ''
-      var nombre = ''
-      var departamento = ''
-      var Municipio = ''
-      var Zona = ''
-      var NUPRE = ''
-      var FMI = ''
-      var Npredial = ''
-      var NpredialAnterior = ''
-      var terreno = ''
-      var País = ''
-      var Departamento = ''
-      var Ciudad = ''
-      var Código_postal = ''
-      var Apartado_correo = ''
-      var Nombre_calle = ''
-
+      let tipo = '';
+      let nombre = '';
+      let departamento = '';
+      let Municipio = '';
+      let Zona = '';
+      let NUPRE = '';
+      let FMI = '';
+      let Npredial = '';
+      let NpredialAnterior = '';
+      let terreno = '';
+      let País = '';
+      let Departamento = '';
+      let Ciudad = '';
+      let Código_postal = '';
+      let Apartado_correo = '';
+      let Nombre_calle = '';
       this.basicConsult.forEach(element => {
         //Terreno
-        terreno = element.attributes['Área de terreno [m2]']
+        terreno = element.attributes['Área de terreno [m2]'];
         element.attributes.predio.forEach(element => {
           //Predio
-          tipo = element.attributes["Tipo"]
-          nombre = element.attributes["Nombre"]
-          departamento = element.attributes["Departamento"]
-          Municipio = element.attributes["Municipio"]
-          Zona = element.attributes["Zona"]
-          NUPRE = element.attributes["NUPRE"]
-          FMI = element.attributes["FMI"]
-          Npredial = element.attributes["Número predial"]
-          NpredialAnterior = element.attributes["Número predial anterior"]
+          tipo = element.attributes["Tipo"];
+          nombre = element.attributes["Nombre"];
+          departamento = element.attributes["Departamento"];
+          Municipio = element.attributes["Municipio"];
+          Zona = element.attributes["Zona"];
+          NUPRE = element.attributes["NUPRE"];
+          FMI = element.attributes["FMI"];
+          Npredial = element.attributes["Número predial"];
+          NpredialAnterior = element.attributes["Número predial anterior"];
         });
         element.attributes.extdireccion.forEach(element => {
           //Direcciones
-          País = element.attributes["País"]
-          Departamento = element.attributes["Departamento"]
-          Ciudad = element.attributes["Ciudad"]
-          Código_postal = element.attributes["Código postal"]
-          Apartado_correo = element.attributes["Apartado correo"]
-          Nombre_calle = element.attributes["Nombre calle"]
+          País = element.attributes["País"];
+          Departamento = element.attributes["Departamento"];
+          Ciudad = element.attributes["Ciudad"];
+          Código_postal = element.attributes["Código postal"];
+          Apartado_correo = element.attributes["Apartado correo"];
+          Nombre_calle = element.attributes["Nombre calle"];
         });
       })
-      var text = "SAT Consulta Basica"
-      this.doc.text(text, this.xOffset(text) + 10, 15);
-      this.doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 20, 300, 200);
-      this.doc.autoTable({ html: '.contentToConvert' });
-      this.doc.text("Predio", 30, this.xOffset(newImg) + 15);
-      this.doc.autoTable({
-        startY: this.xOffset(newImg) + 20,
-
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);
-      qr.addData(environment.qr_base_url + '?fmi=' + FMI);
+      qr.addData('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI);
       qr.make();
-      console.log(qr.createDataURL());
-
-      this.doc.text("Terreno", 30, 90 + this.xOffset(newImg));
-      this.doc.autoTable({
+      let text = "SAT Consulta Basica"
+      let Imageqr = qr.createDataURL();
+      var imagenlogo = new Image();
+      imagenlogo.src = "assets/img/brand/logo.png";
+      // horizontal line margen
+      doc.setLineWidth(1);
+      doc.line(10, 10, 426.46, 10);
+      doc.line(10, 611.4175, 426.46, 611.4175);
+      // vertical line margen
+      doc.line(10, 611.4175, 10, 10);
+      doc.line(426.46, 611.4175, 426.46, 10);
+      // horizontal margen titulo
+      doc.line(10, 85, 426.46, 85);
+      // image LOGO SAT
+      doc.addImage(imagenlogo, 30, 30, 100, 40);
+      // titulo pdf
+      doc.text(text, this.xOffset(text) + 5, 80);
+      // imagen QR
+      doc.addImage(Imageqr, 330, 30);
+      //MAPA
+      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
+      // horizantal mapa
+      doc.line(10, 320, 426.46, 320);
+      //Generacion de las tablas
+      doc.autoTable({ html: '.contentToConvert' });
+      doc.text("Predio", 20, 335);
+      doc.autoTable({
+        margin: 20,
+        startY: 340,
+        tableWidth: 396.46,
+        head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
+        body: [
+          [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
+        ]
+      });
+      doc.text("Terreno", 20, 400);
+      doc.autoTable({
+        margin: 20,
+        tableWidth: 396.46,
         head: [['Terreno']],
         body: [
           [terreno]
         ]
       });
-      this.doc.text("Direcciones", 30, 138 + this.xOffset(newImg));
-      this.doc.autoTable({
+      doc.text("Direcciones", 20, 450);
+      doc.autoTable({
+        margin: 20,
+        tableWidth: 396.46,
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
           [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
         ]
       });
-      //this.doc.text('Footer Text', 216, 279);
-      this.doc.save('ConsultaGeneral.pdf'); // Generated PDF
+      doc.setFontSize(9);
+      doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
+      doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
-
   }
-
 }

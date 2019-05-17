@@ -13,7 +13,6 @@ import { EconomicParcelInfo } from 'src/app/models/economic-parcel-info.interfac
 export class QueryService {
   inputNupre: string;
   apiURL: string = environment.url;
-  urlimage: string = environment.imageGeo;
   private token;
   private httpOptions;
   constructor(private httpClient: HttpClient) {
@@ -35,7 +34,7 @@ export class QueryService {
   }
 
   public getTerrainGeometryImage(id: number) {
-    return this.urlimage + 'api/public/parcel/geometry/png?id=' + id;
+    return this.apiURL + '/public/parcel/geometry/png?id=' + id;
   }
   public getParcelGeometry(id: number) {
     return this.httpClient.get<any>(`${this.apiURL}/public/parcel/geometry?id=${id}`, this.httpOptions);

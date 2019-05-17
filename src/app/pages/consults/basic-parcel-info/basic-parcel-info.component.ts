@@ -3,7 +3,6 @@ import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
-import PluggableMap from 'ol/PluggableMap.js';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
@@ -13,19 +12,18 @@ import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
-import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
-import { UserOptions } from 'jspdf-autotable';
-import { discardPeriodicTasks } from '@angular/core/testing';
-//import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
+
+// import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
 
-// declare var xepOnline: any;
-// declare var jQuery: any;
-// declare var L: any;
+// declare let xepOnline: any;
+// declare let jQuery: any;
+// declare let L: any;
+declare let qrcode: any;
 
 @Component({
   selector: 'app-basic-parcel-info',
@@ -177,7 +175,7 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    var m = new Map({
+    let m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
         dragAndDrop: true,
@@ -205,52 +203,58 @@ export class BasicParcelInfoComponent implements OnInit {
   }
 
   public captureScreen() {
-    var newImg = new Image;
+    let newImg = new Image();
     newImg.onload = function () {
       console.log(this);
-      var tipo = ''
-      var nombre = ''
-      var departamento = ''
-      var Municipio = ''
-      var Zona = ''
-      var NUPRE = ''
-      var FMI = ''
-      var Npredial = ''
-      var NpredialAnterior = ''
-      var terreno = ''
-      var País = ''
-      var Departamento = ''
-      var Ciudad = ''
-      var Código_postal = ''
-      var Apartado_correo = ''
-      var Nombre_calle = ''
+      let tipo = '';
+      let nombre = '';
+      let departamento = '';
+      let Municipio = '';
+      let Zona = '';
+      let NUPRE = '';
+      let FMI = '';
+      let Npredial = '';
+      let NpredialAnterior = '';
+      let terreno = '';
+      let País = '';
+      let Departamento = '';
+      let Ciudad = '';
+      let Código_postal = '';
+      let Apartado_correo = '';
+      let Nombre_calle = '';
 
       this.basicConsult.forEach(element => {
         //Terreno
-        terreno = element.attributes['Área de terreno [m2]']
+        terreno = element.attributes['Área de terreno [m2]'];
         element.attributes.predio.forEach(element => {
           //Predio
-          tipo = element.attributes["Tipo"]
-          nombre = element.attributes["Nombre"]
-          departamento = element.attributes["Departamento"]
-          Municipio = element.attributes["Municipio"]
-          Zona = element.attributes["Zona"]
-          NUPRE = element.attributes["NUPRE"]
-          FMI = element.attributes["FMI"]
-          Npredial = element.attributes["Número predial"]
-          NpredialAnterior = element.attributes["Número predial anterior"]
+          tipo = element.attributes["Tipo"];
+          nombre = element.attributes["Nombre"];
+          departamento = element.attributes["Departamento"];
+          Municipio = element.attributes["Municipio"];
+          Zona = element.attributes["Zona"];
+          NUPRE = element.attributes["NUPRE"];
+          FMI = element.attributes["FMI"];
+          Npredial = element.attributes["Número predial"];
+          NpredialAnterior = element.attributes["Número predial anterior"];
         });
         element.attributes.extdireccion.forEach(element => {
           //Direcciones
-          País = element.attributes["País"]
-          Departamento = element.attributes["Departamento"]
-          Ciudad = element.attributes["Ciudad"]
-          Código_postal = element.attributes["Código postal"]
-          Apartado_correo = element.attributes["Apartado correo"]
-          Nombre_calle = element.attributes["Nombre calle"]
+          País = element.attributes["País"];
+          Departamento = element.attributes["Departamento"];
+          Ciudad = element.attributes["Ciudad"];
+          Código_postal = element.attributes["Código postal"];
+          Apartado_correo = element.attributes["Apartado correo"];
+          Nombre_calle = element.attributes["Nombre calle"];
         });
       })
-      var text = "SAT Consulta Basica"
+      const typeNumber = 4;
+      const errorCorrectionLevel = 'L';
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(environment.qr_base_url + '?fmi=' + FMI);
+      qr.make();
+      console.log(qr.createDataURL());
+      let text = "SAT Consulta Basica"
       this.doc.text(text, this.xOffset(text) + 10, 15);
       this.doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 20, 300, 200);
       this.doc.autoTable({ html: '.contentToConvert' });
@@ -280,7 +284,5 @@ export class BasicParcelInfoComponent implements OnInit {
       this.doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
-
   }
-
 }

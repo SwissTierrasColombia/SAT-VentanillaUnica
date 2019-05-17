@@ -3,7 +3,6 @@ import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
-import PluggableMap from 'ol/PluggableMap.js';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
@@ -13,19 +12,18 @@ import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
-import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
-import { UserOptions } from 'jspdf-autotable';
-import { discardPeriodicTasks } from '@angular/core/testing';
-//import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
+
+// import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
 
 // declare var xepOnline: any;
 // declare var jQuery: any;
 // declare var L: any;
+declare var qrcode: any;
 
 @Component({
   selector: 'app-basic-parcel-info',
@@ -200,82 +198,92 @@ export class BasicParcelInfoComponent implements OnInit {
   }
 
   public captureScreen() {
-    var newImg = new Image;
-    newImg.onload = function() {
-        console.log(this);
-        var tipo = ''
-        var nombre = ''
-        var departamento = ''
-        var Municipio = ''
-        var Zona = ''
-        var NUPRE = ''
-        var FMI = ''
-        var Npredial = ''
-        var NpredialAnterior = ''
-        var terreno = ''
-        var País = ''
-        var Departamento = ''
-        var Ciudad = ''
-        var Código_postal = ''
-        var Apartado_correo = ''
-        var Nombre_calle = ''
-    
-        this.basicConsult.forEach(element => {
-          //Terreno
-          terreno = element.attributes['Área de terreno [m2]']
-          element.attributes.predio.forEach(element => {
-            //Predio
-            tipo = element.attributes["Tipo"]
-            nombre = element.attributes["Nombre"]
-            departamento = element.attributes["Departamento"]
-            Municipio = element.attributes["Municipio"]
-            Zona = element.attributes["Zona"]
-            NUPRE = element.attributes["NUPRE"]
-            FMI = element.attributes["FMI"]
-            Npredial = element.attributes["Número predial"]
-            NpredialAnterior = element.attributes["Número predial anterior"]
-          });
-          element.attributes.extdireccion.forEach(element => {
-            //Direcciones
-            País = element.attributes["País"]
-            Departamento = element.attributes["Departamento"]
-            Ciudad = element.attributes["Ciudad"]
-            Código_postal = element.attributes["Código postal"]
-            Apartado_correo = element.attributes["Apartado correo"]
-            Nombre_calle = element.attributes["Nombre calle"]
-          });
-        })
-        // Few necessary setting options 216 x 279 tamaño carta
-        const doc = new jspdf('portrait', 'px', 'a4');
-        doc.addImage(newImg, 'PNG', 30, 30, 300, 200);
-        doc.autoTable({ html: '.contentToConvert' });
-        // From Javascript
-        let finalY = doc.previousAutoTable.finalY;
-        doc.text("Predio", 30, finalY + 10);
-        doc.autoTable({
-          head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
-          body: [
-            [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
-          ]
+    var newImg = new Image();
+    newImg.onload = function () {
+      console.log(this);
+      var tipo = ''
+      var nombre = ''
+      var departamento = ''
+      var Municipio = ''
+      var Zona = ''
+      var NUPRE = ''
+      var FMI = ''
+      var Npredial = ''
+      var NpredialAnterior = ''
+      var terreno = ''
+      var País = ''
+      var Departamento = ''
+      var Ciudad = ''
+      var Código_postal = ''
+      var Apartado_correo = ''
+      var Nombre_calle = ''
+
+
+
+      this.basicConsult.forEach(element => {
+        //Terreno
+        terreno = element.attributes['Área de terreno [m2]']
+        element.attributes.predio.forEach(element => {
+          //Predio
+          tipo = element.attributes["Tipo"]
+          nombre = element.attributes["Nombre"]
+          departamento = element.attributes["Departamento"]
+          Municipio = element.attributes["Municipio"]
+          Zona = element.attributes["Zona"]
+          NUPRE = element.attributes["NUPRE"]
+          FMI = element.attributes["FMI"]
+          Npredial = element.attributes["Número predial"]
+          NpredialAnterior = element.attributes["Número predial anterior"]
         });
-        doc.text("Terreno", 30, finalY + 85);
-        doc.autoTable({
-          head: [['Terreno']],
-          body: [
-            [terreno]
-          ]
+        element.attributes.extdireccion.forEach(element => {
+          //Direcciones
+          País = element.attributes["País"]
+          Departamento = element.attributes["Departamento"]
+          Ciudad = element.attributes["Ciudad"]
+          Código_postal = element.attributes["Código postal"]
+          Apartado_correo = element.attributes["Apartado correo"]
+          Nombre_calle = element.attributes["Nombre calle"]
         });
-        doc.text("Direcciones", 30, finalY + 132);
-        doc.autoTable({
-          head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
-          body: [
-            [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
-          ]
-        }); 
-        doc.save('ConsultaGeneral.pdf'); // Generated PDF
+      })
+
+      const typeNumber = 4;
+      const errorCorrectionLevel = 'L';
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(environment.qr_base_url + '?fmi=' + FMI);
+      qr.make();
+      console.log(qr.createDataURL());
+
+      // Few necessary setting options 216 x 279 tamaño carta
+      const doc = new jspdf('portrait', 'px', 'a4');
+      doc.addImage(newImg, 'PNG', 30, 30, 300, 200);
+      doc.autoTable({ html: '.contentToConvert' });
+      // From Javascript
+      let finalY = doc.previousAutoTable.finalY;
+      doc.text("Predio", 30, finalY + 10);
+      doc.autoTable({
+        head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
+        body: [
+          [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
+        ]
+      });
+      doc.text("Terreno", 30, finalY + 85);
+      doc.autoTable({
+        head: [['Terreno']],
+        body: [
+          [terreno]
+        ]
+      });
+      doc.text("Direcciones", 30, finalY + 132);
+      doc.autoTable({
+        head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
+        body: [
+          [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
+        ]
+      });
+      doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
-    
+
   }
 
 }

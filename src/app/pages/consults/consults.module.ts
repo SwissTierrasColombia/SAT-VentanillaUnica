@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ConsultsRoutingModule,
     FormsModule
-
   ],
   declarations: [
     BasicParcelInfoComponent,

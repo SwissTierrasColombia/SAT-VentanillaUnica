@@ -40,6 +40,7 @@ export class BasicParcelInfoComponent implements OnInit {
   // Few necessary setting options 216 x 279 tamaño carta
   doc = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
+  urlQR: string = environment.qr_base_url;
   constructor(private service: QueryService) { }
 
   ngOnInit() {
@@ -251,10 +252,11 @@ export class BasicParcelInfoComponent implements OnInit {
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);
-      qr.addData(environment.qr_base_url + '?fmi=' + FMI);
+      qr.addData('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI);
       qr.make();
-      console.log(qr.createDataURL());
       let text = "SAT Consulta Basica"
+      let Imageqr = qr.createDataURL();
+      this.doc.addImage(Imageqr, 10, 15);
       this.doc.text(text, this.xOffset(text) + 10, 15);
       this.doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 20, 300, 200);
       this.doc.autoTable({ html: '.contentToConvert' });

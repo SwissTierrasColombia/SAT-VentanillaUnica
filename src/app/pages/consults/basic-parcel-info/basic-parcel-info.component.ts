@@ -39,6 +39,8 @@ export class BasicParcelInfoComponent implements OnInit {
   inputCadastralCode: string;
   basicConsult: any;
   image: any;
+  // Few necessary setting options 216 x 279 tamaño carta
+  doc = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   constructor(private service: QueryService) { }
 
@@ -198,84 +200,87 @@ export class BasicParcelInfoComponent implements OnInit {
     return m;
 
   }
+  public xOffset(text) {
+    return (this.doc.internal.pageSize.width / 2) - (this.doc.getStringUnitWidth(text) * this.doc.internal.getFontSize() / 2);
+  }
 
   public captureScreen() {
     var newImg = new Image;
-    newImg.onload = function() {
-        console.log(this);
-        var tipo = ''
-        var nombre = ''
-        var departamento = ''
-        var Municipio = ''
-        var Zona = ''
-        var NUPRE = ''
-        var FMI = ''
-        var Npredial = ''
-        var NpredialAnterior = ''
-        var terreno = ''
-        var País = ''
-        var Departamento = ''
-        var Ciudad = ''
-        var Código_postal = ''
-        var Apartado_correo = ''
-        var Nombre_calle = ''
-    
-        this.basicConsult.forEach(element => {
-          //Terreno
-          terreno = element.attributes['Área de terreno [m2]']
-          element.attributes.predio.forEach(element => {
-            //Predio
-            tipo = element.attributes["Tipo"]
-            nombre = element.attributes["Nombre"]
-            departamento = element.attributes["Departamento"]
-            Municipio = element.attributes["Municipio"]
-            Zona = element.attributes["Zona"]
-            NUPRE = element.attributes["NUPRE"]
-            FMI = element.attributes["FMI"]
-            Npredial = element.attributes["Número predial"]
-            NpredialAnterior = element.attributes["Número predial anterior"]
-          });
-          element.attributes.extdireccion.forEach(element => {
-            //Direcciones
-            País = element.attributes["País"]
-            Departamento = element.attributes["Departamento"]
-            Ciudad = element.attributes["Ciudad"]
-            Código_postal = element.attributes["Código postal"]
-            Apartado_correo = element.attributes["Apartado correo"]
-            Nombre_calle = element.attributes["Nombre calle"]
-          });
-        })
-        // Few necessary setting options 216 x 279 tamaño carta
-        const doc = new jspdf('portrait', 'px', 'a4');
-        doc.addImage(newImg, 'PNG', 30, 30, 300, 200);
-        doc.autoTable({ html: '.contentToConvert' });
-        // From Javascript
-        let finalY = doc.previousAutoTable.finalY;
-        doc.text("Predio", 30, finalY + 10);
-        doc.autoTable({
-          head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
-          body: [
-            [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
-          ]
+    newImg.onload = function () {
+      console.log(this);
+      var tipo = ''
+      var nombre = ''
+      var departamento = ''
+      var Municipio = ''
+      var Zona = ''
+      var NUPRE = ''
+      var FMI = ''
+      var Npredial = ''
+      var NpredialAnterior = ''
+      var terreno = ''
+      var País = ''
+      var Departamento = ''
+      var Ciudad = ''
+      var Código_postal = ''
+      var Apartado_correo = ''
+      var Nombre_calle = ''
+
+      this.basicConsult.forEach(element => {
+        //Terreno
+        terreno = element.attributes['Área de terreno [m2]']
+        element.attributes.predio.forEach(element => {
+          //Predio
+          tipo = element.attributes["Tipo"]
+          nombre = element.attributes["Nombre"]
+          departamento = element.attributes["Departamento"]
+          Municipio = element.attributes["Municipio"]
+          Zona = element.attributes["Zona"]
+          NUPRE = element.attributes["NUPRE"]
+          FMI = element.attributes["FMI"]
+          Npredial = element.attributes["Número predial"]
+          NpredialAnterior = element.attributes["Número predial anterior"]
         });
-        doc.text("Terreno", 30, finalY + 85);
-        doc.autoTable({
-          head: [['Terreno']],
-          body: [
-            [terreno]
-          ]
+        element.attributes.extdireccion.forEach(element => {
+          //Direcciones
+          País = element.attributes["País"]
+          Departamento = element.attributes["Departamento"]
+          Ciudad = element.attributes["Ciudad"]
+          Código_postal = element.attributes["Código postal"]
+          Apartado_correo = element.attributes["Apartado correo"]
+          Nombre_calle = element.attributes["Nombre calle"]
         });
-        doc.text("Direcciones", 30, finalY + 132);
-        doc.autoTable({
-          head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
-          body: [
-            [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
-          ]
-        }); 
-        doc.save('ConsultaGeneral.pdf'); // Generated PDF
+      })
+      var text = "SAT Consulta Basica"
+      this.doc.text(text, this.xOffset(text) + 10, 15);
+      this.doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 20, 300, 200);
+      this.doc.autoTable({ html: '.contentToConvert' });
+      this.doc.text("Predio", 30, this.xOffset(newImg) + 15);
+      this.doc.autoTable({
+        startY: this.xOffset(newImg) + 20,
+        head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
+        body: [
+          [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
+        ]
+      });
+      this.doc.text("Terreno", 30, 90 + this.xOffset(newImg));
+      this.doc.autoTable({
+        head: [['Terreno']],
+        body: [
+          [terreno]
+        ]
+      });
+      this.doc.text("Direcciones", 30, 138 + this.xOffset(newImg));
+      this.doc.autoTable({
+        head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
+        body: [
+          [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
+        ]
+      });
+      //this.doc.text('Footer Text', 216, 279);
+      this.doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
-    
+
   }
 
 }

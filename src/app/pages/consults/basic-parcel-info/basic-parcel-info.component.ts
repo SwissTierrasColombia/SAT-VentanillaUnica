@@ -264,14 +264,18 @@ export class BasicParcelInfoComponent implements OnInit {
       // vertical line margen
       doc.line(10, 611.4175, 10, 10);
       doc.line(426.46, 611.4175, 426.46, 10);
+      // vertical separar logo SAT
+      doc.line(140, 85, 140, 10);
+      // vertical separar logo QR
+      doc.line(300, 85, 300, 10);
       // horizontal margen titulo
       doc.line(10, 85, 426.46, 85);
       // image LOGO SAT
-      doc.addImage(imagenlogo, 30, 30, 100, 40);
+      doc.addImage(imagenlogo, 25, 25, 100, 40);
       // titulo pdf
-      doc.text(text, this.xOffset(text) + 5, 80);
+      doc.text(text, this.xOffset(text) + 10, 50);
       // imagen QR
-      doc.addImage(Imageqr, 330, 30);
+      doc.addImage(Imageqr, 340, 25);
       //MAPA
       doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
       // horizantal mapa

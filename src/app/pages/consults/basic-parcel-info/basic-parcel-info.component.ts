@@ -40,13 +40,23 @@ export class BasicParcelInfoComponent implements OnInit {
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
+  tipoBusqueda = 1;
+
   constructor(private service: QueryService) { }
 
   ngOnInit() {
 
   }
-
+  selectTypeSearch(id) {
+    this.inputCadastralCode = '';
+    this.inputFMI = '';
+    this.inputNupre = '';
+    this.tipoBusqueda = id;
+  }
   search() {
+    this.inputFMI = this.inputFMI.trim();
+    this.inputCadastralCode = this.inputCadastralCode.trim();
+    this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputCadastralCode || this.inputFMI) {
       this.getBasicInfo();
     } else {
@@ -315,5 +325,10 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
+  }
+  public onKey(event: any) {
+    if (event.key === "Enter") {
+      this.search();
+    }
   }
 }

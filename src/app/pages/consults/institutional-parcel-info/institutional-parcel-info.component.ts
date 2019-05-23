@@ -31,6 +31,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   tipoBusqueda = 1;
   physicalInfo: PhysicalParcelInfo;
   urlGeoserver: string = environment.geoserver;
+  interesadosInfo: any;
 
   constructor(private service: QueryService) { }
 
@@ -45,15 +46,17 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   }
 
   search() {
-    console.log(this.inputNupre);
+    this.inputFMI = this.inputFMI.trim();
+    this.inputCadastralCode = this.inputCadastralCode.trim();
+    this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
-
+      this.getInteresadosInfo();
       this.service
         .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           data => {
             this.physicalInfo = data[0];
-            console.log('DATA', this.physicalInfo, this.physicalInfo.attributes.predio[0].id);
+            //console.log('DATA', this.physicalInfo, this.physicalInfo.attributes.predio[0].id);
             this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
               this.drawGeometry(geom);
               //console.log(geom);
@@ -69,6 +72,31 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       this.showResult = false;
     }
   }
+  private getInteresadosInfo() {
+    if (this.inputCadastralCode != '') {
+      this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
+        data => {
+          this.interesadosInfo = data;
+        }
+      );
+    }
+    if (this.inputFMI != '') {
+      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
+        data => {
+          this.interesadosInfo = data;
+          console.log(this.interesadosInfo);
+
+        }
+      );
+    }
+    if (this.inputNupre != '') {
+      this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
+        data => {
+          this.interesadosInfo = data;
+        }
+      );
+    }
+  }
 
   private drawGeometry(geom: any) {
 
@@ -79,7 +107,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     });
 
     const sterreno = new TileWMS({
-      url: this.urlGeoserver+'LADM/wms',
+      url: this.urlGeoserver + 'LADM/wms',
       params: { LAYERS: 'LADM:vista_terreno', TILED: true },
       serverType: 'geoserver',
       crossOrigin: 'anonymous'
@@ -163,6 +191,11 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       });
     } else {
       return null;
+    }
+  }
+  public onKey(event: any) {
+    if (event.key === "Enter") {
+      this.search();
     }
   }
 

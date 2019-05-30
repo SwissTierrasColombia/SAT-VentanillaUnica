@@ -291,7 +291,6 @@ export class BasicParcelInfoComponent implements OnInit {
       // horizantal mapa
       doc.line(10, 320, 426.46, 320);
       //Generacion de las tablas
-      doc.autoTable({ html: '.contentToConvert' });
       doc.text("Predio", 20, 335);
       doc.autoTable({
         margin: 20,

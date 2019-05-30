@@ -30,7 +30,6 @@ export class TokenInterceptor implements HttpInterceptor {
     }*/
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(this.token);
         
         if (this.token) {
             request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + this.token) });
@@ -45,7 +44,7 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    console.log('event--->>>', event);
+                    //console.log('event--->>>', event);
                 }
                 return event;
             }));

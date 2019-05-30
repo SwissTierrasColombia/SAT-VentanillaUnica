@@ -30,6 +30,8 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   tab = 1;
   tipoBusqueda = 1;
   physicalInfo: PhysicalParcelInfo;
+  basicData: any;
+  legalInfo: any;
   urlGeoserver: string = environment.geoserver;
 
   constructor(private service: QueryService) { }
@@ -52,13 +54,30 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           data => {
-            this.physicalInfo = data[0];
-            console.log('DATA', this.physicalInfo, this.physicalInfo.attributes.predio[0].id);
-            this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
-              this.drawGeometry(geom);
-              //console.log(geom);
-            });
-            this.showResult = true;
+            this.service
+              .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+              .subscribe(
+                basicData => {
+                  this.physicalInfo = data[0];
+                  this.basicData = basicData;
+                  console.log('FÍSICA: ', this.physicalInfo, basicData);
+                  this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                    this.drawGeometry(geom);
+                  });
+                  this.showResult = true;
+                });
+          },
+          error => {
+            console.log(error);
+            this.showResult = false;
+          }
+        );
+
+      this.service
+        .getParcelLegalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+        .subscribe(
+          data => {
+            this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
           },
           error => {
             console.log(error);
@@ -79,7 +98,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     });
 
     const sterreno = new TileWMS({
-      url: this.urlGeoserver+'LADM/wms',
+      url: this.urlGeoserver + 'LADM/wms',
       params: { LAYERS: 'LADM:vista_terreno', TILED: true },
       serverType: 'geoserver',
       crossOrigin: 'anonymous'
@@ -114,6 +133,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         })
       })
     });
+
 
     const v = new View({ projection: 'EPSG:900913' });
     const polygon = vs.getFeatures()[0].getGeometry();

@@ -99,63 +99,94 @@
                     <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel">
                         <div class="col-12">
                             <h3 class="text-center">Verdad Jurídica</h3>
-                            <table class="table" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">NUPRE</th>
-                                        <th scope="col">Folio de Matrícula Inmobiliaria</th>
-                                        <th scope="col">Círculo Registral</th>
-                                        <th scope="col">Área Registral</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">123</th>
-                                        <td>123456789</td>
-                                        <td>10</td>
-                                        <td>32.1564</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <br>
+                            <div >
+                                <h4 class="text-left">Derechos Inscritos</h4>
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No. Matrícula</th>
+                                            <th scope="col">Tipo Derecho</th>
+                                            <th scope="col">Tipo Documento</th>
+                                            <th scope="col">Vigencia</th>
+                                            <th scope="col">Detalle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="legalInfo.FMI!=null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <th scope="row">{{legalInfo.FMI}}</th>
+                                            <td>{{item.attributes['Tipo de derecho']}}</td>
+                                            <td>{{item.attributes['col_fuenteadministrativa'][0].attributes['Tipo de fuente administrativa']}}</td>
+                                            <td>N/A</td>
+                                            <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i class="fa fa-file fa-lg"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="legalInfo.FMI==null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            <div style="margin-top:30px;">
+                                <h4 class="text-left">Derechos NO Inscritos</h4>
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Proceso Regularización</th>
+                                            <th scope="col">Derecho no inscrito</th>
+                                            <th scope="col">Conflictos</th>
+                                            <th scope="col">Detalle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="legalInfo.FMI==null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">N/A</td>
+                                            <td>{{item.attributes['Tipo de derecho']}}</td>
+                                            <td>N/A</td>
+                                            <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i class="fa fa-file fa-lg"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="legalInfo.FMI!=null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                            <td scope="row">N/A</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
+
+<!-- VERDAD FISICA-->
                     <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
                         <h3 class="text-center">Verdad Física</h3>
                         <hr>
                         <table class="table" style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Delegación Catastral</th>
-                                    <th scope="col">Departamento</th>
-                                    <th scope="col">Municipio</th>
-                                    <th scope="col">Direcciones</th>
-                                    <th scope="col">Nombre del predio</th>
-                                    <th scope="col">Número predial</th>
-                                    <th scope="col">Número predial anterior</th>
-                                    <th scope="col">Área calculada</th>
-                                    <th scope="col">Tipo de predio</th>
-                                    <th scope="col">Avalúo</th>
-                                    <th scope="col">Origen</th>
-                                </tr>
-                            </thead>
                             <tbody>
-                                <tr>
-                                    <td>IGAC</td>
-                                    <td>Antioquia</td>
-                                    <td>Medellín</td>
-                                    <td>Cll f # 123</td>
-                                    <td></td>
-                                    <td>3210658616840536101203</td>
-                                    <td>321001321523130</td>
-                                    <td>32.1564</td>
-                                    <td>NPH</td>
-                                    <td>320.156.400</td>
-                                    <td>--</td>
-                                </tr>
+                                <tr><th style="width: 30%;">Delegación Catastral</th><td>SUCRE</td></tr>
+                                <tr><th style="width: 30%;">Municipio del Predio</th><td>OVEJAS</td></tr>
+                                <tr><th style="width: 30%;">Ubicación del Predio</th><td></td></tr>
+                                <tr><th style="width: 30%;">Dirección del Predio</th><td>311_2_nombre_calle</td></tr>
+                                <tr><th style="width: 30%;">Número Catastral</th><td>{{physicalInfo.attributes.predio[0].attributes['Número predial']}}</td></tr>
+                                <tr><th style="width: 30%;">Área Catastral (m2)</th><td>{{physicalInfo.attributes['Área calculada [m2]']}}</td></tr>
+                                <tr><th style="width: 30%;">Tipo de Parcela</th><td>{{physicalInfo.attributes.predio[0].attributes['Tipo']}}</td></tr>
+                                <tr><th style="width: 30%;">Estado</th><td>ACTIVO</td></tr>
+                                <tr><th style="width: 30%;">Otros Datos</th><td><a href="#">Catastro Municipal</a></td></tr>
                             </tbody>
                         </table>
                     </div>
+<!-- FIN VERDAD FISICA-->
+
+
                     <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel">
                         <div class="col-12">
                             <h3 class="text-center">Interesados</h3>

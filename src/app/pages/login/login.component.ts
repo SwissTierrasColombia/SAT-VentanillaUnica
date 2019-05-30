@@ -14,4 +14,9 @@ export class LoginComponent {
   public login() {
     this.service.login(this.loginData.username, this.loginData.password);
   }
+  public onKey(event: any) {
+    if (event.key === "Enter") {
+      this.login();
+    }
+  }
 }

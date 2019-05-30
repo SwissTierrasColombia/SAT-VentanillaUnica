@@ -33,6 +33,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   basicData: any;
   legalInfo: any;
   urlGeoserver: string = environment.geoserver;
+  interesadosInfo: any;
 
   constructor(private service: QueryService) { }
 
@@ -47,9 +48,11 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   }
 
   search() {
-    console.log(this.inputNupre);
+    this.inputFMI = this.inputFMI.trim();
+    this.inputCadastralCode = this.inputCadastralCode.trim();
+    this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
-
+      this.getInteresadosInfo();
       this.service
         .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
@@ -86,6 +89,31 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         );
     } else {
       this.showResult = false;
+    }
+  }
+  private getInteresadosInfo() {
+    if (this.inputCadastralCode != '') {
+      this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
+        data => {
+          this.interesadosInfo = data;
+        }
+      );
+    }
+    if (this.inputFMI != '') {
+      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
+        data => {
+          this.interesadosInfo = data;
+          console.log(this.interesadosInfo);
+
+        }
+      );
+    }
+    if (this.inputNupre != '') {
+      this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
+        data => {
+          this.interesadosInfo = data;
+        }
+      );
     }
   }
 
@@ -183,6 +211,11 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       });
     } else {
       return null;
+    }
+  }
+  public onKey(event: any) {
+    if (event.key === "Enter") {
+      this.search();
     }
   }
 

@@ -30,7 +30,6 @@ export class TokenInterceptor implements HttpInterceptor {
     }*/
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        
         if (this.token) {
             request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + this.token) });
         }

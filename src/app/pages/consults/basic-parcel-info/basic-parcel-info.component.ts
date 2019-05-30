@@ -40,13 +40,23 @@ export class BasicParcelInfoComponent implements OnInit {
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
+  tipoBusqueda = 1;
+
   constructor(private service: QueryService) { }
 
   ngOnInit() {
 
   }
-
+  selectTypeSearch(id) {
+    this.inputCadastralCode = '';
+    this.inputFMI = '';
+    this.inputNupre = '';
+    this.tipoBusqueda = id;
+  }
   search() {
+    this.inputFMI = this.inputFMI.trim();
+    this.inputCadastralCode = this.inputCadastralCode.trim();
+    this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputCadastralCode || this.inputFMI) {
       this.getBasicInfo();
     } else {
@@ -264,14 +274,18 @@ export class BasicParcelInfoComponent implements OnInit {
       // vertical line margen
       doc.line(10, 611.4175, 10, 10);
       doc.line(426.46, 611.4175, 426.46, 10);
+      // vertical separar logo SAT
+      doc.line(140, 85, 140, 10);
+      // vertical separar logo QR
+      doc.line(300, 85, 300, 10);
       // horizontal margen titulo
       doc.line(10, 85, 426.46, 85);
       // image LOGO SAT
-      doc.addImage(imagenlogo, 30, 30, 100, 40);
+      doc.addImage(imagenlogo, 25, 25, 100, 40);
       // titulo pdf
-      doc.text(text, this.xOffset(text) + 5, 80);
+      doc.text(text, this.xOffset(text) + 10, 50);
       // imagen QR
-      doc.addImage(Imageqr, 330, 30);
+      doc.addImage(Imageqr, 340, 25);
       //MAPA
       doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
       // horizantal mapa
@@ -311,5 +325,10 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
+  }
+  public onKey(event: any) {
+    if (event.key === "Enter") {
+      this.search();
+    }
   }
 }

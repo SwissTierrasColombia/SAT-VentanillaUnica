@@ -36,6 +36,7 @@ export class QueryService {
   public getTerrainGeometryImage(id: number) {
     return this.apiURL + '/public/parcel/geometry/png?id=' + id;
   }
+
   public getParcelGeometry(id: number) {
     return this.httpClient.get<any>(`${this.apiURL}/public/parcel/geometry?id=${id}`, this.httpOptions);
   }
@@ -53,6 +54,9 @@ export class QueryService {
   public getParcelPhysicalQuery(fmi: string, cadastralCode: string, nupre: string) {
     const params = `fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`;
     return this.httpClient.get<PhysicalParcelInfo>(`${this.apiURL}/private/parcel/physical?${params}`, this.httpOptions);
+  }
+  public getInteresadosQuery(tipo: string, idTipo: string) {
+    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/party?${tipo}=${idTipo}`, this.httpOptions);;
   }
 
 }

@@ -32,9 +32,9 @@ declare let qrcode: any;
 })
 export class BasicParcelInfoComponent implements OnInit {
   showResult = false;
-  inputNupre: string;
-  inputFMI = '167-15523';
-  inputCadastralCode: string;
+  inputNupre: string = '';
+  inputFMI = '';
+  inputCadastralCode: string = '';
   basicConsult: any;
   image: any;
   docG = new jspdf('portrait', 'px', 'a4');
@@ -54,10 +54,10 @@ export class BasicParcelInfoComponent implements OnInit {
     this.tipoBusqueda = id;
   }
   search() {
-    this.inputFMI = this.inputFMI.trim();
-    this.inputCadastralCode = this.inputCadastralCode.trim();
-    this.inputNupre = this.inputNupre.trim();
-    if (this.inputNupre || this.inputCadastralCode || this.inputFMI) {
+    if (this.inputNupre!='' || this.inputCadastralCode!='' || this.inputFMI!='') {
+      this.inputFMI = this.inputFMI.trim();
+      this.inputCadastralCode = this.inputCadastralCode.trim();
+      this.inputNupre = this.inputNupre.trim(); 
       this.getBasicInfo();
     } else {
       this.showResult = false;
@@ -75,7 +75,6 @@ export class BasicParcelInfoComponent implements OnInit {
             this.showResult = false;
           } else {
             this.basicConsult = [data[0]];
-            console.log('Consulta basica: ', this.basicConsult, " DATA: ", data);
             this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
               this.drawGeometry(geom);
             });
@@ -216,7 +215,6 @@ export class BasicParcelInfoComponent implements OnInit {
     let doc = new jspdf('portrait', 'px', 'a4');
     let newImg = new Image();
     newImg.onload = function () {
-      console.log(this);
       let tipo = '';
       let nombre = '';
       let departamento = '';

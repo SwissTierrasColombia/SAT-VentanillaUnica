@@ -294,6 +294,7 @@ export class BasicParcelInfoComponent implements OnInit {
         margin: 20,
         startY: 340,
         tableWidth: 396.46,
+        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
         head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
         body: [
           [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
@@ -303,6 +304,7 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
+        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
         head: [['Terreno']],
         body: [
           [terreno]
@@ -312,6 +314,7 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
+        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
           [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]

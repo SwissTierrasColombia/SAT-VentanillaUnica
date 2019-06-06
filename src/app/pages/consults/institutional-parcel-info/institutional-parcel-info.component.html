@@ -5,28 +5,28 @@
 
   @media (min-width: 576px) {
     .map {
-      height: 200px;
+      height: 300px;
       width: 100%;
     }
   }
 
   @media (min-width: 768px) {
     .map {
-      height: 200px;
+      height: 300px;
       width: 100%;
     }
   }
 
   @media (min-width: 992px) {
     .map {
-      height: 200px;
+      height: 500px;
       width: 100%;
     }
   }
 
   @media (min-width: 1200px) {
     .map {
-      height: 200px;
+      height: 500px;
       width: 100%;
     }
   }
@@ -35,7 +35,7 @@
 <div class="animated fadeIn">
   <div class="card">
     <div class="card-header">
-      <i class="icon-magnifier"></i> Consulta
+      <h3><i class="icon-magnifier"></i> Consulta</h3>
     </div>
     <div class="card-body row">
       <div class="form-group col-12">
@@ -70,10 +70,12 @@
 
   <div *ngIf="showResult">
 
+    <!-- PARTE A -->
+
     <div class="card">
-      <div class="card-header">Terreno</div>
+      <div class="card-header"><h3>Punto Único de Verdad</h3></div>
       <div class="card-body">
-        <div id="map" class="map" tabindex="0"></div>
+
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item">
             <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab=1"
@@ -303,5 +305,134 @@
         </div>
       </div>
     </div>
+    <!-- FIN PARTE A -->
+
+    <!-- PARTE B -->
+    <div class="card">
+      <div class="card-header"><h3>Mapa</h3></div>
+      <div class="card-body">
+        <div id="map" class="map" tabindex="0"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>Históricos</h3></div>
+      <div class="card-body">
+
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="text-center">Solicitudes de Conservación Radicadas</h4>
+            </div>
+            <div class="card-body">
+
+              <table class="table" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col">Radicación</th>
+                    <th scope="col">Nº Solicitud</th>
+                    <th scope="col">Fecha Solicitud</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Tipo Solicitud</th>
+                    <th scope="col">Modifica Identificador</th>
+                    <th scope="col">Modifica Geometría</th>
+                    <th scope="col">Venido Registro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>654654</td>
+                    <td><a href="#">565654654</a></td>
+                    <td>2016-05-06</td>
+                    <td>RADICADO</td>
+                    <td>Compraventa Total</td>
+                    <td>No</td>
+                    <td>Si</td>
+                    <td>No</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="text-center">Derechos</h4>
+              </div>
+              <div class="card-body">
+  
+                <table class="table" style="width: 100%">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Nombre Completo</th>
+                      <th scope="col">Tipo Derecho</th>
+                      <th scope="col">% Derecho</th>
+                      <th scope="col">Vigencia</th>
+                      <th scope="col">Tipo Documento</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Detalle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>GARCIA PEREZ, RAMON ORLANDO</td>
+                      <td>DOMINIO PLENO</td>
+                      <td>100</td>
+                      <td>2016-02-16</td>
+                      <td>ESCRITURA</td>
+                      <td>INACTIVO</td>
+                      <td><a href="#">Ver más</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="text-center">Afectaciones</h4>
+                </div>
+                <div class="card-body">
+    
+                  <table class="table" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Objeto que afecta</th>
+                        <th scope="col">Área afectada</th>
+                        <th scope="col">% de afectación</th>
+                        <th scope="col">Fecha constitución</th>
+                        <th scope="col">Fecha expiración</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Detalle Afectación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>4654</td>
+                        <td>Centro histórico - Municipio de Ovejas</td>
+                        <td>1.300,47</td>
+                        <td>100%</td>
+                        <td>2017-02-09</td>
+                        <td>2019-02-02</td>
+                        <td>Activo</td>
+                        <td><a href="#">Ver más</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+      </div>
+    </div>
+    <!-- FIN PARTE B -->
+
   </div>
 </div>

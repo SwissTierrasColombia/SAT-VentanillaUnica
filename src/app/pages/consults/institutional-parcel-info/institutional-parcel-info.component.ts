@@ -35,9 +35,14 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   urlGeoserver: string = environment.geoserver;
   interesadosInfo: any;
 
+  infoSolicitudConservacion = [];
+
+
+
   constructor(private service: QueryService) { }
 
   ngOnInit() {
+    
   }
 
   selectTypeSearch(id) {
@@ -173,7 +178,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         dragPan: true,
         keyboardPan: true,
         keyboardZoom: true,
-        mouseWheelZoom: true,
+        mouseWheelZoom: false,
         pointer: true,
         select: true
       }),

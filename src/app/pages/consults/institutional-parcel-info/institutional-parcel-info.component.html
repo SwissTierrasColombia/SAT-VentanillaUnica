@@ -433,6 +433,8 @@
       </div>
     </div>
     <!-- FIN PARTE B -->
-
+    <div *ngIf="showResult">
+      <button class="btn btn-secondary btn-lg btn-block" (click)="generatepdf()">Descargar Reporte</button>
+    </div>
   </div>
 </div>

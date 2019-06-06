@@ -15,8 +15,8 @@ import { defaults as defaultInteractions } from 'ol/interaction.js';
 import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
-// import * as jspdf from 'jspdf';
-// import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   templateUrl: 'institutional-parcel-info.component.html'
@@ -34,6 +34,9 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   legalInfo: any;
   urlGeoserver: string = environment.geoserver;
   interesadosInfo: any;
+  urlQR: string = environment.qr_base_url;
+  image: any;
+  docG = new jspdf('portrait', 'px', 'a4');
 
   infoSolicitudConservacion = [];
 
@@ -222,6 +225,10 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     if (event.key === "Enter") {
       this.search();
     }
+  }
+  public generatepdf() {
+    let doc = new jspdf('portrait', 'px', 'a4');
+    doc.save('ConsultaInstitucional.pdf'); // Generated PDF
   }
 
 }

@@ -315,7 +315,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
           ["4654", "Centro histórico - Municipio de Ovejas", "1.300,47", "100%", "2017-02-09", "2019-02-02", "Activo"]
         ]
       });
-/*       doc.setFontSize(9);
+/*       
       doc.text("SUCRE", 95, 130);
       doc.text("OVEJAS", 95, 140);
       doc.text("", 95, 150);
@@ -325,8 +325,8 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       doc.text("PropiedadHorizontal.Matriz", 95, 190);
       doc.text("ACTIVO", 95, 200);
       doc.text("Catastro Municipal", 95, 210); */
-
-      doc.text("Fuente de consulta: ", 15, 603)
+      doc.setFontSize(9);
+      doc.text("Fuente de consulta: ", 15, 600)
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 

@@ -20,7 +20,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="icon-lock"></i></span>
                     </div>
-                    <input type="password" name="password" class="form-control" placeholder="Password"
+                    <input (keyup.enter)="onKey($event)" type="password" name="password" class="form-control" placeholder="Password"
                       autocomplete="current-password" [(ngModel)]="loginData.password" required>
                   </div>
                   <div class="row">

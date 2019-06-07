@@ -3,28 +3,39 @@
     <div class="card-header">
       <i class="icon-magnifier"></i> Consulta
     </div>
-    <div class="card-body">
-      <div class="form-group">
+    <div class="card-body row">
+      <div class="form-group col-12">
+        <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
+        <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
+          (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+        <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+          (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+        <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+          (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+      </div>
+      <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
         <label for="inputNupre">NUPRE</label>
-        <input type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre"
+        <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre"
           placeholder="AAAA-00000000000-00">
       </div>
-      <div class="form-group">
+      <div class="form-group col-12" [hidden]="tipoBusqueda!=2">
         <label for="inputCadastralCode">Número Predial</label>
-        <input type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode"
-          placeholder="00000000000000000000">
+        <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputCadastralCode"
+          [(ngModel)]="inputCadastralCode" placeholder="00000000000000000000">
       </div>
-      <div class="form-group">
-        <label for="inputFMI">Folio de Matricula Inmobiliaria</label>
-        <input type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+      <div class="form-group col-12" [hidden]="tipoBusqueda!=3">
+        <label for="inputFMI">Folio de Matrícula Inmobiliaria</label>
+        <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI"
+          placeholder="AAAAAAAAA">
       </div>
-
-      <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+      <div class="text-center col-12">
+        <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+      </div>
     </div>
   </div>
 
 
-  <div id="contentToConvert" *ngIf="showResult">
+  <div *ngIf="showResult">
     <div id="card" class="card" *ngFor="let item of basicConsult">
       <form>
         <div class="card-header">Predio {{item.id}}</div>

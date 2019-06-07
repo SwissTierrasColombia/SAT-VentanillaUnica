@@ -1,6 +1,6 @@
 <app-header [navbarBrandRouterLink]="['/inicio']" [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo.png', width: 115, height: 60, alt: 'CoreUI Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.png', width: 40, height: 40, alt: 'CoreUI Logo'}"
   [sidebarToggler]="ver ? 'lg' : false" [asideMenuToggler]="false">
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item dropdown" placement="bottom right">
@@ -25,7 +25,7 @@
               <div class="dropdown-item"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></div>
               <div class="divider"></div>
                -->
-              <div class="dropdown-item" (click)="logout()"><i class="fa fa-lock"></i> Cerrar sesión</div>
+              <div  class="dropdown-item cerrarSession" (click)="logout()"><i class="fa fa-lock"></i> Cerrar sesión</div>
             </div>
           </li>
       </ul>

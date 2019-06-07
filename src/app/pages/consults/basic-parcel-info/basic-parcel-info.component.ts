@@ -16,6 +16,7 @@ import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
+import { ToastrService } from 'ngx-toastr';
 
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
@@ -42,7 +43,7 @@ export class BasicParcelInfoComponent implements OnInit {
   urlQR: string = environment.qr_base_url;
   tipoBusqueda = 1;
 
-  constructor(private service: QueryService) { }
+  constructor(private service: QueryService, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -54,10 +55,10 @@ export class BasicParcelInfoComponent implements OnInit {
     this.tipoBusqueda = id;
   }
   search() {
-    if (this.inputNupre!='' || this.inputCadastralCode!='' || this.inputFMI!='') {
+    if (this.inputNupre != '' || this.inputCadastralCode != '' || this.inputFMI != '') {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
-      this.inputNupre = this.inputNupre.trim(); 
+      this.inputNupre = this.inputNupre.trim();
       this.getBasicInfo();
     } else {
       this.showResult = false;
@@ -73,6 +74,7 @@ export class BasicParcelInfoComponent implements OnInit {
           if (data['error']) {
             console.log(data['error']);
             this.showResult = false;
+            this.toastr.error("No se encontraron registros.");
           } else {
             this.basicConsult = [data[0]];
             this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
@@ -294,7 +296,7 @@ export class BasicParcelInfoComponent implements OnInit {
         margin: 20,
         startY: 340,
         tableWidth: 396.46,
-        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
+        headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         head: [['Tipo', 'Nombre', 'Departamento', 'Municipio', 'Zona', 'NUPRE', 'FMI', 'Número predial', 'Número predial anterior']],
         body: [
           [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
@@ -304,7 +306,7 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
-        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
+        headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         head: [['Terreno']],
         body: [
           [terreno]
@@ -314,7 +316,7 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
-        headStyles: {fillColor: [165,174,183]}, // Gris Oscuro
+        headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
           [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]

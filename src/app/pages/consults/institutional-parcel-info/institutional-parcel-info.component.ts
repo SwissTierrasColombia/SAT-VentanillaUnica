@@ -17,6 +17,9 @@ import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   templateUrl: 'institutional-parcel-info.component.html'
@@ -42,7 +45,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
 
 
 
-  constructor(private service: QueryService) { }
+  constructor(private service: QueryService, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -56,6 +59,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   }
 
   search() {
+    this.showResult = false
     this.inputFMI = this.inputFMI.trim();
     this.inputCadastralCode = this.inputCadastralCode.trim();
     this.inputNupre = this.inputNupre.trim();
@@ -69,34 +73,40 @@ export class InstitutionalParcelInfoComponent implements OnInit {
               .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
               .subscribe(
                 basicData => {
-                  this.physicalInfo = data[0];
-                  this.basicData = basicData;
-                  console.log('FÍSICA: ', this.physicalInfo, basicData);
-                  this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
-                    this.drawGeometry(geom);
-                  });
-                  this.showResult = true;
+                  this.physicalInfo = data[0] ? data[0] : [];
+                  this.basicData = basicData ? basicData : [];
+                  if (this.physicalInfo.hasOwnProperty('attributes')) {
+                    this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                      this.drawGeometry(geom);
+                    });
+                    this.showResult = true;
+                  }
                 });
           },
           error => {
             console.log(error);
             this.showResult = false;
+            this.toastr.error('Datos no encontrados')
           }
         );
 
       this.service
         .getParcelLegalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
-          data => {
-            this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+          (data: any) => {
+            if (data.length) {
+              this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+            }
           },
           error => {
             console.log(error);
             this.showResult = false;
+            this.toastr.error('Datos no encontrados')
           }
         );
     } else {
       this.showResult = false;
+      this.toastr.error('Datos no encontrados')
     }
   }
   private getInteresadosInfo() {
@@ -104,15 +114,10 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
         data => {
           this.interesadosInfo = data;
-        }
-      );
-    }
-    if (this.inputFMI != '') {
-      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
-        data => {
-          this.interesadosInfo = data;
-          console.log(this.interesadosInfo);
-
+          //console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
+            this.toastr.error("No se encontraron registros.");
+          }
         }
       );
     }
@@ -120,6 +125,21 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
         data => {
           this.interesadosInfo = data;
+          //console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
+            this.toastr.error("No se encontraron registros.");
+          }
+        }
+      );
+    }
+    if (this.inputFMI != '') {
+      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
+        data => {
+          this.interesadosInfo = data;
+          //console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
+            this.toastr.error("No se encontraron registros.");
+          }
         }
       );
     }
@@ -315,33 +335,33 @@ export class InstitutionalParcelInfoComponent implements OnInit {
           ["4654", "Centro histórico - Municipio de Ovejas", "1.300,47", "100%", "2017-02-09", "2019-02-02", "Activo"]
         ]
       });
-/*       
-      doc.text("SUCRE", 95, 130);
-      doc.text("OVEJAS", 95, 140);
-      doc.text("", 95, 150);
-      doc.text("311_2_nombre_calle", 95, 160);
-      doc.text("253940000000000230241000000000", 95, 170);
-      doc.text("7307.3", 95, 180);
-      doc.text("PropiedadHorizontal.Matriz", 95, 190);
-      doc.text("ACTIVO", 95, 200);
-      doc.text("Catastro Municipal", 95, 210); */
+      /*       
+            doc.text("SUCRE", 95, 130);
+            doc.text("OVEJAS", 95, 140);
+            doc.text("", 95, 150);
+            doc.text("311_2_nombre_calle", 95, 160);
+            doc.text("253940000000000230241000000000", 95, 170);
+            doc.text("7307.3", 95, 180);
+            doc.text("PropiedadHorizontal.Matriz", 95, 190);
+            doc.text("ACTIVO", 95, 200);
+            doc.text("Catastro Municipal", 95, 210); */
       doc.setFontSize(9);
       doc.text("Fuente de consulta: ", 15, 600)
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 
-/*       doc.setFontType("bold");
-      doc.setFontSize(10);
-      //Contenido Verdad Fisica
-      doc.text("Delegación Catastral", 20, 130);
-      doc.text("Municipio del Predio", 20, 140);
-      doc.text("Ubicación del Predio", 20, 150);
-      doc.text("Dirección del Predio", 20, 160);
-      doc.text("Número Catastral", 20, 170);
-      doc.text("Área Catastral (m2)", 20, 180);
-      doc.text("Tipo de Parcela", 20, 190);
-      doc.text("Estado", 20, 200);
-      doc.text("Otros Datos", 20, 210); */
+      /*       doc.setFontType("bold");
+            doc.setFontSize(10);
+            //Contenido Verdad Fisica
+            doc.text("Delegación Catastral", 20, 130);
+            doc.text("Municipio del Predio", 20, 140);
+            doc.text("Ubicación del Predio", 20, 150);
+            doc.text("Dirección del Predio", 20, 160);
+            doc.text("Número Catastral", 20, 170);
+            doc.text("Área Catastral (m2)", 20, 180);
+            doc.text("Tipo de Parcela", 20, 190);
+            doc.text("Estado", 20, 200);
+            doc.text("Otros Datos", 20, 210); */
 
 
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF

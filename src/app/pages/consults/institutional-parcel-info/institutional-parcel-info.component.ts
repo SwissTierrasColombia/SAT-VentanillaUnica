@@ -146,6 +146,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   }
 
   private drawGeometry(geom: any) {
+    console.log("geom: ", geom);
 
 
 
@@ -191,7 +192,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     });
 
 
-    const v = new View({ projection: 'EPSG:900913' });
+    const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
     const m = new Map({

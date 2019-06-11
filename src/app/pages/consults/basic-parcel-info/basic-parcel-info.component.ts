@@ -183,7 +183,7 @@ export class BasicParcelInfoComponent implements OnInit {
       })
     });
 
-    const v = new View({ projection: 'EPSG:900913' });
+    const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
     let m = new Map({

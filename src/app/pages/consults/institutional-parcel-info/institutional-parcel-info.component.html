@@ -387,15 +387,26 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>{{lealInfoDercho['Código registral']}}</td>
-                    <td>{{lealInfoDercho['col_fuenteadministrativa']['0']['attributes']['Nombre']}}</td>
-                    <td>{{lealInfoDercho['Tipo de derecho']}}</td>
+                  <tr *ngFor='let item of lealInfoDercho'>
+                    <td>{{item.attributes['Código registral']}}</td>
+                    <td>{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre']}}</td>
+                    <td>{{item.attributes['Tipo de derecho']}}</td>
                     <td></td>
                     <td></td>
-                    <td>{{lealInfoDercho['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa']}}</td>
-                    <td>{{lealInfoDercho['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad']}}</td>
-                    <td><a href="#">Ver más</a></td>
+                    <td>
+                      {{item.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa']}}
+                    </td>
+                    <td>{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad']}}</td>
+                    <td>
+                      <img
+                        *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] == null"
+                        src="http://portal.proadmintierra.info:18888/filemanager/v1/file/Local?id=default.2019.2.18.10h18i&thumbnail=true"
+                        style="width: 20px" alt="">
+                      <a *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] != null"
+                        href="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']}}">
+                        <img
+                          src="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']+'&thumbnail=true'}}"
+                          style="width: 20px" alt=""></a></td>
                   </tr>
                 </tbody>
               </table>

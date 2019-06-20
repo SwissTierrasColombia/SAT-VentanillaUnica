@@ -98,8 +98,8 @@ export class InstitutionalParcelInfoComponent implements OnInit {
           (data: any) => {
             if (data.length) {
               this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
-              this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'][0]['attributes'];
-              console.log(this.lealInfoDercho['col_fuenteadministrativa']['0']['attributes']['Nombre']);
+              this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'];
+              console.log(data[0]['attributes']['predio'][0]);
 
             }
           },

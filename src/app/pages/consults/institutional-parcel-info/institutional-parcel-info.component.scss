@@ -239,3 +239,12 @@
   top: 102px;
   right: 25px;
 }
+.mapa .botonGeopotal {
+  display: block;
+}
+.mapa + .botonGeopotal {
+  position: absolute;
+  top: 26.2em;
+  z-index: 1;
+  left: 36.2em;
+}

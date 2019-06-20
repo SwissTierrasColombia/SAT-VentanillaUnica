@@ -18,14 +18,13 @@ import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-
-
+import * as turf from '@turf/turf';
 
 @Component({
   templateUrl: 'institutional-parcel-info.component.html',
   styleUrls: ['./institutional-parcel-info.component.scss']
 })
-export class InstitutionalParcelInfoComponent implements OnInit {
+export class InstitutionalParcelInfoComponent{
 
   showResult = false;
   inputNupre;
@@ -43,15 +42,15 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   urlQR: string = environment.qr_base_url;
   image: any;
   docG = new jspdf('portrait', 'px', 'a4');
-
+  centroid = {
+    geometry: { coordinates: [0, 0] }
+  };
 
 
 
   constructor(private service: QueryService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-
-  }
+  /**/
 
   selectTypeSearch(id) {
     this.inputCadastralCode = '';
@@ -152,6 +151,8 @@ export class InstitutionalParcelInfoComponent implements OnInit {
 
   private drawGeometry(geom: any) {
     //console.log("geom: ", geom);
+
+    this.centroid = turf.centroid(geom);
 
 
 

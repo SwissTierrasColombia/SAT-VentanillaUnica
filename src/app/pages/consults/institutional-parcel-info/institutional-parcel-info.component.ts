@@ -156,7 +156,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
 
     const sterreno = new TileWMS({
       url: this.urlGeoserver + 'LADM/wms',
-      params: { LAYERS: 'LADM:vista_terreno', TILED: true },
+      params: { LAYERS: 'LADM:sat_mapa_base', TILED: true },
       serverType: 'geoserver',
       crossOrigin: 'anonymous'
     });
@@ -164,7 +164,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
     const terreno = new LayerTile({
       title: 'Terreno',
       source: sterreno,
-      opacity: 0.5
+      opacity: 1
     });
 
 
@@ -172,16 +172,16 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       source: vs,
       style: new Style({
         fill: new Fill({
-          color: 'rgba(100, 255, 100, 0.6)'
+          color: 'rgba(96, 58, 58, 0.1)'
         }),
         stroke: new Stroke({
-          color: '#319FD3',
-          width: 1
+          color: '#ff2929',
+          width: 5
         }),
         image: new CircleStyle({
           radius: 5,
           fill: new Fill({
-            color: 'rgba(255, 255, 255, 0.6)'
+            color: 'rgba(96, 58, 58, 0.2)'
           }),
           stroke: new Stroke({
             color: '#319FD3',
@@ -208,7 +208,8 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       }),
       target: 'map',
       layers: [
-        this.getBaseMap('googleLayerHybrid'),
+        this.getBaseMap('googleLayerSatellite', 1),
+        this.getBaseMap('googleLayerOnlyRoad', 0.5),
         terreno,
         vl
       ],
@@ -219,7 +220,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
 
   }
 
-  private getBaseMap(type: string) {
+  private getBaseMap(type: string, op: number) {
     let source = '';
     switch (type) {
       case 'googleLayerRoadNames': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
@@ -229,27 +230,31 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       case 'googleLayerTerrain': source = 'http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}'; break;
       case 'googleLayerHybrid2': source = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'; break;
       case 'googleLayerOnlyRoad': source = 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}'; break;
-      case 'OSM': source = 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
+      case 'OSM': source = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
     }
     if (source !== '') {
       return new LayerTile({
         title: type,
         source: new XYZ({
           url: source
-        })
+        }),
+        opacity: op
       });
     } else {
       return null;
     }
   }
+
   public onKey(event: any) {
     if (event.key === "Enter") {
       this.search();
     }
   }
+
   public xOffset(text) {
     return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
+  
   public generatepdf() {
     let doc = new jspdf('portrait', 'px', 'a4');
     let newImg = new Image();

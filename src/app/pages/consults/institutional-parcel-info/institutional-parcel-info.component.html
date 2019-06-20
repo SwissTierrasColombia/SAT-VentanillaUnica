@@ -121,18 +121,18 @@
                       <td>{{item.attributes['Tipo de derecho']}}</td>
                       <td>{{item.attributes['col_fuenteadministrativa'][0].attributes['Tipo de fuente administrativa']}}
                       </td>
-                      <td>N/A</td>
-                      <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i
+                      <td>-</td>
+                      <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i
                             class="fa fa-file fa-lg"></i></a></td>
                     </tr>
                   </tbody>
                   <tbody *ngIf="legalInfo.FMI==null">
                     <tr *ngFor="let item of legalInfo.col_derecho">
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
                     </tr>
                   </tbody>
                 </table>
@@ -151,19 +151,19 @@
                   </thead>
                   <tbody *ngIf="legalInfo.FMI==null">
                     <tr *ngFor="let item of legalInfo.col_derecho">
-                      <td scope="row">N/A</td>
+                      <td scope="row">-</td>
                       <td>{{item.attributes['Tipo de derecho']}}</td>
-                      <td>N/A</td>
+                      <td>-</td>
                       <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i
                             class="fa fa-file fa-lg"></i></a></td>
                     </tr>
                   </tbody>
                   <tbody *ngIf="legalInfo.FMI!=null">
                     <tr *ngFor="let item of legalInfo.col_derecho">
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
-                      <td scope="row">N/A</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
+                      <td scope="row">-</td>
                     </tr>
                   </tbody>
                 </table>

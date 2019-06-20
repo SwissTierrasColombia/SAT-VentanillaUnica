@@ -36,6 +36,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   physicalInfo: PhysicalParcelInfo;
   basicData: any;
   legalInfo: any;
+  lealInfoDercho: any;
   urlGeoserver: string = environment.geoserver;
   interesadosInfo: any;
   infoSolicitudConservacion = [];
@@ -97,6 +98,9 @@ export class InstitutionalParcelInfoComponent implements OnInit {
           (data: any) => {
             if (data.length) {
               this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+              this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'][0]['attributes'];
+              console.log(this.lealInfoDercho['col_fuenteadministrativa']['0']['attributes']['Nombre']);
+
             }
           },
           error => {
@@ -147,7 +151,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   }
 
   private drawGeometry(geom: any) {
-    console.log("geom: ", geom);
+    //console.log("geom: ", geom);
 
 
 
@@ -255,7 +259,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   public xOffset(text) {
     return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
-  
+
   public generatepdf() {
     let doc = new jspdf('portrait', 'px', 'a4');
     let newImg = new Image();

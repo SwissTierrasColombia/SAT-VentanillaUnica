@@ -297,3 +297,17 @@
 .ol-overviewmap .ol-overviewmap-box:hover {
   cursor: move;
 }
+.mapa {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+.mapa img {
+  display: block;
+}
+.mapa + img {
+  position: absolute;
+  z-index: 1;
+  top: -2px;
+  right: 14px;
+}

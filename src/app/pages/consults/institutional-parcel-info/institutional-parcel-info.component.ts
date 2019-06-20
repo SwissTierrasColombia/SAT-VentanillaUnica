@@ -22,7 +22,8 @@ import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
-  templateUrl: 'institutional-parcel-info.component.html'
+  templateUrl: 'institutional-parcel-info.component.html',
+  styleUrls: ['./institutional-parcel-info.component.scss']
 })
 export class InstitutionalParcelInfoComponent implements OnInit {
 

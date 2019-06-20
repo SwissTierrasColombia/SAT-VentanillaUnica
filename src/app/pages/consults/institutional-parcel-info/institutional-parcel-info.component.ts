@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { QueryService } from 'src/app/services/consult/query.service';
 import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
 
-import PluggableMap from 'ol/PluggableMap.js';
+// import PluggableMap from 'ol/PluggableMap.js';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
@@ -12,7 +12,7 @@ import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
 import { defaults as defaultInteractions } from 'ol/interaction.js';
-import { transform } from 'ol/proj';
+// import { transform } from 'ol/proj';
 import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
@@ -24,7 +24,7 @@ import * as turf from '@turf/turf';
   templateUrl: 'institutional-parcel-info.component.html',
   styleUrls: ['./institutional-parcel-info.component.scss']
 })
-export class InstitutionalParcelInfoComponent{
+export class InstitutionalParcelInfoComponent {
 
   showResult = false;
   inputNupre;
@@ -60,7 +60,7 @@ export class InstitutionalParcelInfoComponent{
   }
 
   search() {
-    this.showResult = false
+    this.showResult = false;
     this.inputFMI = this.inputFMI.trim();
     this.inputCadastralCode = this.inputCadastralCode.trim();
     this.inputNupre = this.inputNupre.trim();
@@ -87,7 +87,7 @@ export class InstitutionalParcelInfoComponent{
           error => {
             console.log(error);
             this.showResult = false;
-            this.toastr.error('Datos no encontrados')
+            this.toastr.error('Datos no encontrados');
           }
         );
 
@@ -96,8 +96,11 @@ export class InstitutionalParcelInfoComponent{
         .subscribe(
           (data: any) => {
             if (data.length) {
+              // tslint:disable-next-line:no-string-literal
               this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+              // tslint:disable-next-line:no-string-literal
               this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'];
+              // tslint:disable-next-line:no-string-literal
               console.log(data[0]['attributes']['predio'][0]);
 
             }
@@ -105,44 +108,44 @@ export class InstitutionalParcelInfoComponent{
           error => {
             console.log(error);
             this.showResult = false;
-            this.toastr.error('Datos no encontrados')
+            this.toastr.error('Datos no encontrados');
           }
         );
     } else {
       this.showResult = false;
-      this.toastr.error('Datos no encontrados')
+      this.toastr.error('Datos no encontrados');
     }
   }
   private getInteresadosInfo() {
-    if (this.inputCadastralCode != '') {
+    if (this.inputCadastralCode !== '') {
       this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
         data => {
           this.interesadosInfo = data;
-          //console.log(Object.values(this.interesadosInfo)[0]);
-          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
-            this.toastr.error("No se encontraron registros.");
+          // console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] === 'No se encontraron registros.') {
+            this.toastr.error('No se encontraron registros.');
           }
         }
       );
     }
-    if (this.inputNupre != '') {
+    if (this.inputNupre !== '') {
       this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
         data => {
           this.interesadosInfo = data;
-          //console.log(Object.values(this.interesadosInfo)[0]);
-          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
-            this.toastr.error("No se encontraron registros.");
+          // console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] === 'No se encontraron registros.') {
+            this.toastr.error('No se encontraron registros.');
           }
         }
       );
     }
-    if (this.inputFMI != '') {
+    if (this.inputFMI !== '') {
       this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
         data => {
           this.interesadosInfo = data;
-          //console.log(Object.values(this.interesadosInfo)[0]);
-          if (Object.values(this.interesadosInfo)[0] == "No se encontraron registros.") {
-            this.toastr.error("No se encontraron registros.");
+          // console.log(Object.values(this.interesadosInfo)[0]);
+          if (Object.values(this.interesadosInfo)[0] === 'No se encontraron registros.') {
+            this.toastr.error('No se encontraron registros.');
           }
         }
       );
@@ -150,11 +153,9 @@ export class InstitutionalParcelInfoComponent{
   }
 
   private drawGeometry(geom: any) {
-    //console.log("geom: ", geom);
+    // console.log("geom: ", geom);
 
     this.centroid = turf.centroid(geom);
-
-
 
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)
@@ -172,7 +173,6 @@ export class InstitutionalParcelInfoComponent{
       source: sterreno,
       opacity: 1
     });
-
 
     const vl = new VectorLayer({
       source: vs,
@@ -196,7 +196,6 @@ export class InstitutionalParcelInfoComponent{
         })
       })
     });
-
 
     const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
@@ -252,7 +251,7 @@ export class InstitutionalParcelInfoComponent{
   }
 
   public onKey(event: any) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.search();
     }
   }
@@ -262,18 +261,18 @@ export class InstitutionalParcelInfoComponent{
   }
 
   public generatepdf() {
-    let doc = new jspdf('portrait', 'px', 'a4');
-    let newImg = new Image();
-    newImg.onload = function () {
+    const doc = new jspdf('portrait', 'px', 'a4');
+    const newImg = new Image();
+    newImg.onload = function() {
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);
       qr.addData('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + this.inputFMI);
       qr.make();
-      let text = "SAT Consulta Institucional"
-      let Imageqr = qr.createDataURL();
-      var imagenlogo = new Image();
-      imagenlogo.src = "assets/img/brand/logo.png";
+      const text = 'SAT Consulta Institucional';
+      const Imageqr = qr.createDataURL();
+      const imagenlogo = new Image();
+      imagenlogo.src = 'assets/img/brand/logo.png';
       // horizontal line margen
       doc.setLineWidth(1);
       doc.line(10, 10, 426.46, 10);
@@ -293,22 +292,22 @@ export class InstitutionalParcelInfoComponent{
       doc.text(text, this.xOffset(text) + 15, 50);
       // imagen QR
       doc.addImage(Imageqr, 340, 25);
-      doc.text("Verdad Física", 190, 100);
+      doc.text('Verdad Física', 190, 100);
       // horizontal margen titulo Fisica
       doc.line(10, 112, 426.46, 112);
       doc.line(213, 112, 213, 320);
 
-      var imagenverdadfisica = new Image();
-      imagenverdadfisica.src = "assets/VerdadFisica.png";
+      const imagenverdadfisica = new Image();
+      imagenverdadfisica.src = 'assets/VerdadFisica.png';
       doc.addImage(imagenverdadfisica, 20, 120, 190, 190);
 
-      //MAPA
+      // MAPA
       doc.addImage(newImg, 'PNG', 240, 130, 170, 170);
       // horizantal mapa
       doc.line(10, 320, 426.46, 320);
-      doc.text("Históricos", 190, 335);
+      doc.text('Históricos', 190, 335);
       doc.line(10, 340, 426.46, 340);
-      doc.text("Solicitudes de Conservación Radicadas", 20, 355);
+      doc.text('Solicitudes de Conservación Radicadas', 20, 355);
       doc.autoTable({
         margin: 20,
         startY: 360,
@@ -316,12 +315,13 @@ export class InstitutionalParcelInfoComponent{
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [["Radicación", "Nº Solicitud", "Fecha Solicitud", "Estado", "Tipo Solicitud", "Modifica Identificador", "Modifica Geometría", "Estado del trámite"]],
+        // tslint:disable-next-line:max-line-length
+        head: [['Radicación', 'Nº Solicitud', 'Fecha Solicitud', 'Estado', 'Tipo Solicitud', 'Modifica Identificador', 'Modifica Geometría', 'Estado del trámite']],
         body: [
-          ["654654", "565654654", "2016-05-06", "RADICADO", "Compraventa Total", "No", "Si", "Finalizado"]
+          ['654654', '565654654', '2016-05-06', 'RADICADO', 'Compraventa Total', 'No', 'Si', 'Finalizado']
         ]
       });
-      doc.text("Derechos", 20, 425);
+      doc.text('Derechos', 20, 425);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
@@ -329,12 +329,12 @@ export class InstitutionalParcelInfoComponent{
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [["ID", "Nombre Completo", "Tipo Derecho", "% Derecho", "Vigencia", "Tipo Documento", "Estado"]],
+        head: [['ID', 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
         body: [
-          ["1", "GARCIA PEREZ, RAMON ORLANDO", "DOMINIO PLENO", "100", "2016-02-16", "ESCRITURA", "INACTIVO"]
+          ['1', 'GARCIA PEREZ, RAMON ORLANDO', 'DOMINIO PLENO', '100', '2016-02-16', 'ESCRITURA', 'INACTIVO']
         ]
       });
-      doc.text("Afectaciones", 20, 480);
+      doc.text('Afectaciones', 20, 480);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
@@ -342,12 +342,12 @@ export class InstitutionalParcelInfoComponent{
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [["Código", "Objeto que afecta", "Área afectada", "% de afectación", "Fecha constitución", "Fecha expiración", "Estado"]],
+        head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: [
-          ["4654", "Centro histórico - Municipio de Ovejas", "1.300,47", "100%", "2017-02-09", "2019-02-02", "Activo"]
+          ['4654', 'Centro histórico - Municipio de Ovejas', '1.300,47', '100%', '2017-02-09', '2019-02-02', 'Activo']
         ]
       });
-      /*       
+      /*
             doc.text("SUCRE", 95, 130);
             doc.text("OVEJAS", 95, 140);
             doc.text("", 95, 150);
@@ -358,7 +358,7 @@ export class InstitutionalParcelInfoComponent{
             doc.text("ACTIVO", 95, 200);
             doc.text("Catastro Municipal", 95, 210); */
       doc.setFontSize(9);
-      doc.text("Fuente de consulta: ", 15, 600)
+      doc.text('Fuente de consulta: ', 15, 600)
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 
@@ -378,6 +378,7 @@ export class InstitutionalParcelInfoComponent{
 
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
+    // tslint:disable-next-line:no-string-literal
     newImg.src = this.service.getTerrainGeometryImage(this.physicalInfo['id']);
   }
 

@@ -331,6 +331,7 @@ export class BasicParcelInfoComponent implements OnInit {
         ]
       });
       doc.setFontSize(9);
+      doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);

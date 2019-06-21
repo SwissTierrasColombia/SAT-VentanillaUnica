@@ -36,7 +36,9 @@ export class InstitutionalParcelInfoComponent {
   basicData: any;
   legalInfo: any;
   lealInfoDercho: any;
-  admInfo: any;
+  admInfo: any = [
+    ''
+  ];
   urlGeoserver: string = environment.geoserver;
   interesadosInfo: any;
   infoSolicitudConservacion = [];
@@ -116,7 +118,7 @@ export class InstitutionalParcelInfoComponent {
               // tslint:disable-next-line:no-string-literal
               this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'];
               // tslint:disable-next-line:no-string-literal
-              console.log(data[0]['attributes']['predio'][0]);
+              //console.log(data[0]['attributes']['predio'][0]);
 
             }
           },
@@ -314,9 +316,9 @@ export class InstitutionalParcelInfoComponent {
       doc.line(10, 112, 426.46, 112);
       doc.line(213, 112, 213, 320);
 
-      const imagenverdadfisica = new Image();
-      imagenverdadfisica.src = 'assets/VerdadFisica.png';
-      doc.addImage(imagenverdadfisica, 20, 120, 190, 190);
+      //const imagenverdadfisica = new Image();
+      //imagenverdadfisica.src = 'assets/VerdadFisica.png';
+      //doc.addImage(imagenverdadfisica, 20, 120, 190, 190);
 
       // MAPA
       doc.addImage(newImg, 'PNG', 240, 130, 170, 170);
@@ -338,6 +340,22 @@ export class InstitutionalParcelInfoComponent {
           ['654654', '565654654', '2016-05-06', 'RADICADO', 'Compraventa Total', 'No', 'Si', 'Finalizado']
         ]
       });
+      var ID = ""
+      var Nombre_Completo = ""
+      var Tipo_Derecho = ""
+      var Derecho = ""
+      var Vigencia = ""
+      var Tipo_Documento = ""
+      var Estado = ""
+      this.lealInfoDercho.forEach(element => {
+        ID = element.attributes['Código registral']
+        Nombre_Completo = element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre']
+        Tipo_Derecho = element.attributes['Tipo de derecho']
+        Derecho = ""
+        Vigencia = ""
+        Tipo_Documento = element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa']
+        Estado = element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad']
+      });
       doc.text('Derechos', 20, 425);
       doc.autoTable({
         margin: 20,
@@ -346,10 +364,23 @@ export class InstitutionalParcelInfoComponent {
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [['ID', 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
+        head: [[ID, 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
         body: [
-          ['1', 'GARCIA PEREZ, RAMON ORLANDO', 'DOMINIO PLENO', '100', '2016-02-16', 'ESCRITURA', 'INACTIVO']
+          [ID, Nombre_Completo, Tipo_Derecho, Derecho, Vigencia, Tipo_Documento, Estado]
         ]
+      });
+      var Codigo
+      var Objeto_que_afecta
+      var Área_afectada
+      var de_afectacion
+      var Fecha_constitución = '--'
+      var Fecha_expiracion = '--'
+      var Estado_Afectaciones = "Activo"
+      this.admInfo.forEach(element => {
+        Codigo = element.t_id ? element.t_id : '--'
+        Objeto_que_afecta = element.objeto ? element.objeto : '--'
+        Área_afectada = element.area ? element.area : '--'
+        de_afectacion = element.proportion * 100 ? element.proportion : '--'
       });
       doc.text('Afectaciones', 20, 480);
       doc.autoTable({
@@ -361,37 +392,42 @@ export class InstitutionalParcelInfoComponent {
         theme: 'grid',
         head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: [
-          ['4654', 'Centro histórico - Municipio de Ovejas', '1.300,47', '100%', '2017-02-09', '2019-02-02', 'Activo']
+          [Codigo, Objeto_que_afecta, Área_afectada, de_afectacion, Fecha_constitución, Fecha_expiracion, Estado_Afectaciones]
         ]
       });
-      /*
-            doc.text("SUCRE", 95, 130);
-            doc.text("OVEJAS", 95, 140);
-            doc.text("", 95, 150);
-            doc.text("311_2_nombre_calle", 95, 160);
-            doc.text("253940000000000230241000000000", 95, 170);
-            doc.text("7307.3", 95, 180);
-            doc.text("PropiedadHorizontal.Matriz", 95, 190);
-            doc.text("ACTIVO", 95, 200);
-            doc.text("Catastro Municipal", 95, 210); */
+
       doc.setFontSize(9);
       doc.text('Fuente de consulta: ', 15, 600)
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 
-      /*       doc.setFontType("bold");
-            doc.setFontSize(10);
-            //Contenido Verdad Fisica
-            doc.text("Delegación Catastral", 20, 130);
-            doc.text("Municipio del Predio", 20, 140);
-            doc.text("Ubicación del Predio", 20, 150);
-            doc.text("Dirección del Predio", 20, 160);
-            doc.text("Número Catastral", 20, 170);
-            doc.text("Área Catastral (m2)", 20, 180);
-            doc.text("Tipo de Parcela", 20, 190);
-            doc.text("Estado", 20, 200);
-            doc.text("Otros Datos", 20, 210); */
-
+      var Delegacion_Catastral = "SUCRE"
+      var Municipio_del_Predio = "OVEJAS"
+      var Ubicación_del_Predio = "--"
+      var Dirección_del_Predio = "311_2_nombre_calle"
+      var Numero_Catastral = this.physicalInfo.attributes.predio[0].attributes['Número predial']
+      var Area_Catastral = '' + this.physicalInfo.attributes['Área calculada [m2]']
+      var Tipo_de_Parcela = this.physicalInfo.attributes.predio[0].attributes['Tipo']
+      var Estado = "ACTIVO"
+      doc.text(Delegacion_Catastral, 100, 130);
+      doc.text(Municipio_del_Predio, 100, 155);
+      doc.text(Ubicación_del_Predio, 100, 180);
+      doc.text(Dirección_del_Predio, 100, 205);
+      doc.text(Numero_Catastral, 100, 230);
+      doc.text(Area_Catastral, 100, 255);
+      doc.text(Tipo_de_Parcela, 100, 280);
+      doc.text(Estado, 100, 305);
+      doc.setFontSize(10);
+      doc.setFontType("bold");
+      //Contenido Verdad Fisica
+      doc.text("Delegación Catastral:", 20, 130);
+      doc.text("Municipio del Predio:", 20, 155);
+      doc.text("Ubicación del Predio:", 20, 180);
+      doc.text("Dirección del Predio:", 20, 205);
+      doc.text("Número Catastral:", 20, 230);
+      doc.text("Área Catastral (m2):", 20, 255);
+      doc.text("Tipo de Parcela:", 20, 280);
+      doc.text("Estado:", 20, 305);
 
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);

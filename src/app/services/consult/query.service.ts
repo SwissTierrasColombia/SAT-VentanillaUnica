@@ -55,8 +55,13 @@ export class QueryService {
     const params = `fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`;
     return this.httpClient.get<PhysicalParcelInfo>(`${this.apiURL}/private/parcel/physical?${params}`, this.httpOptions);
   }
+
   public getInteresadosQuery(tipo: string, idTipo: string) {
-    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/party?${tipo}=${idTipo}`, this.httpOptions);;
+    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/party?${tipo}=${idTipo}`, this.httpOptions);
+  }
+
+  public getAdministrativeQuery(tid: number) {
+    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/affectations?id=${tid}`, this.httpOptions);
   }
 
 }

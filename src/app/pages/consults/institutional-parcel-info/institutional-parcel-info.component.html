@@ -271,35 +271,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>??</td>
-                    <td>Ordenamiento Territorial</td>
-                    <td>1,300</td>
-                    <td>100%</td>
-                    <td>16 Feb 2016</td>
+                  <tr *ngFor="let item of admInfo">
+                    <td>{{item.t_id}}</td>
+                    <td>{{item.objeto}}</td>
+                    <td>{{item.area}}</td>
+                    <td>{{item.proportion*100}}</td>
+                    <td>--</td>
                     <td>--</td>
                     <td>Activo</td>
-                    <td>Link</td>
-                  </tr>
-                  <tr>
-                    <td>??</td>
-                    <td>Amenaza y Riesgo</td>
-                    <td>1,301</td>
-                    <td>50%</td>
-                    <td>10 Feb 2016</td>
                     <td>--</td>
-                    <td>Activo</td>
-                    <td>Link</td>
-                  </tr>
-                  <tr>
-                    <td>??</td>
-                    <td>Parques Nacionales Naturales</td>
-                    <td>901</td>
-                    <td>80%</td>
-                    <td>20 Abr 2014</td>
-                    <td>--</td>
-                    <td>Activo</td>
-                    <td>Link</td>
                   </tr>
                 </tbody>
               </table>
@@ -318,9 +298,9 @@
       <div class="card-body">
         <div id="map" class="map mapa" tabindex="0"></div>
         <img
-          src="http://192.168.98.69:8000/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:sat_basic_query"
+          src="{{urlGeoserver}}wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:sat_basic_query"
           alt="">
-        <a href="https://ide.proadmintierra.info/geoportal/main?config=2&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
+        <a href="https://ide.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
           type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal
         </a>
       </div>
@@ -438,15 +418,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>4654</td>
-                    <td>Centro histórico - Municipio de Ovejas</td>
-                    <td>1.300,47</td>
-                    <td>100%</td>
-                    <td>2017-02-09</td>
-                    <td>2019-02-02</td>
+                  <tr *ngFor="let item of admInfo">
+                    <td>{{item.t_id}}</td>
+                    <td>{{item.objeto}}</td>
+                    <td>{{item.area}}</td>
+                    <td>{{item.proportion*100}}</td>
+                    <td>--</td>
+                    <td>--</td>
                     <td>Activo</td>
-                    <td><a href="#">Ver más</a></td>
+                    <td>--</td>
                   </tr>
                 </tbody>
               </table>

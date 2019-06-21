@@ -36,6 +36,7 @@ export class InstitutionalParcelInfoComponent {
   basicData: any;
   legalInfo: any;
   lealInfoDercho: any;
+  admInfo: any;
   urlGeoserver: string = environment.geoserver;
   interesadosInfo: any;
   infoSolicitudConservacion = [];
@@ -45,7 +46,6 @@ export class InstitutionalParcelInfoComponent {
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
-
 
 
   constructor(private service: QueryService, private toastr: ToastrService) { }
@@ -77,10 +77,25 @@ export class InstitutionalParcelInfoComponent {
                   this.physicalInfo = data[0] ? data[0] : [];
                   this.basicData = basicData ? basicData : [];
                   if (this.physicalInfo.hasOwnProperty('attributes')) {
+                    this.service
+                      .getAdministrativeQuery(this.physicalInfo.id)
+                      .subscribe(
+                        (admData: any) => {
+                          if (admData.length) {
+                            this.admInfo = admData;
+                          }
+                        },
+                        error => {
+                          console.log(error);
+                          this.showResult = false;
+                          this.toastr.error('Datos no encontrados');
+                        }
+                      );
                     this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
                       this.drawGeometry(geom);
                     });
                     this.showResult = true;
+
                   }
                 });
           },
@@ -111,6 +126,8 @@ export class InstitutionalParcelInfoComponent {
             this.toastr.error('Datos no encontrados');
           }
         );
+
+
     } else {
       this.showResult = false;
       this.toastr.error('Datos no encontrados');
@@ -263,7 +280,7 @@ export class InstitutionalParcelInfoComponent {
   public generatepdf() {
     const doc = new jspdf('portrait', 'px', 'a4');
     const newImg = new Image();
-    newImg.onload = function() {
+    newImg.onload = function () {
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);

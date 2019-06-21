@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
+import * as turf from '@turf/turf';
 
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
@@ -42,6 +43,9 @@ export class BasicParcelInfoComponent implements OnInit {
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
   tipoBusqueda = 1;
+  centroid = {
+    geometry: { coordinates: [0, 0] }
+  };
 
   constructor(private service: QueryService, private toastr: ToastrService) { }
 
@@ -142,6 +146,8 @@ export class BasicParcelInfoComponent implements OnInit {
     //LADM:vw_terreno
 
     */
+
+   this.centroid = turf.centroid(geom);
 
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)

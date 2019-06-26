@@ -20,12 +20,13 @@ export class QueryService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.token
+        Authorization: 'Bearer ' + this.token
       })
     };
   }
 
   public getBasicConsult(fmi: string, cadastralCode: string, nupre: string) {
+    // tslint:disable-next-line:max-line-length
     return this.httpClient.get<BasicParcelInfo>(`${this.apiURL}/public/parcel?fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`, this.httpOptions);
   }
 

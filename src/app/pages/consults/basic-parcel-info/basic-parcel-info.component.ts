@@ -34,9 +34,9 @@ declare let qrcode: any;
 })
 export class BasicParcelInfoComponent implements OnInit {
   showResult = false;
-  inputNupre: string = '';
+  inputNupre = '';
   inputFMI = '';
-  inputCadastralCode: string = '';
+  inputCadastralCode = '';
   basicConsult: any;
   image: any;
   docG = new jspdf('portrait', 'px', 'a4');
@@ -59,6 +59,7 @@ export class BasicParcelInfoComponent implements OnInit {
     this.tipoBusqueda = id;
   }
   search() {
+    // tslint:disable-next-line:triple-equals
     if (this.inputNupre != '' || this.inputCadastralCode != '' || this.inputFMI != '') {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
@@ -75,10 +76,12 @@ export class BasicParcelInfoComponent implements OnInit {
       .subscribe(
         data => {
 
+          // tslint:disable-next-line:no-string-literal
           if (data['error']) {
+            // tslint:disable-next-line:no-string-literal
             console.log(data['error']);
             this.showResult = false;
-            this.toastr.error("No se encontraron registros.");
+            this.toastr.error('No se encontraron registros.');
           } else {
             this.basicConsult = [data[0]];
             this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
@@ -147,7 +150,7 @@ export class BasicParcelInfoComponent implements OnInit {
 
     */
 
-   this.centroid = turf.centroid(geom);
+    this.centroid = turf.centroid(geom);
 
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)
@@ -193,7 +196,7 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    let m = new Map({
+    const m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
         dragAndDrop: true,
@@ -222,9 +225,9 @@ export class BasicParcelInfoComponent implements OnInit {
   }
   public captureScreen() {
     // Few necessary setting options 216 x 279 tamaño carta
-    let doc = new jspdf('portrait', 'px', 'a4');
-    let newImg = new Image();
-    newImg.onload = function () {
+    const doc = new jspdf('portrait', 'px', 'a4');
+    const newImg = new Image();
+    newImg.onload = function() {
       let tipo = '';
       let nombre = '';
       let departamento = '';
@@ -238,43 +241,46 @@ export class BasicParcelInfoComponent implements OnInit {
       let País = '';
       let Departamento = '';
       let Ciudad = '';
-      let Código_postal = '';
+      let codigoPostal = '';
+      // tslint:disable-next-line:variable-name
       let Apartado_correo = '';
+      // tslint:disable-next-line:variable-name
       let Nombre_calle = '';
       this.basicConsult.forEach(element => {
-        //Terreno
+        // Terreno
         terreno = element.attributes['Área de terreno [m2]'];
-        element.attributes.predio.forEach(element => {
-          //Predio
-          tipo = element.attributes["Tipo"];
-          nombre = element.attributes["Nombre"];
-          departamento = element.attributes["Departamento"];
-          Municipio = element.attributes["Municipio"];
-          Zona = element.attributes["Zona"];
-          NUPRE = element.attributes["NUPRE"];
-          FMI = element.attributes["FMI"];
-          Npredial = element.attributes["Número predial"];
-          NpredialAnterior = element.attributes["Número predial anterior"];
+        element.attributes.predio.forEach((e: any) => {
+          // Predio
+          tipo = e.attributes.Tipo;
+          nombre = e.attributes.Nombre;
+          departamento = e.attributes.Departamento;
+          Municipio = e.attributes.Municipio;
+          Zona = e.attributes.Zona;
+          NUPRE = e.attributes.NUPRE;
+          FMI = e.attributes.FMI;
+          Npredial = e.attributes['Número predial'];
+          NpredialAnterior = e.attributes['Número predial anterior'];
         });
-        element.attributes.extdireccion.forEach(element => {
-          //Direcciones
-          País = element.attributes["País"];
-          Departamento = element.attributes["Departamento"];
-          Ciudad = element.attributes["Ciudad"];
-          Código_postal = element.attributes["Código postal"];
-          Apartado_correo = element.attributes["Apartado correo"];
-          Nombre_calle = element.attributes["Nombre calle"];
+        element.attributes.extdireccion.forEach(e => {
+          // Direcciones
+          // tslint:disable-next-line:no-string-literal
+          País = e.attributes['País'];
+          Departamento = e.attributes.Departamento;
+          Ciudad = e.attributes.Ciudad;
+          codigoPostal = e.attributes['Código postal'];
+          Apartado_correo = e.attributes['Apartado correo'];
+          Nombre_calle = e.attributes['Nombre calle'];
         });
-      })
+      });
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);
       qr.addData('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI);
       qr.make();
-      let text = "SAT Consulta Basica"
-      let Imageqr = qr.createDataURL();
-      var imagenlogo = new Image();
-      imagenlogo.src = "assets/img/brand/logo.png";
+      const text = 'SAT Consulta Basica';
+      const Imageqr = qr.createDataURL();
+      const imagenlogo = new Image();
+      imagenlogo.src = 'assets/img/brand/logo.png';
       // horizontal line margen
       doc.setLineWidth(1);
       doc.line(10, 10, 426.46, 10);
@@ -294,12 +300,12 @@ export class BasicParcelInfoComponent implements OnInit {
       doc.text(text, this.xOffset(text) + 10, 50);
       // imagen QR
       doc.addImage(Imageqr, 340, 25);
-      //MAPA
+      // MAPA
       doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
       // horizantal mapa
       doc.line(10, 320, 426.46, 320);
-      //Generacion de las tablas
-      doc.text("Predio", 20, 335);
+      // Generacion de las tablas
+      doc.text('Predio', 20, 335);
       doc.autoTable({
         margin: 20,
         startY: 340,
@@ -310,7 +316,7 @@ export class BasicParcelInfoComponent implements OnInit {
           [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
         ]
       });
-      doc.text("Terreno", 20, 400);
+      doc.text('Terreno', 20, 400);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
@@ -320,14 +326,14 @@ export class BasicParcelInfoComponent implements OnInit {
           [terreno]
         ]
       });
-      doc.text("Direcciones", 20, 450);
+      doc.text('Direcciones', 20, 450);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
-          [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
+          [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
       doc.setFontSize(9);
@@ -338,7 +344,7 @@ export class BasicParcelInfoComponent implements OnInit {
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
   }
   public onKey(event: any) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.search();
     }
   }

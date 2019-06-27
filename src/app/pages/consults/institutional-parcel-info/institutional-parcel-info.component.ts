@@ -307,7 +307,7 @@ export class InstitutionalParcelInfoComponent {
       // horizontal margen titulo
       doc.line(10, 85, 426.46, 85);
       // image LOGO SAT
-      doc.addImage(imagenlogo, 25, 25, 100, 40);
+      doc.addImage(imagenlogo, 25, 25, 100, 52);
       // titulo pdf
       doc.text(text, this.xOffset(text) + 15, 50);
       // imagen QR

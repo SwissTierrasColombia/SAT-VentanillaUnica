@@ -227,7 +227,8 @@ export class BasicParcelInfoComponent implements OnInit {
     // Few necessary setting options 216 x 279 tamaño carta
     const doc = new jspdf('portrait', 'px', 'a4');
     const newImg = new Image();
-    newImg.onload = function() {
+    // tslint:disable-next-line:space-before-function-paren
+    newImg.onload = function () {
       let tipo = '';
       let nombre = '';
       let departamento = '';
@@ -295,13 +296,13 @@ export class BasicParcelInfoComponent implements OnInit {
       // horizontal margen titulo
       doc.line(10, 85, 426.46, 85);
       // image LOGO SAT
-      doc.addImage(imagenlogo, 25, 25, 100, 40);
+      doc.addImage(imagenlogo, 25, 25, 100, 52);
       // titulo pdf
       doc.text(text, this.xOffset(text) + 10, 50);
       // imagen QR
       doc.addImage(Imageqr, 340, 25);
       // MAPA
-      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
+      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text) + 50, 103, 200, 200);
       // horizantal mapa
       doc.line(10, 320, 426.46, 320);
       // Generacion de las tablas

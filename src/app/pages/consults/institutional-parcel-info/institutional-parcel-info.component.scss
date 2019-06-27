@@ -1,4 +1,35 @@
 .map {
+  max-height: 500px;
+}
+
+@media (min-width: 576px) {
+  .map {
+    height: 300px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .map {
+    height: 300px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .map {
+    height: 500px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .map {
+    height: 500px;
+    width: 100%;
+  }
+}
+.map {
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 1);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 1);
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 1);

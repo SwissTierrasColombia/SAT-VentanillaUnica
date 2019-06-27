@@ -353,16 +353,16 @@ export class InstitutionalParcelInfoComponent {
       let Tipo_Documento = '';
       let Estado = '';
       this.lealInfoDercho.forEach(element => {
-        ID = element.attributes['Código registral'];
+        ID = element.attributes['Código registral'] ? element.attributes['Código registral'] : '--';
         // tslint:disable-next-line:no-string-literal
-        Nombre_Completo = element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'];
-        Tipo_Derecho = element.attributes['Tipo de derecho'];
-        Derecho = '';
-        Vigencia = '';
+        Nombre_Completo = element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] : '--';
+        Tipo_Derecho = element.attributes['Tipo de derecho'] ? element.attributes['Tipo de derecho'] : '--';
+        Derecho = '--';
+        Vigencia = '--';
         // tslint:disable-next-line:no-string-literal
-        Tipo_Documento = element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'];
+        Tipo_Documento = element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] : '--';
         // tslint:disable-next-line:no-string-literal
-        Estado = element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'];
+        Estado = element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] : '--';
       });
       doc.text('Derechos', 20, 425);
       doc.autoTable({
@@ -372,7 +372,7 @@ export class InstitutionalParcelInfoComponent {
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [[ID, 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
+        head: [['ID', 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
         body: [
           [ID, Nombre_Completo, Tipo_Derecho, Derecho, Vigencia, Tipo_Documento, Estado]
         ]
@@ -426,7 +426,7 @@ export class InstitutionalParcelInfoComponent {
       // tslint:disable-next-line:variable-name
       const Numero_Catastral = this.physicalInfo.attributes.predio[0].attributes['Número predial'];
       // tslint:disable-next-line:variable-name
-      const Area_Catastral = '' + this.physicalInfo.attributes['Área calculada [m2]'];
+      const Area_Catastral = '--' + this.physicalInfo.attributes['Área calculada [m2]'];
       // tslint:disable-next-line:no-string-literal variable-name
       const Tipo_de_Parcela = this.physicalInfo.attributes.predio[0].attributes['Tipo'];
       Estado = 'ACTIVO';

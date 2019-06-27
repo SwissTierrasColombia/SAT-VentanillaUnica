@@ -229,48 +229,48 @@ export class BasicParcelInfoComponent implements OnInit {
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
-      let tipo = '';
-      let nombre = '';
-      let departamento = '';
-      let Municipio = '';
-      let Zona = '';
-      let NUPRE = '';
-      let FMI = '';
-      let Npredial = '';
-      let NpredialAnterior = '';
-      let terreno = '';
-      let País = '';
-      let Departamento = '';
-      let Ciudad = '';
-      let codigoPostal = '';
+      let tipo = '--';
+      let nombre = '--';
+      let departamento = '--';
+      let Municipio = '--';
+      let Zona = '--';
+      let NUPRE = '--';
+      let FMI = '--';
+      let Npredial = '--';
+      let NpredialAnterior = '--';
+      let terreno = '--';
+      let País = '--';
+      let Departamento = '--';
+      let Ciudad = '--';
+      let codigoPostal = '--';
       // tslint:disable-next-line:variable-name
-      let Apartado_correo = '';
+      let Apartado_correo = '--';
       // tslint:disable-next-line:variable-name
-      let Nombre_calle = '';
+      let Nombre_calle = '--';
       this.basicConsult.forEach(element => {
         // Terreno
-        terreno = element.attributes['Área de terreno [m2]'];
+        terreno = element.attributes['Área de terreno [m2]'] ? element.attributes['Área de terreno [m2]'] : '--';
         element.attributes.predio.forEach((e: any) => {
           // Predio
-          tipo = e.attributes.Tipo;
-          nombre = e.attributes.Nombre;
-          departamento = e.attributes.Departamento;
-          Municipio = e.attributes.Municipio;
-          Zona = e.attributes.Zona;
-          NUPRE = e.attributes.NUPRE;
-          FMI = e.attributes.FMI;
-          Npredial = e.attributes['Número predial'];
-          NpredialAnterior = e.attributes['Número predial anterior'];
+          tipo = e.attributes.Tipo ? e.attributes.Tipo : '--';
+          nombre = e.attributes.Nombre ? e.attributes.Nombre : '--';
+          departamento = e.attributes.Departamento ? e.attributes.Departamento : '--';
+          Municipio = e.attributes.Municipio ? e.attributes.Municipio : '--';
+          Zona = e.attributes.Zona ? e.attributes.Zona : '--';
+          NUPRE = e.attributes.NUPRE ? e.attributes.NUPRE : '--';
+          FMI = e.attributes.FMI ? e.attributes.FMI : '--';
+          Npredial = e.attributes['Número predial'] ? e.attributes['Número predial'] : '--';
+          NpredialAnterior = e.attributes['Número predial anterior'] ? e.attributes['Número predial anterior'] : '--';
         });
         element.attributes.extdireccion.forEach(e => {
           // Direcciones
           // tslint:disable-next-line:no-string-literal
-          País = e.attributes['País'];
-          Departamento = e.attributes.Departamento;
-          Ciudad = e.attributes.Ciudad;
-          codigoPostal = e.attributes['Código postal'];
-          Apartado_correo = e.attributes['Apartado correo'];
-          Nombre_calle = e.attributes['Nombre calle'];
+          País = e.attributes['País'] ? e.attributes['País'] : '--';
+          Departamento = e.attributes.Departamento ? e.attributes.Departamento : '--';
+          Ciudad = e.attributes.Ciudad ? e.attributes.Ciudad : '--';
+          codigoPostal = e.attributes['Código postal'] ? e.attributes['Código postal'] : '--';
+          Apartado_correo = e.attributes['Apartado correo'] ? e.attributes['Apartado correo'] : '--';
+          Nombre_calle = e.attributes['Nombre calle'] ? e.attributes['Nombre calle'] : '--';
         });
       });
       const typeNumber = 4;

@@ -404,7 +404,7 @@ export class InstitutionalParcelInfoComponent {
         styles: { fontSize: 9 },
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
-        head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
+        head: [['Código', 'Objeto que afecta', 'Área afectada m2', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: [
           [Codigo, Objeto_que_afecta, Área_afectada, de_afectacion, Fecha_constitución, Fecha_expiracion, Estado_Afectaciones]
         ]

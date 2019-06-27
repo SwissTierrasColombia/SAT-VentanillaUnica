@@ -315,7 +315,8 @@ export class InstitutionalParcelInfoComponent {
       doc.text('Verdad Física', 190, 100);
       // horizontal margen titulo Fisica
       doc.line(10, 112, 426.46, 112);
-      doc.line(213, 112, 213, 320);
+      //vertical linea separación mapa de info fisica
+      doc.line(220, 112, 220, 320);
 
       // const imagenverdadfisica = new Image();
       // imagenverdadfisica.src = 'assets/VerdadFisica.png';

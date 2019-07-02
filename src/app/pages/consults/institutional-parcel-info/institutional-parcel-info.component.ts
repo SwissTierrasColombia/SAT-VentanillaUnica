@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QueryService } from 'src/app/services/consult/query.service';
 import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
 
@@ -19,12 +19,13 @@ import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
 import * as turf from '@turf/turf';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: 'institutional-parcel-info.component.html',
   styleUrls: ['./institutional-parcel-info.component.scss']
 })
-export class InstitutionalParcelInfoComponent {
+export class InstitutionalParcelInfoComponent implements OnInit {
 
   showResult = false;
   inputNupre;
@@ -50,8 +51,13 @@ export class InstitutionalParcelInfoComponent {
   };
 
 
-  constructor(private service: QueryService, private toastr: ToastrService) { }
+  constructor(private service: QueryService, private toastr: ToastrService, private route:Router) { }
 
+  ngOnInit(): void {
+    if (!sessionStorage.getItem('access_token')) {
+      this.route.navigate(['inicio']);
+    } 
+  }
   /**/
 
   selectTypeSearch(id) {

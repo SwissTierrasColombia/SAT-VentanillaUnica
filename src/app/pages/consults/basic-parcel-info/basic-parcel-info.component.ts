@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
@@ -18,6 +18,7 @@ import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
 import * as turf from '@turf/turf';
+import { ActivatedRoute } from '@angular/router';
 
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
@@ -33,6 +34,7 @@ declare let qrcode: any;
   styleUrls: ['./basic-parcel-info.component.scss']
 })
 export class BasicParcelInfoComponent implements OnInit {
+  @ViewChild("buscarNumeroPredial") numPredialCheck: ElementRef;
   showResult = false;
   inputNupre = '';
   inputFMI = '';
@@ -47,10 +49,26 @@ export class BasicParcelInfoComponent implements OnInit {
     geometry: { coordinates: [0, 0] }
   };
 
-  constructor(private service: QueryService, private toastr: ToastrService) { }
+  constructor(private service: QueryService, private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.route.queryParamMap.subscribe(
+      params => {
+        if (params.has("t_id")) {
+          //arams.get('tid')
+          console.log("llegue: ", params.get('t_id'));
+          this.service.getCadastralCode(Number(params.get('t_id'))).subscribe((result: any) => {
+            console.log(result);
+            if (result) {
+              this.selectTypeSearch(2);
+              this.inputCadastralCode = result.numero_predial;
+              this.search();
+              this.numPredialCheck.nativeElement.checked = true;
+            }
+          });
+        }
+      }
+    )
   }
   selectTypeSearch(id) {
     this.inputCadastralCode = '';

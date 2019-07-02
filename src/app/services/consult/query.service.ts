@@ -64,5 +64,8 @@ export class QueryService {
   public getAdministrativeQuery(tid: number) {
     return this.httpClient.get<any>(`${this.apiURL}/private/parcel/affectations?id=${tid}`, this.httpOptions);
   }
+  public getCadastralCode(tid: number) {
+    return this.httpClient.get<any>(`${this.apiURL}/public/parcel/cadastralcode?id=${tid}`, this.httpOptions);
+  }
 
 }

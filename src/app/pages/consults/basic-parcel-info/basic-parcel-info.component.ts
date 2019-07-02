@@ -64,6 +64,8 @@ export class BasicParcelInfoComponent implements OnInit {
               this.inputCadastralCode = result.numero_predial;
               this.search();
               this.numPredialCheck.nativeElement.checked = true;
+            } else {
+              this.toastr.error('No se encontraron registros.');
             }
           });
         }

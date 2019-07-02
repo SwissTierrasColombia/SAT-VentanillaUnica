@@ -93,6 +93,7 @@ export class BasicParcelInfoComponent implements OnInit {
         error => {
           console.log(error);
           this.showResult = false;
+          this.toastr.error('No se encontraron registros.');
         }
       );
   }

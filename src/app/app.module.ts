@@ -52,8 +52,6 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TokenInterceptor } from './services/token.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegistroObjEspecialComponent } from './pages/tramites/registro-obj-especial/registro-obj-especial.component';
-import { DialogBoxComponent } from './pages/tramites/registro-obj-especial/dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -63,8 +61,6 @@ import { DialogBoxComponent } from './pages/tramites/registro-obj-especial/dialo
     P500Component,
     LoginComponent,
     RegisterComponent,
-    RegistroObjEspecialComponent,
-    DialogBoxComponent
   ],
   imports: [
     BrowserModule,

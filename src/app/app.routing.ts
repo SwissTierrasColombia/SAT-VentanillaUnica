@@ -8,12 +8,20 @@ import { P404Component } from './pages/error/404.component';
 import { P500Component } from './pages/error/500.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { RegistroObjEspecialComponent } from './pages/tramites/registro-obj-especial/registro-obj-especial.component';
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'inicio',
     pathMatch: 'full',
+  },
+  {
+    path: 'tramites',
+    component: RegistroObjEspecialComponent,
+    data: {
+      title: 'Registro de objetos especiales'
+    }
   },
   {
     path: '404',

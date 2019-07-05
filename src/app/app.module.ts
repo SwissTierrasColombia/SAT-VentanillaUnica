@@ -7,6 +7,14 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
 
+import { 
+  MatTableModule, 
+  MatDialogModule, 
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule
+} from '@angular/material';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -42,7 +50,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TokenInterceptor } from './services/token.interceptor';
-
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -69,6 +76,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChartsModule,
     HttpClientModule,
     FormsModule,
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatInputModule,
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot()

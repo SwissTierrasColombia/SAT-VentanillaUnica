@@ -2,8 +2,12 @@ import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface UsersData {
-  name: string;
   id: number;
+  modelo: string;
+  objeto: string;
+  restricciones: string;
+  urlws: string;
+  fechas: string;
 }
 
 @Component({

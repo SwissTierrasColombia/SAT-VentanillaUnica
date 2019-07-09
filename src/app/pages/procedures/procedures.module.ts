@@ -19,6 +19,12 @@ import {
 
 
 @NgModule({
+  declarations: [
+    ProcedureRequestComponent,
+    ProcedureManagementComponent,
+    RegistroObjEspecialComponent,
+    DialogBoxComponent
+  ],
   imports: [
     CommonModule,
     ProceduresRoutingModule,
@@ -32,12 +38,7 @@ import {
   ],
   entryComponents: [
     DialogBoxComponent
-  ],
-  declarations: [
-    ProcedureRequestComponent,
-    ProcedureManagementComponent,
-    RegistroObjEspecialComponent,
-    DialogBoxComponent
   ]
+
 })
 export class ProceduresModule { }

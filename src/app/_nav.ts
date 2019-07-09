@@ -69,7 +69,7 @@ export const navItems: NavData[] = [
   {
     name: 'Registro de Objeto de Régimen Especial',
     url: '/procedures/registro',
-    icon: 'icon-control-play'
+    icon: 'icon-list'
   }
 
 ];

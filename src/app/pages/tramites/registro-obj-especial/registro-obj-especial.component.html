@@ -1,54 +1,71 @@
-<div class="container text-center">
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <i class="cui-arrow-bottom"></i> Seleccione el modelo y el objeto a registrar
+    </div>
+    <div class="card-body row">
 
-  <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">añadir registro</button>
-
-  <table mat-table [dataSource]="dataSource" #mytable class="my-table mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="modelo">
-      <th mat-header-cell *matHeaderCellDef> Modelo </th>
-      <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="objeto">
-      <th mat-header-cell *matHeaderCellDef> Objeto </th>
-      <td mat-cell *matCellDef="let element"> {{element.objeto}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="restricciones">
-      <th mat-header-cell *matHeaderCellDef> Restricciones </th>
-      <td mat-cell *matCellDef="let element"> {{element.restricciones}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="urlws">
-      <th mat-header-cell *matHeaderCellDef> URL WS </th>
-      <td mat-cell *matCellDef="let element"> {{element.urlws}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="fechas">
-      <th mat-header-cell *matHeaderCellDef> Fechas </th>
-      <td mat-cell *matCellDef="let element"> {{element.fechas}} </td>
-    </ng-container>
-
-    <!-- Action Column -->
-    <ng-container matColumnDef="modificar">
-      <th mat-header-cell *matHeaderCellDef> Modificar </th>
-      <td mat-cell *matCellDef="let element" class="action-link modificar">
-        <a (click)="openDialog('Update',element)">Editar</a> |
-        <a (click)="openDialog('Delete',element)">Eliminar</a>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
+      <form class="form-group col-12">
+        <div class="form-group col-12">
+          <div class="col-auto my-1">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Modelos</label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+              <option selected>Seleccionar</option>
+              <option value="1">Modelo 1</option>
+              <option value="2">Modelo 2</option>
+              <option value="3">Modelo 3</option>
+            </select>
+          </div>
+          <div class="col-auto my-1">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Objetos</label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+              <option selected>Seleccionar</option>
+              <option value="1">Objeto 1</option>
+              <option value="2">Objeto 2</option>
+              <option value="3">Objeto 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="text-center col-12">
+          <button type="button" class="btn btn-primary" (click)="openModal('custom-modal-2')">Añadir
+            Restricción</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <jw-modal id="custom-modal-2">
+      <div class="card">
+        <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+        <div class="card-header">
+          <i class="cui-arrow-bottom"></i> Registro de Objeto de Régimen Especial
+        </div>
+        <div class="card-body row">
+          <form action="" class="needs-validation form-group col-12" novalidate>
+            <div class="form-group row">
+              <div class="form-group col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                  <label class="form-check-label" for="gridCheck1">
+                    Restricción 1
+                  </label>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck2">
+                  <label class="form-check-label" for="gridCheck2">
+                    Restricción 2
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="text-center col-12">
+              <button type="button" class="btn btn-dark" (click)="closeModal('custom-modal-2');">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </jw-modal>
+  </div>
 </div>

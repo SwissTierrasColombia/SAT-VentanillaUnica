@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/services/modal/modal.service';
+import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-regime/object-especial-regime.service';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -9,19 +10,25 @@ import { ModalService } from 'src/app/services/modal/modal.service';
 
 export class RegistroObjEspecialComponent implements OnInit {
 
-  constructor(private modalService: ModalService) {
+  models: ModelsEspecialRegime;
+  constructor(private services: ObjectEspecialRegimeService) {
   }
 
   ngOnInit() {
+    this.services.GetDataModel(1).subscribe(
+      response => {
+        this.models = response
+        console.log(this.models);
+
+      },
+      error => {
+        console.log(error);
+
+      }
+
+    )
   }
 
-  openModal(id: string) {
-    this.modalService.open(id);
-  }
-
-  closeModal(id: string) {
-    this.modalService.close(id);
-  }
   createCategory() {
     var node = document.createElement("DIV");
     var itm = document.getElementById("child").lastChild;

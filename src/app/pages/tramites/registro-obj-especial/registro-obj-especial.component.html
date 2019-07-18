@@ -1,116 +1,67 @@
 <div class="card">
   <div class="card-header">Registro de Objeto de Régimen Especial</div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="entityModels">
+
+    <!-- Topics -->
     <form action="" method="post">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">Modelo</span>
+            <span class="input-group-text">Temática: {{entityModels.name}}</span>
           </div>
-          <select class="form-control" id="modelo" name="modelo">
-            <option value="0">Por favor seleccione el modelo</option>
-            <option value="1">Modelo #1</option>
-            <option value="2">Modelo #2</option>
-            <option value="3">Modelo #3</option>
-            <option value="3">Modelo #4</option>
+          <select class="form-control" id="modelo" name="modelo" [(ngModel)]="TopicSeleccionado"
+            *ngFor="let topic of entityModels.topics">
+            <option value="0">Por favor seleccione la temática</option>
+            <option [ngValue]="topic">{{topic.name}}</option>
           </select>
           <div class="input-group-append">
           </div>
         </div>
       </div>
-      <div class="form-group">
+
+      <!-- Models -->
+      <div class="form-group" *ngIf="TopicSeleccionado">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Modelo: {{TopicSeleccionado.name}}</span>
+          </div>
+          <select class="form-control" id="modelo" name="modelo" [(ngModel)]="ModeloSeleccionado"
+            *ngFor="let model of TopicSeleccionado.models">
+            <option value="0">Por favor seleccione el modelo</option>
+            <option [ngValue]="model">{{model.name}}</option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="ModeloSeleccionado">
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Objetos</span>
           </div>
-          <select class="form-control" id="objetos" name="objetos" size="5" multiple="">
-            <option value="1">Option #1</option>
-            <option value="2">Option #2</option>
-            <option value="3">Option #3</option>
-            <option value="4">Option #4</option>
-            <option value="5">Option #5</option>
-            <option value="6">Option #6</option>
-            <option value="7">Option #7</option>
-            <option value="8">Option #8</option>
-            <option value="9">Option #9</option>
-            <option value="10">Option #10</option>
+          <select class="form-control" id="objetos" name="objetos" size="5" multiple=""
+            [(ngModel)]="ObjetoSeleccionado">
+            <option *ngFor="let obj of ModeloSeleccionado.objects; let i = index" [ngValue]="obj">{{obj.name}}
+            </option>
           </select>
           <div class="input-group-append">
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Tipo de servidor de mapas</span>
-          </div>
-          <select class="form-control" id="select2" name="select2">
-            <option value="0">Por favor seleccione el servidor</option>
-            <option value="1">Geoserver</option>
-          </select>
-          <div class="input-group-append">
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
+      <div class="form-group" *ngIf="ObjetoSeleccionado">
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">url</span>
           </div>
-          <input class="form-control" id="url" type="text" name="url" disabled="disabled">
+          <input class="form-control" id="url" type="text" name="url" disabled="disabled"
+            [value]="ObjetoSeleccionado[0].url">
           <div class="input-group-append">
           </div>
         </div>
       </div>
-      <!--       <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Base URL</span>
-          </div>
-          <input class="form-control" id="BaseURL" type="text" name="BaseURL">
-          <div class="input-group-append">
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">workspace</span>
-          </div>
-          <input class="form-control" id="workspace" type="text" name="workspace">
-          <div class="input-group-append">
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Capa</span>
-          </div>
-          <input class="form-control" id="capa" type="text" name="Capa">
-          <div class="input-group-append">
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="input-group col-6">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Fecha de inicio</span>
-          </div>
-          <input class="form-control" id="FechaInicio" type="date" name="FechaInicio">
-          <div class="input-group-append">
-          </div>
-        </div>
-        <div class="input-group col-6">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Fecha de Finalización</span>
-          </div>
-          <input class="form-control" id="FechaFinalizacion" type="date" name="FechaFinalizacion">
-          <div class="input-group-append">
-          </div>
-        </div>
-      </div> -->
-      <div class="row">
+
+      <div class="row" *ngIf="ObjetoSeleccionado">
         <div class="col-11">
           <div class="input-group-text">Categoria</div>
         </div>
@@ -119,7 +70,7 @@
         </div>
       </div>
       <br>
-      <div class="col-10 offset-1">
+      <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado">
         <div id="Nodo">
           <div id="child">
             <div class="form-group">
@@ -170,21 +121,9 @@
               <br>
               <span class="input-group-text">Restricciones</span>
               <div class="col-form-label row offset-1">
-                <div class="form-check checkbox col-3">
-                  <input class="form-check-input" id="check1" type="checkbox" value="">
-                  <label class="form-check-label" for="check1">Restricción 1</label>
-                </div>
-                <div class="form-check checkbox col-3">
-                  <input class="form-check-input" id="check2" type="checkbox" value="">
-                  <label class="form-check-label" for="check2">Restricción 2</label>
-                </div>
-                <div class="form-check checkbox col-3">
-                  <input class="form-check-input" id="check3" type="checkbox" value="">
-                  <label class="form-check-label" for="check3">Restricción 3</label>
-                </div>
-                <div class="form-check checkbox col-3">
-                  <input class="form-check-input" id="check4" type="checkbox" value="">
-                  <label class="form-check-label" for="check4">Restricción 4</label>
+                <div class="form-check checkbox col-3" *ngFor="let item of restricciones">
+                  <input class="form-check-input" id="check1" type="checkbox" [value]="item.id">
+                  <label class="form-check-label" for="check1">{{item.name}}</label>
                 </div>
               </div>
             </div>

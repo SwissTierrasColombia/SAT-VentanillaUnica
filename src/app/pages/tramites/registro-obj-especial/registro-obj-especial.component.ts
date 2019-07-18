@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-regime/object-especial-regime.service';
+import { RestrictionsObjectEspecial } from 'src/app/models/restrictions-object-especial';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -10,22 +11,33 @@ import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-re
 
 export class RegistroObjEspecialComponent implements OnInit {
 
-  models: ModelsEspecialRegime;
+  entityModels: ModelsEspecialRegime;
+  TopicSeleccionado: any;
+  ModeloSeleccionado: any;
+  ObjetoSeleccionado: any;
+  restricciones: RestrictionsObjectEspecial;
   constructor(private services: ObjectEspecialRegimeService) {
   }
 
   ngOnInit() {
     this.services.GetDataModel(1).subscribe(
       response => {
-        this.models = response
-        console.log(this.models);
-
+        this.entityModels = response
       },
       error => {
         console.log(error);
 
       }
 
+    )
+    this.services.GetRestrictions().subscribe(
+      response => {
+        this.restricciones = response
+      },
+      error => {
+        console.error(error);
+
+      }
     )
   }
 

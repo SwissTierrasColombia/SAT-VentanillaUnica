@@ -1,71 +1,202 @@
-<div class="container">
-  <div class="card">
-    <div class="card-header">
-      <i class="cui-arrow-bottom"></i> Seleccione el modelo y el objeto a registrar
-    </div>
-    <div class="card-body row">
-
-      <form class="form-group col-12">
-        <div class="form-group col-12">
-          <div class="col-auto my-1">
-            <label class="mr-sm-2" for="inlineFormCustomSelect">Modelos</label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Seleccionar</option>
-              <option value="1">Modelo 1</option>
-              <option value="2">Modelo 2</option>
-              <option value="3">Modelo 3</option>
-            </select>
+<div class="card">
+  <div class="card-header">Registro de Objeto de Régimen Especial</div>
+  <div class="card-body">
+    <form action="" method="post">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Modelo</span>
           </div>
-          <div class="col-auto my-1">
-            <label class="mr-sm-2" for="inlineFormCustomSelect">Objetos</label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Seleccionar</option>
-              <option value="1">Objeto 1</option>
-              <option value="2">Objeto 2</option>
-              <option value="3">Objeto 3</option>
-            </select>
+          <select class="form-control" id="modelo" name="modelo">
+            <option value="0">Por favor seleccione el modelo</option>
+            <option value="1">Modelo #1</option>
+            <option value="2">Modelo #2</option>
+            <option value="3">Modelo #3</option>
+            <option value="3">Modelo #4</option>
+          </select>
+          <div class="input-group-append">
           </div>
-        </div>
-        <div class="text-center col-12">
-          <button type="button" class="btn btn-primary" (click)="openModal('custom-modal-2')">Añadir
-            Restricción</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-    <jw-modal id="custom-modal-2">
-      <div class="card">
-        <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
-        <div class="card-header">
-          <i class="cui-arrow-bottom"></i> Registro de Objeto de Régimen Especial
-        </div>
-        <div class="card-body row">
-          <form action="" class="needs-validation form-group col-12" novalidate>
-            <div class="form-group row">
-              <div class="form-group col-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="gridCheck1">
-                  <label class="form-check-label" for="gridCheck1">
-                    Restricción 1
-                  </label>
-                </div>
-              </div>
-              <div class="form-group col-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="gridCheck2">
-                  <label class="form-check-label" for="gridCheck2">
-                    Restricción 2
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="text-center col-12">
-              <button type="button" class="btn btn-dark" (click)="closeModal('custom-modal-2');">Guardar</button>
-            </div>
-          </form>
         </div>
       </div>
-    </jw-modal>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Objetos</span>
+          </div>
+          <select class="form-control" id="objetos" name="objetos" size="5" multiple="">
+            <option value="1">Option #1</option>
+            <option value="2">Option #2</option>
+            <option value="3">Option #3</option>
+            <option value="4">Option #4</option>
+            <option value="5">Option #5</option>
+            <option value="6">Option #6</option>
+            <option value="7">Option #7</option>
+            <option value="8">Option #8</option>
+            <option value="9">Option #9</option>
+            <option value="10">Option #10</option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Tipo de servidor de mapas</span>
+          </div>
+          <select class="form-control" id="select2" name="select2">
+            <option value="0">Por favor seleccione el servidor</option>
+            <option value="1">Geoserver</option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">url</span>
+          </div>
+          <input class="form-control" id="url" type="text" name="url" disabled="disabled">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <!--       <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Base URL</span>
+          </div>
+          <input class="form-control" id="BaseURL" type="text" name="BaseURL">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">workspace</span>
+          </div>
+          <input class="form-control" id="workspace" type="text" name="workspace">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Capa</span>
+          </div>
+          <input class="form-control" id="capa" type="text" name="Capa">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="input-group col-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Fecha de inicio</span>
+          </div>
+          <input class="form-control" id="FechaInicio" type="date" name="FechaInicio">
+          <div class="input-group-append">
+          </div>
+        </div>
+        <div class="input-group col-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Fecha de Finalización</span>
+          </div>
+          <input class="form-control" id="FechaFinalizacion" type="date" name="FechaFinalizacion">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-11">
+          <div class="input-group-text">Categoria</div>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-primary" type="submit" (click)="createCategory()">+</button>
+        </div>
+      </div>
+      <br>
+      <div class="col-10 offset-1">
+        <div id="Nodo">
+          <div id="child">
+            <div class="form-group">
+              <div class="input-group-text">Categoria 1</div>
+              <br>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Campo</span>
+                </div>
+                <select class="form-control" id="campo" name="campo">
+                  <option value="0">Por favor seleccione el campo</option>
+                  <option value="1">campo #1</option>
+                  <option value="2">campo #2</option>
+                  <option value="3">campo #3</option>
+                  <option value="3">campo #4</option>
+                </select>
+                <div class="input-group-append">
+                </div>
+              </div>
+              <br>
+
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Valor</span>
+                </div>
+                <input class="form-control" id="valor" type="text" name="valor">
+                <div class="input-group-append">
+                </div>
+              </div>
+              <br>
+
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Url más info</span>
+                </div>
+                <input class="form-control" id="valor" type="text" name="valor">
+                <div class="input-group-append">
+                </div>
+              </div>
+              <br>
+
+              <span class="input-group-text">Descripción</span>
+              <div class="">
+                <textarea class="form-control" id="textarea-input" name="textarea-input" rows="5"
+                  placeholder="Contendido de la Descripción.."></textarea>
+              </div>
+
+              <br>
+              <span class="input-group-text">Restricciones</span>
+              <div class="col-form-label row offset-1">
+                <div class="form-check checkbox col-3">
+                  <input class="form-check-input" id="check1" type="checkbox" value="">
+                  <label class="form-check-label" for="check1">Restricción 1</label>
+                </div>
+                <div class="form-check checkbox col-3">
+                  <input class="form-check-input" id="check2" type="checkbox" value="">
+                  <label class="form-check-label" for="check2">Restricción 2</label>
+                </div>
+                <div class="form-check checkbox col-3">
+                  <input class="form-check-input" id="check3" type="checkbox" value="">
+                  <label class="form-check-label" for="check3">Restricción 3</label>
+                </div>
+                <div class="form-check checkbox col-3">
+                  <input class="form-check-input" id="check4" type="checkbox" value="">
+                  <label class="form-check-label" for="check4">Restricción 4</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form-group form-actions">
+        <div class="text-center col-12">
+          <button class="btn btn-primary" type="submit">Registrar Objeto</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

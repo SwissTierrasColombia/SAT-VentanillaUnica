@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ProcedureRequestComponent } from './procedure-request/procedure-request.component';
 import { ProcedureManagementComponent } from './procedure-managment/procedure-management.component';
 import { RegistroObjEspecialComponent } from '../tramites/registro-obj-especial/registro-obj-especial.component';
-import { DialogBoxRegistroComponent } from '../tramites/registro-obj-especial/dialog-box-registro/dialog-box-registro.component';
+import { DialogBoxRegistroComponent } from '../../components/dialog-box-registro/dialog-box-registro.component';
 
 
 

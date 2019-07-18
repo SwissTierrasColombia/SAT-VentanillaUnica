@@ -22,4 +22,11 @@ export class RegistroObjEspecialComponent implements OnInit {
   closeModal(id: string) {
     this.modalService.close(id);
   }
+  createCategory() {
+    var node = document.createElement("DIV");
+    var itm = document.getElementById("child").lastChild;
+    var cln = itm.cloneNode(true);
+    node.appendChild(cln);
+    document.getElementById("Nodo").appendChild(node);
+  }
 }

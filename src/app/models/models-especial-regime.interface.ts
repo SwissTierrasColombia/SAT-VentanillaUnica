@@ -1,21 +1,21 @@
-interface ModelsEspecialRegime {
+export interface ModelsEspecialRegime {
   entity: number;
   name: string;
   topics: Topic[];
 }
 
-interface Topic {
+export interface Topic {
   name: string;
   models: Model[];
 }
 
-interface Model {
+export interface Model {
   name: string;
   url: string;
   objects: Object[];
 }
 
-interface Object {
+export interface Object {
   name: string;
   url: string;
 }

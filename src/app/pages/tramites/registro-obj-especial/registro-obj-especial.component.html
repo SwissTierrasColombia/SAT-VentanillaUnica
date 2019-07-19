@@ -42,7 +42,8 @@
           </div>
           <select class="form-control" id="objetos" name="objetos" size="5" multiple=""
             [(ngModel)]="ObjetoSeleccionado">
-            <option *ngFor="let obj of ModeloSeleccionado.objects; let i = index" [ngValue]="obj">{{obj.name}}
+            <option (click)="CreateCampos()" *ngFor="let obj of ModeloSeleccionado.objects; let i = index"
+              [ngValue]="obj">{{obj.name}}
             </option>
           </select>
           <div class="input-group-append">
@@ -76,16 +77,15 @@
             <div class="form-group">
               <div class="input-group-text">Categoria 1</div>
               <br>
-              <div class="input-group">
+              <div class="input-group" *ngIf="camposFeature">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Campo</span>
                 </div>
                 <select class="form-control" id="campo" name="campo">
                   <option value="0">Por favor seleccione el campo</option>
-                  <option value="1">campo #1</option>
-                  <option value="2">campo #2</option>
-                  <option value="3">campo #3</option>
-                  <option value="3">campo #4</option>
+                  <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" value="{{item.value}}">
+                    {{item.key}}
+                  </option>
                 </select>
                 <div class="input-group-append">
                 </div>

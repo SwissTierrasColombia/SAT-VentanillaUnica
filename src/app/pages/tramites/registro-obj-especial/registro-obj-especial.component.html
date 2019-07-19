@@ -1,15 +1,14 @@
 <div class="card">
   <div class="card-header">Registro de Objeto de Régimen Especial</div>
   <div class="card-body" *ngIf="entityModels">
-
-    <!-- Topics -->
     <form action="" method="post">
+      <!-- Topics -->
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Temática: {{entityModels.name}}</span>
           </div>
-          <select class="form-control" id="modelo" name="modelo" [(ngModel)]="TopicSeleccionado"
+          <select class="form-control" id="Topics" name="Topics" [(ngModel)]="TopicSeleccionado"
             *ngFor="let topic of entityModels.topics">
             <option value="0">Por favor seleccione la temática</option>
             <option [ngValue]="topic">{{topic.name}}</option>
@@ -106,7 +105,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Url más info</span>
                 </div>
-                <input class="form-control" id="valor" type="text" name="valor">
+                <input class="form-control" id="urlInfo" type="text" name="urlInfo">
                 <div class="input-group-append">
                 </div>
               </div>
@@ -115,15 +114,15 @@
               <span class="input-group-text">Descripción</span>
               <div class="">
                 <textarea class="form-control" id="textarea-input" name="textarea-input" rows="5"
-                  placeholder="Contendido de la Descripción.."></textarea>
+                  placeholder="Contendido de la Descripción..."></textarea>
               </div>
 
               <br>
               <span class="input-group-text">Restricciones</span>
               <div class="col-form-label row offset-1">
-                <div class="form-check checkbox col-3" *ngFor="let item of restricciones">
-                  <input class="form-check-input" id="check1" type="checkbox" [value]="item.id">
-                  <label class="form-check-label" for="check1">{{item.name}}</label>
+                <div class="form-check checkbox col-3" *ngFor="let item of restricciones; let i = index">
+                  <input class="form-check-input" id="check{{i}}" type="checkbox" [value]="item.id">
+                  <label class="form-check-label" for="check{{i}}">{{item.name}}</label>
                 </div>
               </div>
             </div>

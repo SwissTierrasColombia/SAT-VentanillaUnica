@@ -17,7 +17,6 @@
           </div>
         </div>
       </div>
-
       <!-- Models -->
       <div class="form-group" *ngIf="TopicSeleccionado">
         <div class="input-group">
@@ -60,6 +59,30 @@
           </div>
         </div>
       </div>
+      <div class="form-group" *ngIf="ObjetoSeleccionado">
+        <div class="row">
+          <div class="col-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Fecha de Inicio</span>
+              </div>
+              <input class="form-control" id="fechaInicio" type="date" name="fechaInicio" [(ngModel)]="fechaInicio">
+              <div class="input-group-append">
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Fecha de Final</span>
+              </div>
+              <input class="form-control" id="fechaFinal" type="date" name="fechaFinal" [(ngModel)]="fechaFinal">
+              <div class="input-group-append">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="row" *ngIf="ObjetoSeleccionado">
         <div class="col-11">
@@ -80,9 +103,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Campo</span>
                 </div>
-                <select class="form-control" id="campo" name="campo">
+                <select class="form-control" id="campo" name="campo" [(ngModel)]="campo">
                   <option value="0">Por favor seleccione el campo</option>
-                  <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" value="{{item.value}}">
+                  <option [ngValue]="item.key" *ngFor="let item of camposFeature.features[0].properties | keyvalue">
                     {{item.key}}
                   </option>
                 </select>
@@ -90,12 +113,11 @@
                 </div>
               </div>
               <br>
-
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Valor</span>
                 </div>
-                <input class="form-control" id="valor" type="text" name="valor">
+                <input class="form-control" id="valor" type="text" name="valor" [(ngModel)]="valorCampo">
                 <div class="input-group-append">
                 </div>
               </div>
@@ -105,7 +127,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Url más info</span>
                 </div>
-                <input class="form-control" id="urlInfo" type="text" name="urlInfo">
+                <input class="form-control" id="urlInfo" type="text" name="urlInfo" [(ngModel)]="urlInfo">
                 <div class="input-group-append">
                 </div>
               </div>
@@ -114,14 +136,15 @@
               <span class="input-group-text">Descripción</span>
               <div class="">
                 <textarea class="form-control" id="textarea-input" name="textarea-input" rows="2"
-                  placeholder="Contendido de la Descripción..."></textarea>
+                  placeholder="Contendido de la Descripción..." [(ngModel)]="description"></textarea>
               </div>
 
               <br>
               <span class="input-group-text">Restricciones</span>
               <div class="col-form-label row offset-1">
                 <div class="form-check checkbox col-3" *ngFor="let item of restricciones; let i = index">
-                  <input class="form-check-input" id="check{{i}}" type="checkbox" [value]="item.id">
+                  <input name="restriccion{{i}}" class="form-check-input" id="check{{i}}" type="checkbox"
+                    [(ngModel)]="restricciones[i].status">
                   <label class="form-check-label" for="check{{i}}">{{item.name}}</label>
                 </div>
               </div>
@@ -132,7 +155,7 @@
       <br>
       <div class="form-group form-actions">
         <div class="text-center col-12">
-          <button class="btn btn-primary" type="submit">Registrar Objeto</button>
+          <button class="btn btn-primary" type="submit" (click)="RegistrarObjeto()">Registrar Objeto</button>
         </div>
       </div>
     </form>

@@ -22,15 +22,12 @@ export class RegistroObjEspecialComponent implements OnInit {
   restricciones: RestrictionsObjectEspecial;
   camposFeature: FeaturesObjectEspecial;
   token: TokenJwt;
-  datos: {
-    NombreEntidad: "",
-    Modelo: "",
-    Objetos: [],
-    urlgeo: "",
-    categorias: {
-      categoria: []
-    }
-  }
+  campo: any;
+  valorCampo: string;
+  urlInfo: string;
+  description: string;
+  fechaInicio: Date;
+  fechaFinal: Date;
   constructor(private services: ObjectEspecialRegimeService, private route: Router) {
   }
 
@@ -64,15 +61,7 @@ export class RegistroObjEspecialComponent implements OnInit {
         }
       );
 
-      this.services.GetRestrictions().subscribe(
-        response => {
-          this.restricciones = response;
-        },
-        error => {
-          console.error(error);
 
-        }
-      );
     }
   }
   createCategory() {
@@ -83,7 +72,15 @@ export class RegistroObjEspecialComponent implements OnInit {
     document.getElementById("Nodo").appendChild(node);
   }
   CreateCampos() {
+    this.services.GetRestrictions().subscribe(
+      response => {
+        this.restricciones = response;
+      },
+      error => {
+        console.error(error);
 
+      }
+    );
     // Get the size of an object
     this.services.GetFeatures(this.ObjetoSeleccionado[0].url).subscribe(
       response => {
@@ -94,5 +91,29 @@ export class RegistroObjEspecialComponent implements OnInit {
 
       }
     );
+  }
+  RegistrarObjeto() {
+    let name = this.TopicSeleccionado.name;
+    let model = this.ModeloSeleccionado.name;
+    let object = this.ObjetoSeleccionado[0].name;
+    let wsurl = this.ObjetoSeleccionado[0].url
+    let fechaInicio = this.fechaInicio;
+    let fechaFin = this.fechaFinal;
+    //Categorias
+    let field = this.campo;
+    let value = this.valorCampo
+    let urlMasInfo = this.urlInfo
+    let description = this.description
+    let restriction = []
+    for (let i in this.restricciones) {
+      if (this.restricciones[i].status == true) {
+        delete this.restricciones[i].status;
+        restriction.push({
+          id: 0,
+          "restriction": this.restricciones[i]
+        });
+      }
+    }
+    this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, field, value, urlMasInfo, description, restriction);
   }
 }

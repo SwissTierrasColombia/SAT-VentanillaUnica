@@ -4,6 +4,8 @@ import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-re
 import { RestrictionsObjectEspecial } from 'src/app/models/restrictions-object-especial';
 import { ModelsEspecialRegime } from 'src/app/models/models-especial-regime.interface';
 import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
+import { TokenJwt } from 'src/app/models/token-jwt.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -19,11 +21,26 @@ export class RegistroObjEspecialComponent implements OnInit {
   ObjetoSeleccionado: any;
   restricciones: RestrictionsObjectEspecial;
   camposFeature: FeaturesObjectEspecial;
-  constructor(private services: ObjectEspecialRegimeService) {
+  token: TokenJwt;
+  constructor(private services: ObjectEspecialRegimeService, private route: Router) {
   }
 
   ngOnInit() {
-    this.services.GetDataModel(1).subscribe(
+    this.token = JSON.parse(sessionStorage.getItem('rol'));
+    let id = 0
+    for (let index = 0; index < this.token.realm_access.roles.length; index++) {
+      if (this.token.realm_access.roles[index] === 'Entidad1') {
+        id = 1
+      } else if (this.token.realm_access.roles[index] === 'Entidad2') {
+        id = 2
+      } else if (this.token.realm_access.roles[index] === 'Entidad3') {
+        id = 3
+      } else {
+        this.route.navigate(['inicio']);
+      }
+    }
+
+    this.services.GetDataModel(id).subscribe(
       response => {
         this.entityModels = response;
       },

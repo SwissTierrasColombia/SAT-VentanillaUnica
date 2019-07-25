@@ -26,9 +26,8 @@ export class LoginService {
 
     return this.httpClient.post<any>(this.apiURL + '/realms/SAT/protocol/openid-connect/token', parametros, { headers: this.httpHeaders }).subscribe((res => {
       this.data = JSON.parse(atob(res.access_token.split('.')[1]))
-      //console.log(this.data);
+      console.log(this.data);
       sessionStorage.setItem('access_token', res.access_token);
-      sessionStorage.setItem('rol', JSON.stringify(this.data));
       this.route.navigate(['inicio']);
     }), error => {
       console.log("error", error);

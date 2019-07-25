@@ -26,7 +26,8 @@ export class RegistroObjEspecialComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.token = JSON.parse(sessionStorage.getItem('rol'));
+    this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
+    console.log(this.token);
     let id = 0
     for (let index = 0; index < this.token.realm_access.roles.length; index++) {
       if (this.token.realm_access.roles[index] === 'Entidad1') {
@@ -35,11 +36,11 @@ export class RegistroObjEspecialComponent implements OnInit {
         id = 2
       } else if (this.token.realm_access.roles[index] === 'Entidad3') {
         id = 3
-      } else {
+      } else if (this.token.realm_access.roles.length == index + 1) {
         this.route.navigate(['inicio']);
       }
-    }
 
+    }
     this.services.GetDataModel(id).subscribe(
       response => {
         this.entityModels = response;

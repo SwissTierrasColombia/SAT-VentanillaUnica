@@ -22,44 +22,58 @@ export class RegistroObjEspecialComponent implements OnInit {
   restricciones: RestrictionsObjectEspecial;
   camposFeature: FeaturesObjectEspecial;
   token: TokenJwt;
+  datos: {
+    NombreEntidad: "",
+    Modelo: "",
+    Objetos: [],
+    urlgeo: "",
+    categorias: {
+      categoria: []
+    }
+  }
   constructor(private services: ObjectEspecialRegimeService, private route: Router) {
   }
 
   ngOnInit() {
-    this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
-    console.log(this.token);
-    let id = 0
-    for (let index = 0; index < this.token.realm_access.roles.length; index++) {
-      if (this.token.realm_access.roles[index] === 'Entidad1') {
-        id = 1
-      } else if (this.token.realm_access.roles[index] === 'Entidad2') {
-        id = 2
-      } else if (this.token.realm_access.roles[index] === 'Entidad3') {
-        id = 3
-      } else if (this.token.realm_access.roles.length == index + 1) {
-        this.route.navigate(['inicio']);
+    if (!sessionStorage.getItem('access_token')) {
+      this.route.navigate(['inicio']);
+    } else {
+      this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
+      console.log(this.token);
+      let id = 0
+      for (let index = 0; index < this.token.realm_access.roles.length; index++) {
+        if (this.token.realm_access.roles[index] === 'Entidad1') {
+          id = 1
+        } else if (this.token.realm_access.roles[index] === 'Entidad2') {
+          id = 2
+        } else if (this.token.realm_access.roles[index] === 'Entidad3') {
+          id = 3
+        } else if (this.token.realm_access.roles.length == index + 1) {
+          this.route.navigate(['inicio']);
+        }
+
       }
 
+      this.services.GetDataModel(id).subscribe(
+        response => {
+          this.entityModels = response;
+        },
+        error => {
+          console.log(error);
+
+        }
+      );
+
+      this.services.GetRestrictions().subscribe(
+        response => {
+          this.restricciones = response;
+        },
+        error => {
+          console.error(error);
+
+        }
+      );
     }
-    this.services.GetDataModel(id).subscribe(
-      response => {
-        this.entityModels = response;
-      },
-      error => {
-        console.log(error);
-
-      }
-    );
-    this.services.GetRestrictions().subscribe(
-      response => {
-        this.restricciones = response;
-      },
-      error => {
-        console.error(error);
-
-      }
-    );
-
   }
   createCategory() {
     var node = document.createElement("DIV");

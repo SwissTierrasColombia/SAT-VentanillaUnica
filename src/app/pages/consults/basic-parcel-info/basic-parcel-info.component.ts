@@ -6,7 +6,9 @@ import { QueryService } from 'src/app/services/consult/query.service';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
+import Image from 'ol/layer/Image';
 import XYZ from 'ol/source/XYZ';
+import ImageWMS from 'ol/source/ImageWMS';
 import { Vector as VectorSource } from 'ol/source.js';
 import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -19,6 +21,7 @@ import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
 import * as turf from '@turf/turf';
 import { ActivatedRoute } from '@angular/router';
+
 
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
@@ -34,7 +37,7 @@ declare let qrcode: any;
   styleUrls: ['./basic-parcel-info.component.scss']
 })
 export class BasicParcelInfoComponent implements OnInit {
-  @ViewChild("buscarNumeroPredial") numPredialCheck: ElementRef;
+  @ViewChild('buscarNumeroPredial') numPredialCheck: ElementRef;
   showResult = false;
   inputNupre = '';
   inputFMI = '';
@@ -176,19 +179,33 @@ export class BasicParcelInfoComponent implements OnInit {
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)
     });
-
-    const sterreno = new TileWMS({
-      url: this.urlGeoserver + 'LADM/wms',
-      params: { LAYERS: 'LADM:sat_mapa_base', TILED: true },
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
+    /*
+        const sterreno = new TileWMS({
+          url: this.urlGeoserver + 'LADM/wms',
+          params: { LAYERS: 'LADM:sat_mapa_base' },
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous'
+        });
+    */
+    const sterreno = new Image({
+      source: new ImageWMS({
+        ratio: 1,
+        url: this.urlGeoserver + 'LADM/wms',
+        params: {
+          FORMAT: 'image/png',
+          VERSION: '1.1.1',
+          LAYERS: 'LADM:sat_mapa_base',
+          exceptions: 'application/vnd.ogc.se_inimage',
+        }
+      })
     });
-
+/*
     const terreno = new LayerTile({
       title: 'Terreno',
       source: sterreno,
       opacity: 1
     });
+    */
 
 
     const vl = new VectorLayer({
@@ -232,7 +249,7 @@ export class BasicParcelInfoComponent implements OnInit {
       layers: [
         this.getBaseMap('googleLayerSatellite', 1),
         this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        terreno,
+        sterreno,
         vl
       ],
       view: v

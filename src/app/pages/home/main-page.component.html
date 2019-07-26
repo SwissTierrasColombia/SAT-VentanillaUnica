@@ -40,14 +40,10 @@
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
           <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab=1"
-            aria-controls="home" >
-            <i class="fa fa-archive fa-lg"></i> Qué es Ventanilla unica</a>
+            aria-controls="home">
+            <i class="fa fa-archive fa-lg"></i> Qué es la Ventanilla única</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="tab=2"
-            aria-controls="profile">
-            <i class="fa fa-map-o fa-watch"></i> Que puedes hacer</a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="tab=3"
             aria-controls="messages">
@@ -61,17 +57,19 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel">
-          Es un proyecto estratégico del Gobierno Nacional liderado por la Superintendencia de Notariado y Registro que
-          busca acercar el proceso de registro inmueble a la ciudadanía a partir de la facilitación de las relaciones
-          del
-          ciudadano con las entidades vinculadas, la simplificación de los trámites asociados al proceso y la prestación
-          de un servicio de excelencia. La materialización de este propósito se encuentra en un modelo estándar de
-          servicio que pueden encontrar los ciudadanos en las Notarias.
+          <p>La ventanilla única es un prototipo de punto único de acceso a la información y servicios de Administración
+            de Tierras; pudiendo integrar diferentes actores que intervienen en los servicios que requiere el ciudadano.
+          </p>
+          <p>Su alcance está conceptualizado en cuatro etapas:</p>
+          <ul>
+            <li>Consulta</li>
+
+            <li>Certificación</li>
+            <li>Radicación y seguimiento de trámites</li>
+            <li>Gestión de mutaciones</li>
+          </ul>
         </div>
-        <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
-          Puedes realizar consultas generales de tus predios, junto a la verificación de tramites, tambien se puede
-          imprimir un reporte de como esta su predio actual según IGAC.
-        </div>
+        
         <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel">
           <ul class="list-group text-center">
             <li class="list-group-item">

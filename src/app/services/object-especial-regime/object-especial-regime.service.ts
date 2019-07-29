@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RestrictionsObjectEspecial } from 'src/app/models/restrictions-object-especial';
 import { ModelsEspecialRegime } from 'src/app/models/models-especial-regime.interface';
 import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.
 })
 export class ObjectEspecialRegimeService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private toastr: ToastrService) { }
 
   public GetDataModel(id: Number) {
     return this.httpClient.get<ModelsEspecialRegime>("http://192.168.98.75:9091/ideat/models/" + id);
@@ -21,9 +22,7 @@ export class ObjectEspecialRegimeService {
   public GetFeatures(url: string) {
     return this.httpClient.get<FeaturesObjectEspecial>(url)
   }
-  public PostObjectRegister(name: string, model: string, object: string, wsurl: string, fechaInicio: Date, fechaFin: Date, field: string, value: string, urlMasInfo: string, description: string, restriction: any) {
-    console.log(object);
-
+  public PostObjectRegister(name: string, model: string, object: string, wsurl: string, fechaInicio: Date, fechaFin: Date, categories: any) {
     let data = {
       "objSpecialRegime": {
         "id": 0,
@@ -37,30 +36,17 @@ export class ObjectEspecialRegimeService {
         "createAt": fechaInicio,
         "dueDate": fechaFin
       },
-      "categories": [
-        {
-          "category": {
-            "id": 0,
-            "field": field,
-            "value": value,
-            "urlMasInfo": urlMasInfo,
-            "description": description
-          },
-          "restrictions": restriction
-        }
-      ]
+      "categories": categories
     };
-    console.log("datos que llegan ", JSON.stringify(data));
+    this.httpClient.post("http://192.168.98.75:9091/vu/ore", data)
+      .subscribe(
+        _ => {
+          this.toastr.success("¡Objeto Registrado!")
+        },
+        error => {
+          this.toastr.error("¡Objeto No Registrado!")
 
-    this.httpClient.post("http://192.168.98.75:9091/vu/ore", data).subscribe(
-      Res => {
-        console.log("Todo bien Good", Res);
-
-      },
-      error => {
-        console.log("Que mal xD", error);
-
-      }
-    )
+        }
+      )
   }
 }

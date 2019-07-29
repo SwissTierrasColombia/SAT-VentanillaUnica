@@ -10,7 +10,7 @@
           </div>
           <select class="form-control" id="Topics" name="Topics" [(ngModel)]="TopicSeleccionado"
             *ngFor="let topic of entityModels.topics">
-            <option value="0">Por favor seleccione la temática</option>
+            <!-- <option value="0">Por favor seleccione la temática</option> -->
             <option [ngValue]="topic">{{topic.name}}</option>
           </select>
           <div class="input-group-append">
@@ -25,7 +25,7 @@
           </div>
           <select class="form-control" id="modelo" name="modelo" [(ngModel)]="ModeloSeleccionado"
             *ngFor="let model of TopicSeleccionado.models">
-            <option value="0">Por favor seleccione el modelo</option>
+            <!-- <option value="0">Por favor seleccione el modelo</option> -->
             <option [ngValue]="model">{{model.name}}</option>
           </select>
           <div class="input-group-append">
@@ -67,8 +67,6 @@
                 <span class="input-group-text">Fecha de Inicio</span>
               </div>
               <input class="form-control" id="fechaInicio" type="date" name="fechaInicio" [(ngModel)]="fechaInicio">
-              <div class="input-group-append">
-              </div>
             </div>
           </div>
           <div class="col-6">
@@ -77,8 +75,6 @@
                 <span class="input-group-text">Fecha de Final</span>
               </div>
               <input class="form-control" id="fechaFinal" type="date" name="fechaFinal" [(ngModel)]="fechaFinal">
-              <div class="input-group-append">
-              </div>
             </div>
           </div>
         </div>
@@ -93,33 +89,32 @@
         </div>
       </div>
       <br>
-      <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado">
-        <div id="Nodo">
-          <div id="child">
+
+      <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado" id="Nodo">
+        <div id="child">
+          <div id="child{{count}}">
             <div class="form-group">
-              <div class="input-group-text">Categoria 1</div>
+              <div class="input-group-text">Categoria {{count}}</div>
               <br>
               <div class="input-group" *ngIf="camposFeature">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Campo</span>
                 </div>
-                <select class="form-control" id="campo" name="campo" [(ngModel)]="campo">
-                  <option value="0">Por favor seleccione el campo</option>
-                  <option [ngValue]="item.key" *ngFor="let item of camposFeature.features[0].properties | keyvalue">
+                <select class="form-control" id="campo{{count}}" name="campo{{count}}" [(ngModel)]="campo">
+                  <!-- <option value="0">Por favor seleccione el campo</option> -->
+                  <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" name="item.key"
+                    [ngValue]="item.key">
                     {{item.key}}
                   </option>
                 </select>
-                <div class="input-group-append">
-                </div>
               </div>
               <br>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Valor</span>
                 </div>
-                <input class="form-control" id="valor" type="text" name="valor" [(ngModel)]="valorCampo">
-                <div class="input-group-append">
-                </div>
+                <input class="form-control" id="valor{{count}}" type="text" name="valor{{count}}"
+                  [(ngModel)]="valorCampo">
               </div>
               <br>
 
@@ -127,25 +122,26 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">Url más info</span>
                 </div>
-                <input class="form-control" id="urlInfo" type="text" name="urlInfo" [(ngModel)]="urlInfo">
-                <div class="input-group-append">
-                </div>
+                <input class="form-control" id="urlInfo{{count}}" type="text" name="urlInfo{{count}}"
+                  [(ngModel)]="urlInfo">
               </div>
               <br>
 
               <span class="input-group-text">Descripción</span>
               <div class="">
-                <textarea class="form-control" id="textarea-input" name="textarea-input" rows="2"
-                  placeholder="Contendido de la Descripción..." [(ngModel)]="description"></textarea>
+                <textarea class="form-control" id="textarea-input{{count}}" name="textarea-input{{count}}" rows="2"
+                  placeholder="Contendido de la descripción..." [(ngModel)]="description"></textarea>
               </div>
 
               <br>
               <span class="input-group-text">Restricciones</span>
-              <div class="col-form-label row offset-1">
-                <div class="form-check checkbox col-3" *ngFor="let item of restricciones; let i = index">
-                  <input name="restriccion{{i}}" class="form-check-input" id="check{{i}}" type="checkbox"
-                    [(ngModel)]="restricciones[i].status">
-                  <label class="form-check-label" for="check{{i}}">{{item.name}}</label>
+              <div class="form-group">
+                <div class="col-form-label row offset-1">
+                  <div class="form-check checkbox col-3" *ngFor="let item of restricciones; let i = index">
+                    <input name="restriccion{{count}}{{i}}" class="form-check-input" id="check{{count}}{{i}}"
+                      type="checkbox" [(ngModel)]="restricciones[i].status">
+                    <label class="form-check-label" for="check{{count}}{{i}}">{{item.name}}</label>
+                  </div>
                 </div>
               </div>
             </div>

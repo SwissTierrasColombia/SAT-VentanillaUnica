@@ -140,6 +140,11 @@ export class RegistroObjEspecialComponent implements OnInit {
       }
     }
     delete this.ObjetoSeleccionado[0].name
+    this.campo = []
+    this.valorCampo = []
+    this.urlInfo = []
+    this.description = []
+    delete this.ObjetoSeleccionado
     this.count = 0;
   }
 }

@@ -84,7 +84,7 @@
         <div class="col-11">
           <div class="input-group-text">Categoria</div>
         </div>
-        <div class="col-1">
+        <div class="col-1" id="fixedbutton">
           <button class="btn btn-primary" type="submit" (click)="createCategory()">+</button>
         </div>
       </div>
@@ -95,51 +95,61 @@
       <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado" id="Nodo">
         <div id="child" *ngFor="let cat of formcategories; let count = index">
           <div id="child{{count}}">
-            <div class="form-group">
-              <div class="input-group-text">Categoria {{count+1}}</div>
-              <br>
-              <div class="input-group" *ngIf="camposFeature">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Campo</span>
-                </div>
-                <select class="form-control" id="campo{{count}}" name="campo{{count}}" [(ngModel)]="cat.category.campo">
-                  <!-- <option value="0">Por favor seleccione el campo</option> -->
-                  <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" name="item.key"
-                    [ngValue]="item.key">
-                    {{item.key}}
-                  </option>
-                </select>
-              </div>
-              <br>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Valor</span>
-                </div>
-                <input class="form-control" id="valor{{count}}" type="text" name="valor{{count}}"
-                  [(ngModel)]="cat.category.valorCampo">
-              </div>
-              <br>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Url más info</span>
-                </div>
-                <input class="form-control" id="urlInfo{{count}}" type="url" name="urlInfo{{count}}"
-                  [(ngModel)]="cat.category.urlInfo">
-              </div>
-              <br>
-              <span class="input-group-text">Descripción</span>
-              <div class="">
-                <textarea class="form-control" id="textarea-input{{count}}" name="textarea-input{{count}}" rows="2"
-                  placeholder="Contendido de la descripción..." [(ngModel)]="cat.category.description"></textarea>
-              </div>
-              <br>
-              <span class="input-group-text">Restricciones</span>
+            <div class="card p-3">
               <div class="form-group">
-                <div class="col-form-label row offset-1">
-                  <div class="form-check checkbox col-3" *ngFor="let item of cat.restrictions; let i = index">
-                    <input name="restriccion{{count}}{{i}}" class="form-check-input" id="check{{count}}{{i}}"
-                      type="checkbox" [(ngModel)]="item.status">
-                    <label class="form-check-label" for="check{{count}}{{i}}">{{item.restriction.name}}</label>
+                <div class="row">
+                  <div class="col-11">
+                    <div class="input-group-text">Categoria {{count+1}}</div>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-danger" type="submit" (click)="deleteCategory(count)">-</button>
+                  </div>
+                </div>
+                <br>
+                <div class="input-group" *ngIf="camposFeature">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Campo</span>
+                  </div>
+                  <select class="form-control" id="campo{{count}}" name="campo{{count}}"
+                    [(ngModel)]="cat.category.campo">
+                    <!-- <option value="0">Por favor seleccione el campo</option> -->
+                    <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" name="item.key"
+                      [ngValue]="item.key">
+                      {{item.key}}
+                    </option>
+                  </select>
+                </div>
+                <br>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Valor</span>
+                  </div>
+                  <input class="form-control" id="valor{{count}}" type="text" name="valor{{count}}"
+                    [(ngModel)]="cat.category.valorCampo">
+                </div>
+                <br>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Url más info</span>
+                  </div>
+                  <input class="form-control" id="urlInfo{{count}}" type="url" name="urlInfo{{count}}"
+                    [(ngModel)]="cat.category.urlInfo">
+                </div>
+                <br>
+                <span class="input-group-text">Descripción</span>
+                <div class="">
+                  <textarea class="form-control" id="textarea-input{{count}}" name="textarea-input{{count}}" rows="2"
+                    placeholder="Contendido de la descripción..." [(ngModel)]="cat.category.description"></textarea>
+                </div>
+                <br>
+                <span class="input-group-text">Restricciones</span>
+                <div class="form-group">
+                  <div class="col-form-label row offset-1">
+                    <div class="form-check checkbox col-3" *ngFor="let item of cat.restrictions; let i = index">
+                      <input name="restriccion{{count}}{{i}}" class="form-check-input" id="check{{count}}{{i}}"
+                        type="checkbox" [(ngModel)]="item.status">
+                      <label class="form-check-label" for="check{{count}}{{i}}">{{item.restriction.name}}</label>
+                    </div>
                   </div>
                 </div>
               </div>

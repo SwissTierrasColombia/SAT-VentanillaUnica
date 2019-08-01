@@ -69,6 +69,9 @@ export class RegistroObjEspecialComponent implements OnInit {
       restrictions: JSON.parse(JSON.stringify(this.restricciones))
     })
   }
+  deleteCategory(id: number) {
+    this.formcategories.splice(id, 1)
+  }
   CreateCampos() {
     this.services.GetRestrictions().subscribe(
       response => {

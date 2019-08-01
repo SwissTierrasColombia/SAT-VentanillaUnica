@@ -23,13 +23,9 @@ export class RegistroObjEspecialComponent implements OnInit {
   token: TokenJwt;
   fechaInicio: Date;
   fechaFinal: Date;
-  categories = []
-  campo: [];
-  valorCampo: [];
-  urlInfo: [];
-  description: [];
-  restricciones: RestrictionsObjectEspecial;
-  count = 0;
+  formcategories = []
+  categorias: any
+  restricciones = [];
   constructor(private services: ObjectEspecialRegimeService, private route: Router) {
   }
 
@@ -65,48 +61,23 @@ export class RegistroObjEspecialComponent implements OnInit {
 
     }
   }
-  createObjectCategory(id: number) {
-    //Categorias
-    let field = this.campo;
-    let value = this.valorCampo
-    let urlMasInfo = this.urlInfo
-    let description = this.description
-    let restriction = [
-    ]
-    for (let i in this.restricciones) {
-      if (this.restricciones[i].status == true) {
-        delete this.restricciones[i].status;
-        restriction.push({
-          id: id,
-          "restriction": this.restricciones[i]
-        });
-      }
-    }
-
-    this.categories[id] = ({
-      "category": {
-        "id": id,
-        "field": field,
-        "value": value,
-        "urlMasInfo": urlMasInfo,
-        "description": description
-      },
-      restriction
-    })
-  }
   createCategory() {
-    var node = document.createElement("DIV");
-    var itm = document.getElementById("child").lastChild;
-    var cln = itm.cloneNode(true);
-    node.appendChild(cln);
-    document.getElementById("Nodo").appendChild(node);
-    this.createObjectCategory(this.count)
-    this.count += 1;
+    this.formcategories.push({
+      "category": {
+        "id": 0,
+      },
+      restrictions: JSON.parse(JSON.stringify(this.restricciones))
+    })
   }
   CreateCampos() {
     this.services.GetRestrictions().subscribe(
       response => {
-        this.restricciones = response;
+        for (let i in response) {
+          this.restricciones.push({
+            "id": 0,
+            "restriction": response[i]
+          })
+        }
       },
       error => {
         console.error(error);
@@ -124,27 +95,28 @@ export class RegistroObjEspecialComponent implements OnInit {
       }
     );
   }
+
   RegistrarObjeto() {
     let name = this.TopicSeleccionado.name;
     let model = this.ModeloSeleccionado.name;
     let object = this.ObjetoSeleccionado[0].name;
-    let wsurl = this.ObjetoSeleccionado[0].url
+    let wsurl = this.ObjetoSeleccionado[0].url;
     let fechaInicio = this.fechaInicio;
     let fechaFin = this.fechaFinal;
-    this.createObjectCategory(this.count)
-    this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, this.createObjectCategory(this.count));
-    for (let index = 1; index < this.count + 1; index++) {
-      var myNode = document.getElementById("child" + index);
-      while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
+    let dataCategorias = JSON.parse(JSON.stringify(this.formcategories))
+    for (let i in dataCategorias) {
+      for (let j in dataCategorias[i].restrictions) {
+        if (dataCategorias[i].restrictions[j].status == null || dataCategorias[i].restrictions[j].status == false) {
+          dataCategorias[i].restrictions.splice(j, 1);
+        } else if (dataCategorias[i].restrictions[j].status == true) {
+          delete dataCategorias[i].restrictions[j].status;
+        }
       }
     }
-    delete this.ObjetoSeleccionado[0].name
-    this.campo = []
-    this.valorCampo = []
-    this.urlInfo = []
-    this.description = []
-    delete this.ObjetoSeleccionado
-    this.count = 0;
+    this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
+    delete this.ObjetoSeleccionado[0].name;
+    this.formcategories = [];
+    this.restricciones = [];
   }
+
 }

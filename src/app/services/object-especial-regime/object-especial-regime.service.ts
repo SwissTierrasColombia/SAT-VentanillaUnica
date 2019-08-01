@@ -38,6 +38,8 @@ export class ObjectEspecialRegimeService {
       },
       "categories": categories
     };
+    //console.log("Datos que llegán: ", JSON.stringify(data));
+
     this.httpClient.post("http://192.168.98.75:9091/vu/ore", data)
       .subscribe(
         _ => {

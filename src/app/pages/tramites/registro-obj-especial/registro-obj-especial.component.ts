@@ -6,6 +6,7 @@ import { ModelsEspecialRegime } from 'src/app/models/models-especial-regime.inte
 import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
 import { TokenJwt } from 'src/app/models/token-jwt.interface';
 import { Router } from '@angular/router';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 })
 
 export class RegistroObjEspecialComponent implements OnInit {
-
+  objetosRegistrados: any;
   entityModels: ModelsEspecialRegime;
   TopicSeleccionado: any;
   ModeloSeleccionado: any;
@@ -26,40 +27,50 @@ export class RegistroObjEspecialComponent implements OnInit {
   formcategories = []
   categorias: any
   restricciones = [];
-  constructor(private services: ObjectEspecialRegimeService, private route: Router) {
-  }
+  agregar = false;
+  id = 0
+  constructor(private services: ObjectEspecialRegimeService, private route: Router) { }
 
   ngOnInit() {
     if (!sessionStorage.getItem('access_token')) {
       this.route.navigate(['inicio']);
     } else {
       this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
-      let id = 0
       for (let index = 0; index < this.token.realm_access.roles.length; index++) {
         if (this.token.realm_access.roles[index] === 'Entidad1') {
-          id = 1
+          this.id = 1
         } else if (this.token.realm_access.roles[index] === 'Entidad2') {
-          id = 2
+          this.id = 2
         } else if (this.token.realm_access.roles[index] === 'Entidad3') {
-          id = 3
+          this.id = 3
         } else if (this.token.realm_access.roles.length == index + 1) {
           this.route.navigate(['inicio']);
         }
 
       }
-
-      this.services.GetDataModel(id).subscribe(
+      this.services.getObjetoRegister(this.id).subscribe(
         response => {
-          this.entityModels = response;
+          this.objetosRegistrados = response;
+          //console.log("this.objetosRegistrados", this.objetosRegistrados, " this.id: ", this.id);
         },
         error => {
           console.log(error);
 
         }
-      );
-
-
+      )
     }
+  }
+  registrarobj() {
+    this.agregar = true;
+    this.services.GetDataModel(this.id).subscribe(
+      response => {
+        this.entityModels = response;
+      },
+      error => {
+        console.log(error);
+
+      }
+    );
   }
   createCategory() {
     this.formcategories.push({
@@ -73,24 +84,25 @@ export class RegistroObjEspecialComponent implements OnInit {
     this.formcategories.splice(id, 1)
   }
   CreateCampos() {
-    this.services.GetRestrictions().subscribe(
+    // Get the size of an object
+    this.services.GetFeatures(this.ObjetoSeleccionado[0].url).subscribe(
       response => {
-        for (let i in response) {
-          this.restricciones.push({
-            "id": 0,
-            "restriction": response[i]
-          })
-        }
+        this.camposFeature = response
       },
       error => {
         console.error(error);
 
       }
     );
-    // Get the size of an object
-    this.services.GetFeatures(this.ObjetoSeleccionado[0].url).subscribe(
+    this.services.GetRestrictions().subscribe(
       response => {
-        this.camposFeature = response
+        for (let i in response) {
+          this.restricciones.push({
+            "id": 0,
+            "restriction": response[i],
+            "status": false
+          })
+        }
       },
       error => {
         console.error(error);
@@ -109,17 +121,26 @@ export class RegistroObjEspecialComponent implements OnInit {
     let dataCategorias = JSON.parse(JSON.stringify(this.formcategories))
     for (let i in dataCategorias) {
       for (let j in dataCategorias[i].restrictions) {
-        if (dataCategorias[i].restrictions[j].status == null || dataCategorias[i].restrictions[j].status == false) {
-          dataCategorias[i].restrictions.splice(j, 1);
+        if (dataCategorias[i].restrictions[j].status == false) {
+          delete dataCategorias[i].restrictions[j];
+          //dataCategorias[i].restrictions.splice(j, 1)
         } else if (dataCategorias[i].restrictions[j].status == true) {
           delete dataCategorias[i].restrictions[j].status;
         }
       }
     }
+    //dataCategorias[i].restrictions.splice(j, 1);
     this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
-    delete this.ObjetoSeleccionado[0].name;
-    this.formcategories = [];
     this.restricciones = [];
+    this.services.getObjetoRegister(this.id).subscribe(
+      response => {
+        this.objetosRegistrados = response;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+    this.agregar = false
   }
 
 }

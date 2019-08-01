@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class LoginService {
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
   });
-  constructor(private httpClient: HttpClient, private route: Router) {
+  constructor(private httpClient: HttpClient, private route: Router, private toastr: ToastrService) {
 
   }
   login(username: string, password: string) {
@@ -30,6 +31,7 @@ export class LoginService {
       sessionStorage.setItem('access_token', res.access_token);
       this.route.navigate(['inicio']);
     }), error => {
+      this.toastr.error("Nombre de usuario o contraseña, incorrectos")
       console.log("error", error);
     })
   }

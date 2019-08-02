@@ -15,10 +15,10 @@ export class ObjectEspecialRegimeService {
   constructor(private httpClient: HttpClient, private toastr: ToastrService) { }
 
   public GetDataModel(id: Number) {
-    return this.httpClient.get<ModelsEspecialRegime>("http://192.168.98.75:9091/ideat/models/" + id);
+    return this.httpClient.get<ModelsEspecialRegime>("http://localhost:9091/ideat/models/" + id);
   }
   public GetRestrictions() {
-    return this.httpClient.get<RestrictionsObjectEspecial>("http://192.168.98.75:9091/vu/ore/restrictions");
+    return this.httpClient.get<RestrictionsObjectEspecial>("http://localhost:9091/vu/ore/restrictions");
   }
   public GetFeatures(url: string) {
     return this.httpClient.get<FeaturesObjectEspecial>(url)
@@ -41,7 +41,7 @@ export class ObjectEspecialRegimeService {
     };
     console.log("Datos que llegán: ", JSON.stringify(data));
 
-    this.httpClient.post("http://192.168.98.75:9091/vu/ore", data)
+    this.httpClient.post("http://localhost:9091/vu/ore", data)
       .subscribe(
         _ => {
           this.toastr.success("¡Objeto Registrado!")
@@ -53,6 +53,6 @@ export class ObjectEspecialRegimeService {
       )
   }
   public getObjetoRegister(id: number) {
-    return this.httpClient.get<ObjectEspecialRegime>("http://192.168.98.75:9091/vu/ore/" + id);
+    return this.httpClient.get<ObjectEspecialRegime>("http://localhost:9091/vu/ore/" + id);
   }
 }

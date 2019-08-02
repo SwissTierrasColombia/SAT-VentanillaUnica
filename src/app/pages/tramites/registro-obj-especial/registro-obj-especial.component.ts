@@ -123,14 +123,18 @@ export class RegistroObjEspecialComponent implements OnInit {
       for (let j in dataCategorias[i].restrictions) {
         if (dataCategorias[i].restrictions[j].status == false) {
           delete dataCategorias[i].restrictions[j];
-          //dataCategorias[i].restrictions.splice(j, 1)
         } else if (dataCategorias[i].restrictions[j].status == true) {
           delete dataCategorias[i].restrictions[j].status;
         }
+        const result = dataCategorias[i].restrictions.filter(word => word != null);
+        console.log("result: ", j, " : ", result);
+        if (j == '3') {
+          dataCategorias[i].restrictions = result
+        }
       }
     }
-    //dataCategorias[i].restrictions.splice(j, 1);
     this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
+    delete this.ObjetoSeleccionado[0].name;
     this.restricciones = [];
     this.services.getObjetoRegister(this.id).subscribe(
       response => {

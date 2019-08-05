@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { QueryService } from 'src/app/services/consult/query.service';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
@@ -6,7 +6,9 @@ import { QueryService } from 'src/app/services/consult/query.service';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
+import Image from 'ol/layer/Image';
 import XYZ from 'ol/source/XYZ';
+import ImageWMS from 'ol/source/ImageWMS';
 import { Vector as VectorSource } from 'ol/source.js';
 import { Vector as VectorLayer } from 'ol/layer.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -17,6 +19,9 @@ import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
+import * as turf from '@turf/turf';
+import { ActivatedRoute } from '@angular/router';
+
 
 // import { Map, TileLayer, CRS, geoJSON } from 'leaflet/dist/leaflet-src.esm.js';
 
@@ -32,21 +37,43 @@ declare let qrcode: any;
   styleUrls: ['./basic-parcel-info.component.scss']
 })
 export class BasicParcelInfoComponent implements OnInit {
+  @ViewChild('buscarNumeroPredial') numPredialCheck: ElementRef;
   showResult = false;
-  inputNupre: string = '';
+  inputNupre = '';
   inputFMI = '';
-  inputCadastralCode: string = '';
+  inputCadastralCode = '';
   basicConsult: any;
   image: any;
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
   tipoBusqueda = 1;
+  centroid = {
+    geometry: { coordinates: [0, 0] }
+  };
 
-  constructor(private service: QueryService, private toastr: ToastrService) { }
+  constructor(private service: QueryService, private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.route.queryParamMap.subscribe(
+      params => {
+        if (params.has("t_id")) {
+          //arams.get('tid')
+          console.log("llegue: ", params.get('t_id'));
+          this.service.getCadastralCode(Number(params.get('t_id'))).subscribe((result: any) => {
+            console.log(result);
+            if (result) {
+              this.selectTypeSearch(2);
+              this.inputCadastralCode = result.numero_predial;
+              this.search();
+              this.numPredialCheck.nativeElement.checked = true;
+            } else {
+              this.toastr.error('No se encontraron registros.');
+            }
+          });
+        }
+      }
+    )
   }
   selectTypeSearch(id) {
     this.inputCadastralCode = '';
@@ -55,6 +82,7 @@ export class BasicParcelInfoComponent implements OnInit {
     this.tipoBusqueda = id;
   }
   search() {
+    // tslint:disable-next-line:triple-equals
     if (this.inputNupre != '' || this.inputCadastralCode != '' || this.inputFMI != '') {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
@@ -71,10 +99,12 @@ export class BasicParcelInfoComponent implements OnInit {
       .subscribe(
         data => {
 
+          // tslint:disable-next-line:no-string-literal
           if (data['error']) {
+            // tslint:disable-next-line:no-string-literal
             console.log(data['error']);
             this.showResult = false;
-            this.toastr.error("No se encontraron registros.");
+            this.toastr.error('No se encontraron registros.');
           } else {
             this.basicConsult = [data[0]];
             this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
@@ -86,6 +116,7 @@ export class BasicParcelInfoComponent implements OnInit {
         error => {
           console.log(error);
           this.showResult = false;
+          this.toastr.error('No se encontraron registros.');
         }
       );
   }
@@ -143,22 +174,38 @@ export class BasicParcelInfoComponent implements OnInit {
 
     */
 
+    this.centroid = turf.centroid(geom);
+
     const vs = new VectorSource({
       features: (new GeoJSON()).readFeatures(geom)
     });
-
-    const sterreno = new TileWMS({
-      url: this.urlGeoserver + 'LADM/wms',
-      params: { LAYERS: 'LADM:sat_mapa_base', TILED: true },
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
+    /*
+        const sterreno = new TileWMS({
+          url: this.urlGeoserver + 'LADM/wms',
+          params: { LAYERS: 'LADM:sat_mapa_base' },
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous'
+        });
+    */
+    const sterreno = new Image({
+      source: new ImageWMS({
+        ratio: 1,
+        url: this.urlGeoserver + 'LADM/wms',
+        params: {
+          FORMAT: 'image/png',
+          VERSION: '1.1.1',
+          LAYERS: 'LADM:sat_mapa_base',
+          exceptions: 'application/vnd.ogc.se_inimage',
+        }
+      })
     });
-
+/*
     const terreno = new LayerTile({
       title: 'Terreno',
       source: sterreno,
       opacity: 1
     });
+    */
 
 
     const vl = new VectorLayer({
@@ -187,7 +234,7 @@ export class BasicParcelInfoComponent implements OnInit {
     const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
     v.fit(polygon, { size: [500, 500] });
-    let m = new Map({
+    const m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
         dragAndDrop: true,
@@ -202,7 +249,7 @@ export class BasicParcelInfoComponent implements OnInit {
       layers: [
         this.getBaseMap('googleLayerSatellite', 1),
         this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        terreno,
+        sterreno,
         vl
       ],
       view: v
@@ -216,59 +263,63 @@ export class BasicParcelInfoComponent implements OnInit {
   }
   public captureScreen() {
     // Few necessary setting options 216 x 279 tamaño carta
-    let doc = new jspdf('portrait', 'px', 'a4');
-    let newImg = new Image();
+    const doc = new jspdf('portrait', 'px', 'a4');
+    const newImg = new Image();
+    // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
-      let tipo = '';
-      let nombre = '';
-      let departamento = '';
-      let Municipio = '';
-      let Zona = '';
-      let NUPRE = '';
-      let FMI = '';
-      let Npredial = '';
-      let NpredialAnterior = '';
-      let terreno = '';
-      let País = '';
-      let Departamento = '';
-      let Ciudad = '';
-      let Código_postal = '';
-      let Apartado_correo = '';
-      let Nombre_calle = '';
+      let tipo = '--';
+      let nombre = '--';
+      let departamento = '--';
+      let Municipio = '--';
+      let Zona = '--';
+      let NUPRE = '--';
+      let FMI = '--';
+      let Npredial = '--';
+      let NpredialAnterior = '--';
+      let terreno = '--';
+      let País = '--';
+      let Departamento = '--';
+      let Ciudad = '--';
+      let codigoPostal = '--';
+      // tslint:disable-next-line:variable-name
+      let Apartado_correo = '--';
+      // tslint:disable-next-line:variable-name
+      let Nombre_calle = '--';
       this.basicConsult.forEach(element => {
-        //Terreno
-        terreno = element.attributes['Área de terreno [m2]'];
-        element.attributes.predio.forEach(element => {
-          //Predio
-          tipo = element.attributes["Tipo"];
-          nombre = element.attributes["Nombre"];
-          departamento = element.attributes["Departamento"];
-          Municipio = element.attributes["Municipio"];
-          Zona = element.attributes["Zona"];
-          NUPRE = element.attributes["NUPRE"];
-          FMI = element.attributes["FMI"];
-          Npredial = element.attributes["Número predial"];
-          NpredialAnterior = element.attributes["Número predial anterior"];
+        // Terreno
+        terreno = element.attributes['Área de terreno [m2]'] ? element.attributes['Área de terreno [m2]'] : '--';
+        element.attributes.predio.forEach((e: any) => {
+          // Predio
+          tipo = e.attributes.Tipo ? e.attributes.Tipo : '--';
+          nombre = e.attributes.Nombre ? e.attributes.Nombre : '--';
+          departamento = e.attributes.Departamento ? e.attributes.Departamento : '--';
+          Municipio = e.attributes.Municipio ? e.attributes.Municipio : '--';
+          Zona = e.attributes.Zona ? e.attributes.Zona : '--';
+          NUPRE = e.attributes.NUPRE ? e.attributes.NUPRE : '--';
+          FMI = e.attributes.FMI ? e.attributes.FMI : '--';
+          Npredial = e.attributes['Número predial'] ? e.attributes['Número predial'] : '--';
+          NpredialAnterior = e.attributes['Número predial anterior'] ? e.attributes['Número predial anterior'] : '--';
         });
-        element.attributes.extdireccion.forEach(element => {
-          //Direcciones
-          País = element.attributes["País"];
-          Departamento = element.attributes["Departamento"];
-          Ciudad = element.attributes["Ciudad"];
-          Código_postal = element.attributes["Código postal"];
-          Apartado_correo = element.attributes["Apartado correo"];
-          Nombre_calle = element.attributes["Nombre calle"];
+        element.attributes.extdireccion.forEach(e => {
+          // Direcciones
+          // tslint:disable-next-line:no-string-literal
+          País = e.attributes['País'] ? e.attributes['País'] : '--';
+          Departamento = e.attributes.Departamento ? e.attributes.Departamento : '--';
+          Ciudad = e.attributes.Ciudad ? e.attributes.Ciudad : '--';
+          codigoPostal = e.attributes['Código postal'] ? e.attributes['Código postal'] : '--';
+          Apartado_correo = e.attributes['Apartado correo'] ? e.attributes['Apartado correo'] : '--';
+          Nombre_calle = e.attributes['Nombre calle'] ? e.attributes['Nombre calle'] : '--';
         });
-      })
+      });
       const typeNumber = 4;
       const errorCorrectionLevel = 'L';
       const qr = qrcode(typeNumber, errorCorrectionLevel);
       qr.addData('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI);
       qr.make();
-      let text = "SAT Consulta Basica"
-      let Imageqr = qr.createDataURL();
-      var imagenlogo = new Image();
-      imagenlogo.src = "assets/img/brand/logo.png";
+      const text = 'SAT Consulta Basica';
+      const Imageqr = qr.createDataURL();
+      const imagenlogo = new Image();
+      imagenlogo.src = 'assets/img/brand/logo.png';
       // horizontal line margen
       doc.setLineWidth(1);
       doc.line(10, 10, 426.46, 10);
@@ -283,17 +334,17 @@ export class BasicParcelInfoComponent implements OnInit {
       // horizontal margen titulo
       doc.line(10, 85, 426.46, 85);
       // image LOGO SAT
-      doc.addImage(imagenlogo, 25, 25, 100, 40);
+      doc.addImage(imagenlogo, 25, 25, 100, 52);
       // titulo pdf
       doc.text(text, this.xOffset(text) + 10, 50);
       // imagen QR
       doc.addImage(Imageqr, 340, 25);
-      //MAPA
-      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text), 103, 300, 200);
+      // MAPA
+      doc.addImage(newImg, 'PNG', this.xOffset(newImg) - this.xOffset(text) + 50, 103, 200, 200);
       // horizantal mapa
       doc.line(10, 320, 426.46, 320);
-      //Generacion de las tablas
-      doc.text("Predio", 20, 335);
+      // Generacion de las tablas
+      doc.text('Predio', 20, 335);
       doc.autoTable({
         margin: 20,
         startY: 340,
@@ -304,7 +355,7 @@ export class BasicParcelInfoComponent implements OnInit {
           [tipo, nombre, departamento, Municipio, Zona, NUPRE, FMI, Npredial, NpredialAnterior]
         ]
       });
-      doc.text("Terreno", 20, 400);
+      doc.text('Terreno', 20, 400);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
@@ -314,24 +365,25 @@ export class BasicParcelInfoComponent implements OnInit {
           [terreno]
         ]
       });
-      doc.text("Direcciones", 20, 450);
+      doc.text('Direcciones', 20, 450);
       doc.autoTable({
         margin: 20,
         tableWidth: 396.46,
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         head: [['País', 'Departamento', 'Ciudad', 'Código postal', 'Apartado correo', 'Nombre calle']],
         body: [
-          [País, Departamento, Ciudad, Código_postal, Apartado_correo, Nombre_calle]
+          [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
       doc.setFontSize(9);
+      doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
     newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
   }
   public onKey(event: any) {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       this.search();
     }
   }

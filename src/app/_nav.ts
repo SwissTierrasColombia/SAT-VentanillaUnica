@@ -65,6 +65,11 @@ export const navItems: NavData[] = [
     name: 'Gestión de Trámites',
     url: '/procedures/procedure-management',
     icon: 'icon-control-play'
+  },
+  {
+    name: 'Registro de Objeto de Régimen Especial',
+    url: '/procedures/registro',
+    icon: 'icon-list'
   }
 
 ];

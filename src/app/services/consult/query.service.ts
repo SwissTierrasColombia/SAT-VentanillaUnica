@@ -20,12 +20,13 @@ export class QueryService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.token
+        Authorization: 'Bearer ' + this.token
       })
     };
   }
 
   public getBasicConsult(fmi: string, cadastralCode: string, nupre: string) {
+    // tslint:disable-next-line:max-line-length
     return this.httpClient.get<BasicParcelInfo>(`${this.apiURL}/public/parcel?fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`, this.httpOptions);
   }
 
@@ -55,8 +56,16 @@ export class QueryService {
     const params = `fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`;
     return this.httpClient.get<PhysicalParcelInfo>(`${this.apiURL}/private/parcel/physical?${params}`, this.httpOptions);
   }
+
   public getInteresadosQuery(tipo: string, idTipo: string) {
-    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/party?${tipo}=${idTipo}`, this.httpOptions);;
+    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/party?${tipo}=${idTipo}`, this.httpOptions);
+  }
+
+  public getAdministrativeQuery(tid: number) {
+    return this.httpClient.get<any>(`${this.apiURL}/private/parcel/affectations?id=${tid}`, this.httpOptions);
+  }
+  public getCadastralCode(tid: number) {
+    return this.httpClient.get<any>(`${this.apiURL}/public/parcel/cadastralcode?id=${tid}`, this.httpOptions);
   }
 
 }

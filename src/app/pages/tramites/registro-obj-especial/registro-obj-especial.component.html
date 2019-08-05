@@ -1,0 +1,235 @@
+<div class="card" *ngIf="agregar">
+  <div class="card-header">Registro de Objeto de Régimen Especial</div>
+  <div class="card-body" *ngIf="entityModels">
+    <form action="" method="post">
+      <!-- Topics -->
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Temática: {{entityModels.name}}</span>
+          </div>
+          <select class="form-control" id="Topics" name="Topics" [(ngModel)]="TopicSeleccionado"
+            *ngFor="let topic of entityModels.topics">
+            <!-- <option value="0">Por favor seleccione la temática</option> -->
+            <option [ngValue]="topic">{{topic.name}}</option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <!-- Models -->
+      <div class="form-group" *ngIf="TopicSeleccionado">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Modelo: {{TopicSeleccionado.name}}</span>
+          </div>
+          <select class="form-control" id="modelo" name="modelo" [(ngModel)]="ModeloSeleccionado"
+            *ngFor="let model of TopicSeleccionado.models">
+            <!-- <option value="0">Por favor seleccione el modelo</option> -->
+            <option [ngValue]="model">{{model.name}}</option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="ModeloSeleccionado">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Objetos</span>
+          </div>
+          <select class="form-control" id="objetos" name="objetos" size="5" multiple=""
+            [(ngModel)]="ObjetoSeleccionado">
+            <option (click)="CreateCampos()" *ngFor="let obj of ModeloSeleccionado.objects; let i = index"
+              [ngValue]="obj">{{obj.name}}
+            </option>
+          </select>
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="ObjetoSeleccionado">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">url</span>
+          </div>
+          <input class="form-control" id="url" type="text" name="url" disabled="disabled"
+            [value]="ObjetoSeleccionado[0].url">
+          <div class="input-group-append">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="ObjetoSeleccionado">
+        <div class="row">
+          <div class="col-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Fecha de Inicio</span>
+              </div>
+              <input class="form-control" id="fechaInicio" type="date" name="fechaInicio" [(ngModel)]="fechaInicio">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Fecha de Final</span>
+              </div>
+              <input class="form-control" id="fechaFinal" type="date" name="fechaFinal" [(ngModel)]="fechaFinal">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- {{formcategories | json}} -->
+      <div *ngIf="ObjetoSeleccionado">
+        <div class="row">
+          <div class="col-11">
+            <div class="input-group-text">Categoria</div>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-primary fixed_button" type="submit" (click)="createCategory()">+</button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado" id="Nodo">
+        <div id="child" *ngFor="let cat of formcategories; let count = index">
+          <div id="child{{count}}">
+            <div class="card p-3">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-11">
+                    <div class="input-group-text">Categoria {{count+1}}</div>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-danger" type="submit" (click)="deleteCategory(count)">-</button>
+                  </div>
+                </div>
+                <br>
+                <div class="input-group" *ngIf="camposFeature">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Campo</span>
+                  </div>
+                  <select class="form-control" id="campo{{count}}" name="campo{{count}}"
+                    [(ngModel)]="cat.category.field">
+                    <!-- <option value="0">Por favor seleccione el campo</option> -->
+                    <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" name="item.key"
+                      [ngValue]="item.key">
+                      {{item.key}}
+                    </option>
+                  </select>
+                </div>
+                <br>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Valor</span>
+                  </div>
+                  <input class="form-control" id="valor{{count}}" type="text" name="valor{{count}}"
+                    [(ngModel)]="cat.category.value">
+                </div>
+                <br>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Url más info</span>
+                  </div>
+                  <input class="form-control" id="urlInfo{{count}}" type="url" name="urlInfo{{count}}"
+                    [(ngModel)]="cat.category.urlMasInfo">
+                </div>
+                <br>
+                <span class="input-group-text">Descripción</span>
+                <div class="">
+                  <textarea class="form-control" id="textarea-input{{count}}" name="textarea-input{{count}}" rows="2"
+                    placeholder="Contendido de la descripción..." [(ngModel)]="cat.category.description"></textarea>
+                </div>
+                <br>
+                <span class="input-group-text">Restricciones</span>
+                <div class="form-group">
+                  <div class="col-form-label row offset-1">
+                    <div class="form-check checkbox col-3" *ngFor="let item of cat.restrictions; let i = index">
+                      <input name="restriccion{{count}}{{i}}" class="form-check-input" id="check{{count}}{{i}}"
+                        type="checkbox" [(ngModel)]="item.status">
+                      <label class="form-check-label" for="check{{count}}{{i}}">{{item.restriction.name}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="form-group form-actions">
+        <div class="text-center col-12">
+          <button class="btn btn-primary" type="submit" (click)="RegistrarObjeto()">Registrar Objeto</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Información de objetos especiales -->
+<div *ngIf="objetosRegistrados && agregar == false">
+  <div class="row" *ngFor="let item of objetosRegistrados">
+    <div class="col-6">
+      <div class="card" style="height: 90%">
+        <div class="card-header">
+          <h4 class="text-center">Objeto de regimen especial</h4>
+        </div>
+        <div class="card-body">
+
+          <table class="table" style="width: 100%">
+            <thead>
+              <tr>
+                <th scope="col">Organización</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">objecto</th>
+                <th scope="col">Fecha inicial <br>Fecha final</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ item.objSpecialRegime.organization.name }}</td>
+                <td>{{ item.objSpecialRegime.model }}</td>
+                <td>{{ item.objSpecialRegime.object }}</td>
+                <td>{{ item.objSpecialRegime.createAt }} <br> {{ item.objSpecialRegime.dueDate }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card" style="height: 90%">
+        <div class="card-header">
+          <h4 class="text-center">Categoria Objeto de regimen especial</h4>
+        </div>
+        <div class="card-body">
+          <table class="table" style="width: 100%">
+            <thead>
+              <tr>
+                <th scope="col">Campo</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Más información</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Tipos de restricciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cat of item.categories">
+                <td>{{ cat.category.field }}</td>
+                <td>{{ cat.category.value }}</td>
+                <td>{{ cat.category.urlMasInfo }}</td>
+                <td>{{ cat.category.description }}</td>
+                <td>
+                  <div *ngFor="let res of cat.restrictions">
+                    {{ res.restriction.name }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button *ngIf="agregar == false" class="btn btn-secondary btn-lg btn-block" (click)="registrarobj()">Registrar
+  Objeto</button>

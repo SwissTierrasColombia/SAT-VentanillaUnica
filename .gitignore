@@ -45,5 +45,3 @@ Thumbs.db
 package-lock.json
 dist.tar.gz
 
-environment.prod.ts
-environment.ts

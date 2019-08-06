@@ -7,6 +7,7 @@ import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.
 import { TokenJwt } from 'src/app/models/token-jwt.interface';
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs/operators';
+import { ObjSpecialRegime } from '../../../models/object-especial-regime.interface';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -29,6 +30,8 @@ export class RegistroObjEspecialComponent implements OnInit {
   restricciones = [];
   agregar = false;
   id = 0
+  updateObject: any;
+  actualizar = false;
   constructor(private services: ObjectEspecialRegimeService, private route: Router) { }
 
   ngOnInit() {
@@ -139,12 +142,22 @@ export class RegistroObjEspecialComponent implements OnInit {
     this.services.getObjetoRegister(this.id).subscribe(
       response => {
         this.objetosRegistrados = response;
+        window.location.reload()
       },
       error => {
         console.log(error);
       }
     )
     this.agregar = false
+  }
+  updateTopic(id: number) {
+    this.actualizar = true
+    this.updateObject = this.objetosRegistrados[id]
+
+  }
+  deleteTopic(id: number) {
+    //console.log(this.objetosRegistrados[id].objSpecialRegime.id);
+    this.services.deleteObject(this.objetosRegistrados[id].objSpecialRegime.id)
   }
 
 }

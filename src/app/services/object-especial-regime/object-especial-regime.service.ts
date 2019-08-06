@@ -56,4 +56,17 @@ export class ObjectEspecialRegimeService {
   public getObjetoRegister(id: number) {
     return this.httpClient.get<ObjectEspecialRegime>(this.url + "/vu/ore/" + id);
   }
+  public deleteObject(id: number) {
+    console.log("feito: id", id);
+    this.httpClient.delete(this.url + "/vu/ore/" + id).subscribe(
+      _ => {
+        this.toastr.success("¡Objeto Eliminado!")
+        window.location.reload()
+      },
+      error => {
+        this.toastr.error("¡No se elimino el objeto!")
+
+      }
+    );
+  }
 }

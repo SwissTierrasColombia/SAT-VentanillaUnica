@@ -9,7 +9,7 @@ import { ProcedureRequestComponent } from './procedure-request/procedure-request
 import { ProcedureManagementComponent } from './procedure-managment/procedure-management.component';
 import { RegistroObjEspecialComponent } from '../tramites/registro-obj-especial/registro-obj-especial.component';
 import { DialogBoxRegistroComponent } from '../../components/dialog-box-registro/dialog-box-registro.component';
-
+import { UpdateObjectEspecialComponent } from '../tramites/update-object-especial/update-object-especial.component';
 
 
 @NgModule({
@@ -17,7 +17,8 @@ import { DialogBoxRegistroComponent } from '../../components/dialog-box-registro
     ProcedureRequestComponent,
     ProcedureManagementComponent,
     RegistroObjEspecialComponent,
-    DialogBoxRegistroComponent
+    DialogBoxRegistroComponent,
+    UpdateObjectEspecialComponent
   ],
   imports: [
     CommonModule,

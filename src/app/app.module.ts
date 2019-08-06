@@ -7,9 +7,9 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { FormsModule } from '@angular/forms';
 
-import { 
-  MatTableModule, 
-  MatDialogModule, 
+import {
+  MatTableModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
   MatButtonModule
@@ -53,6 +53,7 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +61,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

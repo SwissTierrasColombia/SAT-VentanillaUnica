@@ -1,5 +1,10 @@
 <div class="card">
-  <div class="card-header">Actualización de Objeto de Régimen Especial</div>
+  <div class="card-header">Actualización de Objeto de Régimen Especial
+    <div class="text-right pointer" (click)="volver()">
+      <i class="icons font-2xl cui-action-undo"></i>
+      <div>Volver</div>
+    </div>
+  </div>
   <div class="card-body" *ngIf="updateObject">
     <form action="" method="post">
       <!-- Topics -->
@@ -14,7 +19,6 @@
           </div>
         </div>
       </div>
-
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -39,24 +43,27 @@
       </div>
       <div class="form-group">
         <div class="row">
-          <div class="col-6">
+          <div class="col-sm">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Fecha de Inicio</span>
               </div>
-              <input class="form-control" id="fechaInicio" type="date" name="fechaInicio" [(ngModel)]="fechaInicio">
+              <input [value]="fechaInicio" [(ngModel)]="fechaInicio" class="form-control" id="fechaInicio" type="date"
+                name="fechaInicio">
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-sm">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Fecha de Final</span>
               </div>
-              <input class="form-control" id="fechaFinal" type="date" name="fechaFinal" [(ngModel)]="fechaFinal">
+              <input [value]="fechaFinal" [(ngModel)]="fechaFinal" class="form-control" id="fechaFinal" type="date"
+                name="fechaFinal">
             </div>
           </div>
         </div>
       </div>
+      
       <!-- {{formcategories | json}} -->
       <div>
         <div class="row">
@@ -119,7 +126,7 @@
                     placeholder="Contendido de la descripción..." [(ngModel)]="cat.category.description"></textarea>
                 </div>
                 <br>
-                <span class="input-group-text">Restricciones</span>
+                <span class="input-group-text">Afectaciones</span>
                 <div class="form-group">
                   <div class="col-form-label row offset-1">
                     <div class="form-check checkbox col-3" *ngFor="let item of cat.restrictions; let i = index">
@@ -137,7 +144,7 @@
       <br>
       <div class="form-group form-actions">
         <div class="text-center col-12">
-          <button class="btn btn-primary" type="submit" (click)="actualizarObjeto()">Actializar Objeto</button>
+          <button class="btn btn-primary" type="submit" (click)="actualizarObjeto()">Actualizar Objeto</button>
         </div>
       </div>
     </form>

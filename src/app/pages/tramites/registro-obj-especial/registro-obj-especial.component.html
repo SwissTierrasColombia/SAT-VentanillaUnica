@@ -1,5 +1,10 @@
 <div class="card" *ngIf="agregar">
-  <div class="card-header">Registro de Objeto de Régimen Especial</div>
+  <div class="card-header">Registro de Objeto de Régimen Especial
+    <div class="text-right pointer" (click)="volver()">
+      <i class="icons font-2xl cui-action-undo"></i>
+      <div>Volver</div>
+    </div>
+  </div>
   <div class="card-body" *ngIf="entityModels">
     <form action="" method="post">
       <!-- Topics -->
@@ -61,7 +66,7 @@
       </div>
       <div class="form-group" *ngIf="ObjetoSeleccionado">
         <div class="row">
-          <div class="col-6">
+          <div class="col-sm">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Fecha de Inicio</span>
@@ -69,7 +74,7 @@
               <input class="form-control" id="fechaInicio" type="date" name="fechaInicio" [(ngModel)]="fechaInicio">
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-sm">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Fecha de Final</span>
@@ -168,7 +173,7 @@
 <!-- Información de objetos especiales -->
 <div *ngIf="objetosRegistrados && agregar == false && actualizar == false">
   <div class="row" *ngFor="let item of objetosRegistrados; let id = index">
-    <div class="col-6">
+    <div class="col-sm">
       <div class="card" style="height: 90%">
         <div class="card-header">
           <h4 class="text-center">Objeto de regimen especial</h4>
@@ -193,14 +198,15 @@
                 <td>{{ item.objSpecialRegime.object }}</td>
                 <td>{{ item.objSpecialRegime.createAt }} <br> {{ item.objSpecialRegime.dueDate }}</td>
                 <td><i (click)="updateTopic(id)" class="icons font-2xl d-block cui-action-redo pointer"></i></td>
-                <td><i (click)="deleteTopic(id)" class="icons font-2xl d-block cui-trash pointer"></i></td>
+                <td><i (click)="openModal(id,'custom-modal-2')" class="icons font-2xl d-block cui-trash pointer"></i>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-sm">
       <div class="card" style="height: 90%">
         <div class="card-header">
           <h4 class="text-center">Categoria Objeto de regimen especial</h4>
@@ -213,7 +219,7 @@
                 <th scope="col">Valor</th>
                 <th scope="col">Más información</th>
                 <th scope="col">Descripción</th>
-                <th scope="col">Tipos de restricciones</th>
+                <th scope="col">Tipos de afectaciones</th>
               </tr>
             </thead>
             <tbody>
@@ -241,4 +247,25 @@
 
 <div *ngIf="actualizar">
   <app-update-object-especial [updateObject]="updateObject"></app-update-object-especial>
+</div>
+<div class="row">
+  <jw-modal id="custom-modal-2">
+    <div class="card">
+      <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
+      <div class="card-header">
+        <i class="cui-arrow-bottom"></i>
+        <p class="text-center">
+          ¿Desea eliminar realmente el objeto especial?
+        </p>
+      </div>
+      <div class="card-body row">
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-primary btn-block" (click)="closeModal(1,'custom-modal-2');">SI</button>
+        </div>
+        <div class="text-center col-sm">
+          <button type="button" class="btn btn-dark btn-block" (click)="closeModal(0,'custom-modal-2');">NO</button>
+        </div>
+      </div>
+    </div>
+  </jw-modal>
 </div>

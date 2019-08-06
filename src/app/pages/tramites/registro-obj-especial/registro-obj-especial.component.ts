@@ -6,8 +6,7 @@ import { ModelsEspecialRegime } from 'src/app/models/models-especial-regime.inte
 import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
 import { TokenJwt } from 'src/app/models/token-jwt.interface';
 import { Router } from '@angular/router';
-import { timeout } from 'rxjs/operators';
-import { ObjSpecialRegime } from '../../../models/object-especial-regime.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registro-obj-especial',
@@ -32,7 +31,9 @@ export class RegistroObjEspecialComponent implements OnInit {
   id = 0
   updateObject: any;
   actualizar = false;
-  constructor(private services: ObjectEspecialRegimeService, private route: Router) { }
+  comprobarEliminar = false
+  idDeleteObjet: number
+  constructor(private services: ObjectEspecialRegimeService, private route: Router, private toastr: ToastrService, private modalService: ModalService) { }
 
   ngOnInit() {
     if (!sessionStorage.getItem('access_token')) {
@@ -155,9 +156,22 @@ export class RegistroObjEspecialComponent implements OnInit {
     this.updateObject = this.objetosRegistrados[id]
 
   }
-  deleteTopic(id: number) {
-    //console.log(this.objetosRegistrados[id].objSpecialRegime.id);
-    this.services.deleteObject(this.objetosRegistrados[id].objSpecialRegime.id)
+  closeModal(option: number, id: string) {
+    if (option == 1) {
+      this.comprobarEliminar = true
+      this.services.deleteObject(this.objetosRegistrados[this.idDeleteObjet].objSpecialRegime.id)
+    } else if (option == 0) {
+      this.toastr.error("No se elimino el objeto")
+    }
+    this.modalService.close(id);
+  }
+  openModal(id: number, modal: string) {
+    this.modalService.open(modal);
+    this.idDeleteObjet = id
+  }
+
+  volver() {
+    window.location.reload()
   }
 
 }

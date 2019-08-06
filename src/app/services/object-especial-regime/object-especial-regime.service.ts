@@ -56,15 +56,45 @@ export class ObjectEspecialRegimeService {
   public getObjetoRegister(id: number) {
     return this.httpClient.get<ObjectEspecialRegime>(this.url + "/vu/ore/" + id);
   }
+
+  public updateObjectRegister(idObject: number, idorganization: number, name: string, model: string, object: string, wsurl: string, fechaInicio: Date, fechaFin: Date, categories: any) {
+    let data = {
+      "objSpecialRegime": {
+        "id": idObject,
+        "organization": {
+          "id": idorganization,
+          "name": name
+        },
+        "model": model,
+        "object": object,
+        "wsurl": wsurl,
+        "createAt": fechaInicio,
+        "dueDate": fechaFin
+      },
+      "categories": categories
+    };
+    console.log("Datos Actualizados: ", JSON.stringify(data));
+
+    this.httpClient.put(this.url + "/vu/ore", data)
+      .subscribe(
+        _ => {
+          this.toastr.success("¡Objeto actualizado!")
+        },
+        error => {
+          this.toastr.error("El objeto no se actualizo")
+          console.log("error update: ", error);
+        }
+      )
+
+  }
   public deleteObject(id: number) {
-    console.log("feito: id", id);
     this.httpClient.delete(this.url + "/vu/ore/" + id).subscribe(
       _ => {
         this.toastr.success("¡Objeto Eliminado!")
         window.location.reload()
       },
       error => {
-        this.toastr.error("¡No se elimino el objeto!")
+        this.toastr.error("No se elimino el objeto")
 
       }
     );

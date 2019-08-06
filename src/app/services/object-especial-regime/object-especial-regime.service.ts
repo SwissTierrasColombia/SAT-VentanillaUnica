@@ -64,7 +64,7 @@ export class ObjectEspecialRegimeService {
         window.location.reload()
       },
       error => {
-        this.toastr.error("¡No se elimino el objeto!")
+        this.toastr.error("No se elimino el objeto")
 
       }
     );

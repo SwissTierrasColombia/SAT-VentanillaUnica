@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-regime/object-especial-regime.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-re
   templateUrl: './update-object-especial.component.html',
   styleUrls: ['./update-object-especial.component.scss']
 })
-export class UpdateObjectEspecialComponent implements OnInit, OnChanges {
+export class UpdateObjectEspecialComponent implements OnInit {
   @Input() updateObject: any
   @Input() actualizar: boolean
   updateRegister: any
@@ -16,17 +16,13 @@ export class UpdateObjectEspecialComponent implements OnInit, OnChanges {
   restricciones: any;
   camposFeature: import("/home/andres/work/SAT-VentanillaUnica/src/app/models/features-object-especial.interface").FeaturesObjectEspecial;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['updateObject']) {
-      //console.log("llegue");
-    }
-    throw new Error("Method not implemented.");
-  }
-
   constructor(private services: ObjectEspecialRegimeService) { }
 
   ngOnInit() {
     console.log(this.updateObject);
+    this.fechaInicio = this.updateObject.objSpecialRegime.createAt
+    this.fechaFinal = this.updateObject.objSpecialRegime.dueDate
+
     this.services.GetRestrictions().subscribe(
       response => {
         for (let i in response) {
@@ -36,6 +32,16 @@ export class UpdateObjectEspecialComponent implements OnInit, OnChanges {
             "status": false
           })
         }
+        console.log(this.restricciones);
+      },
+      error => {
+        console.error("error restricciones: ", error);
+      }
+    );
+
+    this.services.GetFeatures(this.updateObject.objSpecialRegime.wsurl).subscribe(
+      response => {
+        this.camposFeature = response
       },
       error => {
         console.error(error);
@@ -54,20 +60,8 @@ export class UpdateObjectEspecialComponent implements OnInit, OnChanges {
       }
     }
   }
-  CreateCampos() {
-    // Get the size of an object
-    this.services.GetFeatures(this.updateObject.objSpecialRegime.wsurl).subscribe(
-      response => {
-        this.camposFeature = response
-      },
-      error => {
-        console.error(error);
 
-      }
-    );
-  }
   createCategory() {
-
     this.formcategories.push({
       "category": {
         "id": this.formcategories.length,
@@ -80,9 +74,11 @@ export class UpdateObjectEspecialComponent implements OnInit, OnChanges {
   deleteCategory(id: number) {
     this.formcategories.splice(id, 1)
   }
-  
+
   actualizarObjeto() {
     this.actualizar = false
   }
-
+  volver() {
+    window.location.reload()
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-regime/object-especial-regime.service';
+import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
 
 @Component({
   selector: 'app-update-object-especial',
@@ -14,7 +15,7 @@ export class UpdateObjectEspecialComponent implements OnInit {
   fechaFinal: Date;
   formcategories = []
   restricciones = [];
-  camposFeature: import("/home/andres/work/SAT-VentanillaUnica/src/app/models/features-object-especial.interface").FeaturesObjectEspecial;
+  camposFeature: FeaturesObjectEspecial;
 
   constructor(private services: ObjectEspecialRegimeService) { }
 

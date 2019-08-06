@@ -167,7 +167,7 @@
 </div>
 <!-- Información de objetos especiales -->
 <div *ngIf="objetosRegistrados && agregar == false">
-  <div class="row" *ngFor="let item of objetosRegistrados">
+  <div class="row" *ngFor="let item of objetosRegistrados; let i = index">
     <div class="col-6">
       <div class="card" style="height: 90%">
         <div class="card-header">

@@ -9,6 +9,7 @@ export const environment = {
   geoserver: 'http://192.168.98.69:8000/geoserver/',
   imageGeo: 'http://192.168.98.69:9090/',
   qr_base_url: 'http://localhost:4200/#/consults/basic-parcel-info',
+  urlRegistro:'http://192.168.98.75:9091/'
 };
 
 /*

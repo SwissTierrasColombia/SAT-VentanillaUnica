@@ -63,6 +63,7 @@
           </div>
         </div>
       </div>
+      
       <!-- {{formcategories | json}} -->
       <div>
         <div class="row">
@@ -125,7 +126,7 @@
                     placeholder="Contendido de la descripción..." [(ngModel)]="cat.category.description"></textarea>
                 </div>
                 <br>
-                <span class="input-group-text">Restricciones</span>
+                <span class="input-group-text">Afectaciones</span>
                 <div class="form-group">
                   <div class="col-form-label row offset-1">
                     <div class="form-check checkbox col-3" *ngFor="let item of cat.restrictions; let i = index">

@@ -221,7 +221,7 @@
               <tr *ngFor="let cat of item.categories; let id = index">
                 <td>{{ cat.category.field }}</td>
                 <td>{{ cat.category.value }}</td>
-                <td>{{ cat.category.urlMasInfo }}</td>
+                <td style="word-wrap: break-word;">{{ cat.category.urlMasInfo }}</td>
                 <td>{{ cat.category.description }}</td>
                 <td>
                   <div *ngFor="let res of cat.restrictions">
@@ -253,23 +253,23 @@
         </div>
       </div>
       <div class="card">
-          <div class="card-body">
-            <table class="table" style="width: 100%">
-              <thead>
-                <tr>
-                  <th class="text-center" scope="col">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center"><i (click)="openModal(id,'custom-modal-2')"
-                      class="icons font-2xl d-block cui-trash pointer"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="card-body">
+          <table class="table" style="width: 100%">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center"><i (click)="openModal(id,'custom-modal-2')"
+                    class="icons font-2xl d-block cui-trash pointer"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
   </div>
 </div>

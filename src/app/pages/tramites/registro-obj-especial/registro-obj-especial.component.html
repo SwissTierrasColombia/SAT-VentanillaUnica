@@ -172,7 +172,7 @@
 </div>
 <!-- Información de objetos especiales -->
 <div *ngIf="objetosRegistrados && agregar == false && actualizar == false">
-  <div class="row" *ngFor="let item of objetosRegistrados; let id = index">
+  <div class="row objectosRegistrados" *ngFor="let item of objetosRegistrados; let id = index">
     <div class="col-sm">
       <div class="card" style="height: 90%">
         <div class="card-header">
@@ -209,7 +209,7 @@
     <div class="col-sm">
       <div class="card" style="height: 90%">
         <div class="card-header">
-          <h4 class="text-center">Categoria Objeto de regimen especial</h4>
+          <h4 class="text-center">Categorias Objeto de regimen especial</h4>
         </div>
         <div class="card-body">
           <table class="table" style="width: 100%">
@@ -241,15 +241,16 @@
     </div>
   </div>
 </div>
-<button *ngIf="agregar == false && actualizar == false" class="btn btn-secondary btn-lg btn-block"
+<button *ngIf="agregar == false && actualizar == false" class="btn btn-outline-info btn-block text-black"
   (click)="registrarobj()">Registrar
   Objeto</button>
+<br>
 
 <div *ngIf="actualizar">
   <app-update-object-especial [updateObject]="updateObject"></app-update-object-especial>
 </div>
 <div class="row">
-  <jw-modal id="custom-modal-2">
+  <jw-modal id="custom-modal-2" class="mt-5">
     <div class="card">
       <!--style="height:500px"  Se puede especificar el height de la ventana modal, o el cojera por defecto el contenido de los elementos-->
       <div class="card-header">
@@ -261,12 +262,12 @@
       <div class="card-body row">
         <div class="text-center col-sm">
           <button type="button" class="btn btn-primary btn-block" (click)="closeModal(1,'custom-modal-2');">
-            <h4>SI</h4>
+            <h4>Sí</h4>
           </button>
         </div>
         <div class="text-center col-sm">
           <button type="button" class="btn btn-dark btn-block" (click)="closeModal(0,'custom-modal-2');">
-            <h4>NO</h4>
+            <h4>No</h4>
           </button>
         </div>
       </div>

@@ -135,7 +135,6 @@ export class UpdateObjectEspecialComponent implements OnInit {
       }
     }
     this.services.updateObjectRegister(id, idorganization, name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
-    window.location.reload()
   }
 
 }

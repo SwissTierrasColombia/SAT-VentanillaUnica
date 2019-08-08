@@ -79,6 +79,7 @@ export class ObjectEspecialRegimeService {
       .subscribe(
         _ => {
           this.toastr.success("¡Objeto actualizado!")
+          window.location.reload()
         },
         error => {
           this.toastr.error("El objeto no se actualizo")

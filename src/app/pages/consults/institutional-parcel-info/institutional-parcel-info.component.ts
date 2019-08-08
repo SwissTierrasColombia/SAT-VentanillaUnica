@@ -400,7 +400,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         Codigo = element.t_id ? element.t_id : '--';
         Objeto_que_afecta = element.objeto ? element.objeto : '--';
         Área_afectada = element.area ? element.area : '--';
-        de_afectacion = element.proportion * 100 ? element.proportion : '--';
+        de_afectacion = element.proportion ? element.proportion : '--';
       });
       doc.text('Afectaciones', 20, 480);
       doc.autoTable({

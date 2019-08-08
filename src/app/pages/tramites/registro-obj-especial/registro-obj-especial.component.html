@@ -187,8 +187,6 @@
                 <th scope="col">Modelo</th>
                 <th scope="col">objecto</th>
                 <th scope="col">Vigencia</th>
-                <th scope="col">Actualizar</th>
-                <th scope="col">Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -197,9 +195,6 @@
                 <td>{{ item.objSpecialRegime.model }}</td>
                 <td>{{ item.objSpecialRegime.object }}</td>
                 <td>{{ item.objSpecialRegime.createAt }} <br> {{ item.objSpecialRegime.dueDate }}</td>
-                <td><i (click)="updateTopic(id)" class="icons font-2xl d-block cui-action-redo pointer"></i></td>
-                <td><i (click)="openModal(id,'custom-modal-2')" class="icons font-2xl d-block cui-trash pointer"></i>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -223,7 +218,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cat of item.categories">
+              <tr *ngFor="let cat of item.categories; let id = index">
                 <td>{{ cat.category.field }}</td>
                 <td>{{ cat.category.value }}</td>
                 <td>{{ cat.category.urlMasInfo }}</td>
@@ -238,6 +233,43 @@
           </table>
         </div>
       </div>
+    </div>
+    <div class="col-sm">
+      <div class="card">
+        <div class="card-body">
+          <table class="table" style="width: 100%">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">Actualizar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center"><i (click)="updateTopic(id)"
+                    class="icons font-2xl d-block cui-action-redo pointer"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+          <div class="card-body">
+            <table class="table" style="width: 100%">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center"><i (click)="openModal(id,'custom-modal-2')"
+                      class="icons font-2xl d-block cui-trash pointer"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
     </div>
   </div>
 </div>

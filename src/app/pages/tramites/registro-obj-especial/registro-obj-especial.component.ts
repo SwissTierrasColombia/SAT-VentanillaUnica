@@ -143,7 +143,6 @@ export class RegistroObjEspecialComponent implements OnInit {
     this.services.getObjetoRegister(this.id).subscribe(
       response => {
         this.objetosRegistrados = response;
-        window.location.reload()
       },
       error => {
         console.log(error);

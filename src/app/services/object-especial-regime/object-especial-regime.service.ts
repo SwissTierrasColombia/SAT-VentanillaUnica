@@ -46,6 +46,7 @@ export class ObjectEspecialRegimeService {
       .subscribe(
         _ => {
           this.toastr.success("¡Objeto Registrado!")
+          window.location.reload()
         },
         error => {
           this.toastr.error("¡Objeto No Registrado!")

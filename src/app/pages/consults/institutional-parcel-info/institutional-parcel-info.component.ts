@@ -51,12 +51,12 @@ export class InstitutionalParcelInfoComponent implements OnInit {
   };
 
 
-  constructor(private service: QueryService, private toastr: ToastrService, private route:Router) { }
+  constructor(private service: QueryService, private toastr: ToastrService, private route: Router) { }
 
   ngOnInit(): void {
     if (!sessionStorage.getItem('access_token')) {
       this.route.navigate(['inicio']);
-    } 
+    }
   }
   /**/
 
@@ -348,27 +348,14 @@ export class InstitutionalParcelInfoComponent implements OnInit {
           ['654654', '565654654', '2016-05-06', 'RADICADO', 'Compraventa Total', 'No', 'Si', 'Finalizado']
         ]
       });
-      let ID = '';
-      // tslint:disable-next-line:variable-name
-      let Nombre_Completo = '';
-      // tslint:disable-next-line:variable-name
-      let Tipo_Derecho = '';
-      let Derecho = '';
-      let Vigencia = '';
-      // tslint:disable-next-line:variable-name
-      let Tipo_Documento = '';
-      let Estado = '';
+      let Derecho = '--';
+      let Vigencia = '--';
+      let Estado = '--';
+      var bodyDerechos = []
       this.lealInfoDercho.forEach(element => {
-        ID = element.attributes['Código registral'] ? element.attributes['Código registral'] : '--';
-        // tslint:disable-next-line:no-string-literal
-        Nombre_Completo = element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] : '--';
-        Tipo_Derecho = element.attributes['Tipo de derecho'] ? element.attributes['Tipo de derecho'] : '--';
-        Derecho = '--';
-        Vigencia = '--';
-        // tslint:disable-next-line:no-string-literal
-        Tipo_Documento = element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] : '--';
-        // tslint:disable-next-line:no-string-literal
-        Estado = element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] : '--';
+        bodyDerechos.push(
+          [element.attributes['Código registral'] ? element.attributes['Código registral'] : '--', element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] : '--', Derecho, Vigencia, element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] : '--', element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] : '--']
+        )
       });
       doc.text('Derechos', 20, 425);
       doc.autoTable({
@@ -379,28 +366,15 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
         head: [['ID', 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
-        body: [
-          [ID, Nombre_Completo, Tipo_Derecho, Derecho, Vigencia, Tipo_Documento, Estado]
-        ]
+        body: bodyDerechos
       });
-      let Codigo: any;
-      // tslint:disable-next-line:variable-name
-      let Objeto_que_afecta: any;
-      // tslint:disable-next-line:variable-name
-      let Área_afectada: any;
-      // tslint:disable-next-line:variable-name
-      let de_afectacion: any;
-      // tslint:disable-next-line:variable-name
       const Fecha_constitución = '--';
-      // tslint:disable-next-line:variable-name
       const Fecha_expiracion = '--';
-      // tslint:disable-next-line:variable-name
       const Estado_Afectaciones = 'Activo';
+      var bodyAfectaciones = []
+
       this.admInfo.forEach(element => {
-        Codigo = element.t_id ? element.t_id : '--';
-        Objeto_que_afecta = element.objeto ? element.objeto : '--';
-        Área_afectada = element.area ? element.area : '--';
-        de_afectacion = element.proportion ? element.proportion : '--';
+        bodyAfectaciones.push([element.t_id ? element.t_id : '--', element.objeto ? element.objeto : '--', element.area ? element.area : '--', element.proportion ? element.proportion : '--', Fecha_constitución, Fecha_expiracion, Estado_Afectaciones])
       });
       doc.text('Afectaciones', 20, 480);
       doc.autoTable({
@@ -411,9 +385,7 @@ export class InstitutionalParcelInfoComponent implements OnInit {
         headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
         theme: 'grid',
         head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
-        body: [
-          [Codigo, Objeto_que_afecta, Área_afectada, de_afectacion, Fecha_constitución, Fecha_expiracion, Estado_Afectaciones]
-        ]
+        body: bodyAfectaciones
       });
 
       doc.setFontSize(9);
@@ -421,19 +393,12 @@ export class InstitutionalParcelInfoComponent implements OnInit {
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 
-      // tslint:disable-next-line:variable-name
       const Delegacion_Catastral = 'SUCRE';
-      // tslint:disable-next-line:variable-name
       const Municipio_del_Predio = 'OVEJAS';
-      // tslint:disable-next-line:variable-name
       const Ubicación_del_Predio = '--';
-      // tslint:disable-next-line:variable-name
       const Dirección_del_Predio = '311_2_nombre_calle';
-      // tslint:disable-next-line:variable-name
       const Numero_Catastral = this.physicalInfo.attributes.predio[0].attributes['Número predial'];
-      // tslint:disable-next-line:variable-name
       const Area_Catastral = '--' + this.physicalInfo.attributes['Área calculada [m2]'];
-      // tslint:disable-next-line:no-string-literal variable-name
       const Tipo_de_Parcela = this.physicalInfo.attributes.predio[0].attributes['Tipo'];
       Estado = 'ACTIVO';
       doc.text(Delegacion_Catastral, 100, 130);

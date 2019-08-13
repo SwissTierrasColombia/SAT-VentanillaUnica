@@ -70,6 +70,11 @@ export const navItems: NavData[] = [
     name: 'Registro de Objeto de Régimen Especial',
     url: '/procedures/registro',
     icon: 'icon-list'
+  },
+  {
+    name: 'Generador de procesos',
+    url: '/procedures/bpm',
+    icon: 'icon-list'
   }
 
 ];

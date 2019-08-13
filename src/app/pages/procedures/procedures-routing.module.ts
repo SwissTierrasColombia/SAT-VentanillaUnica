@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProcedureRequestComponent } from './procedure-request/procedure-request.component';
 import { ProcedureManagementComponent } from './procedure-managment/procedure-management.component';
 import { RegistroObjEspecialComponent } from '../tramites/registro-obj-especial/registro-obj-especial.component';
+import { GenerateBpmComponent } from '../tramites/generate-bpm/generate-bpm.component';
 
 
 const routes: Routes = [
@@ -36,7 +37,15 @@ const routes: Routes = [
         data: {
           title: 'Registro de Objeto de Régimen Especial'
         }
-      }  
+      }
+      ,
+      {
+        path: 'bpm',
+        component: GenerateBpmComponent,
+        data: {
+          title: 'Generador de procesos'
+        }
+      }   
     ]
   }
 ];

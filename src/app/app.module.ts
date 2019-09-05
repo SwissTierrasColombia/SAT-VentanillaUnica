@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { VuComponent } from './sections/vu/vu.component';
+// import { VuComponent } from './sections/vu/vu.component';
 import { PmComponent } from './sections/pm/pm.component';
 import { VuModule } from './sections/vu/vu.module';
 //libraries
@@ -12,13 +12,14 @@ import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
-    VuComponent,
+    // VuComponent,
     PmComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     VuModule,
+    FormsModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot() // ToastrModule added
   ],

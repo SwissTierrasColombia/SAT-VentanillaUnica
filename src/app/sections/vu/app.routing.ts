@@ -4,19 +4,21 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 //import { DefaultLayoutComponent } from './containers';
 
-import { P404Component } from './pages/error/404.component';
-import { P500Component } from './pages/error/500.component';
 import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { VuComponent } from './vu.component';
+import { MainPageComponent } from './pages/home/main-page.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'vu',
     component: VuComponent,
-    pathMatch: 'full',
+    children: [
+      {
+        path: '', component: MainPageComponent
+      }
+    ]
   },
-  {
+  /* {
     path: '404',
     component: P404Component,
     data: {
@@ -43,7 +45,7 @@ export const routes: Routes = [
     data: {
       title: 'Register Page'
     }
-  },
+  }, */
 /*   {
     path: '',
     component: DefaultLayoutComponent,
@@ -65,7 +67,7 @@ export const routes: Routes = [
       }
     ]
   }, */
-  { path: '**', component: P404Component }
+  // { path: '**', component: P404Component }
 ];
 
 @NgModule({

@@ -9,11 +9,13 @@ import { VuModule } from './sections/vu/vu.module';
 //libraries
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { SidebarLeftComponent } from './layouts/sidebar-left/sidebar-left.component';
 @NgModule({
   declarations: [
     AppComponent,
     // VuComponent,
-    PmComponent
+    PmComponent,
+    SidebarLeftComponent
   ],
   imports: [
     BrowserModule,

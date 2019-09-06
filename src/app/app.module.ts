@@ -10,6 +10,8 @@ import { VuModule } from './sections/vu/vu.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SidebarLeftComponent } from './layouts/sidebar-left/sidebar-left.component';
+import { TokenInterceptorService } from './services/interceptors/token-interceptor.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,10 +24,12 @@ import { SidebarLeftComponent } from './layouts/sidebar-left/sidebar-left.compon
     AppRoutingModule,
     VuModule,
     FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot() // ToastrModule added
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

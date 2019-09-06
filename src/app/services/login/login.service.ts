@@ -12,7 +12,7 @@ export class LoginService {
   data = [];
   apiURL: string;
 
-  constructor(private httpClient: HttpClient, private route: Router, private toastr: ToastrService) {
+  constructor(private httpClient: HttpClient) {
     this.apiURL = environment.apiBaseUrlPrefix;
   }
   login(username: string, password: string) {

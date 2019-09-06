@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row justify-content-center">
+            <i class="material-icons cursor text-left" (click)="volver()">backspace</i>
+            <div class="col-11">
+                <h3>
+                    Configuración Roles para el paso {{nameStep}}
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form action="">
+            <div class="row">
+                <div class="col-6 text-right">
+                    <h5>Agrega los roles al paso {{nameStep}}</h5>
+                </div>
+                <div class="col-6 text-left">
+                    <div class="form-check form-check-inline ml-5" *ngFor="let item of stepRoles; let id = index;">
+                        <input name="role{{id}}" class="form-check-input" type="checkbox" id="inlineCheckbox{{id}}"
+                            [(ngModel)]="item.status" (click)="addRolToStep(item, item.status)">
+                        <label class="form-check-label" for="inlineCheckbox{{id}}">{{item.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

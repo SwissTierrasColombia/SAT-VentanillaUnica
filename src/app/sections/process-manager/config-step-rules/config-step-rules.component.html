@@ -1,0 +1,297 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-1">
+                <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+            </div>
+            <div class="col-10">
+                <h4 class="card-title"> Configuración reglas de: {{nameStep}}</h4>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-primary fixed_button" type="submit" (click)="addNewRule()">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" *ngIf="formRulesStepProcess">
+        <!-- {{formRulesStepProcess | json}} -->
+        <form action="" method="post">
+            <div class="form-group">
+                <div class="row m-1" *ngFor="let form of formRulesStepProcess; let idOut = index;">
+                    <div class="row justify-content">
+                        <div class="col-11">
+                            <button class="btn btn-danger" type="submit" (click)="deleteRule(idOut)">-</button>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row m-2">
+                            <div class="col-sm-11">
+                                <h5>Condiciones</h5>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary fixed_button" type="submit"
+                                    (click)="addNewConditions(idOut)">+</button>
+                            </div>
+                        </div>
+                        <!-- {{form | json}} -->
+                        <div class="row m-1" *ngFor="let item of form.conditions; let idInt = index;">
+                            {{item | json}}
+                            <div class="col-1">
+                                <button class="btn btn-danger" type="submit"
+                                    (click)="deleteConditions(idOut,idInt)">-</button>
+                            </div>
+                            <!-- {{allFieldStep | json}} -->
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Campos</span>
+                                    </div>
+                                    <select class="form-control" id="typeData{{idOut}}{{idInt}}"
+                                        name="typeData{{idOut}}{{idInt}}" [(ngModel)]="item.field"
+                                        (ngModelChange)="modelChanged(item.field,idOut,idInt)">
+                                        <option *ngFor="let fiel of allFieldStep" name="fiel._id" [ngValue]="fiel._id">
+                                            {{fiel.nameField}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Operadores</span>
+                                    </div>
+                                    <select class="form-control" id="operator{{idOut}}{{idInt}}"
+                                        name="operator{{idOut}}{{idInt}}" [(ngModel)]="item.operator">
+                                        <option *ngFor="let type of typeOperaators" name="type.operator"
+                                            [ngValue]="type._id">
+                                            {{type.operator}}
+                                            <!-- {{type.symbol}} -->
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div [ngSwitch]="item.typeData">
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataText">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor: </span>
+                                        </div>
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="text"
+                                            name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataNumber">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor: </span>
+                                        </div>
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="number"
+                                            name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataEmail">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor: </span>
+                                        </div>
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="email"
+                                            name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataPhoneNumber">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor: </span>
+                                        </div>
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="number"
+                                            name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataDate">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor: </span>
+                                        </div>
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="date"
+                                            name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                                    <select class="form-control" name="r_data_{{item.field}}" ng-model="number"
+                                        [(ngModel)]="item.value">
+                                        <option *ngFor="let option of item.metadata.options; let id = index"
+                                            [ngValue]="id">
+                                            {{option}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                                    <select multiple class="form-control" name="r_data_{{item.field}}"
+                                        [(ngModel)]="item.value">
+                                        <option *ngFor="let option of item.metadata.options; let id = index"
+                                            [ngValue]="id">
+                                            {{option}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                                    <select class="form-control" id="requerido{{idOut}}{{idInt}}"
+                                        name="requerido{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                        <option name="item" [ngValue]="true">
+                                            Verdadero
+                                        </option>
+                                        <option name="item" [ngValue]="false">
+                                            Falso
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataTextarea">
+                                    <textarea class="form-control" rows="2" name="r_data_{{item.field}}"
+                                        [(ngModel)]="item.value"></textarea>
+                                </div>
+
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                                    <input type="file" class="form-control-file" [(ngModel)]="item.value">
+                                </div>
+                                <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">URL: </span>
+                                        </div>
+                                        <input class="form-control" id="url{{idOut}}{{idInt}}" type="url"
+                                            name="url{{idOut}}{{idInt}}" [(ngModel)]="item.value">
+                                    </div>
+                                </div>
+
+                                <div *ngSwitchDefault>
+                                    <h5>No hay ningún campo seleccionado</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-5">
+                            <div class="col-sm-11">
+                                <h5>Callbacks</h5>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary fixed_button" type="submit"
+                                    (click)="addNewCallback(idOut)">+</button>
+                            </div>
+                        </div>
+                        <div class="row m-2" *ngFor="let call of form.callbacks; let idInt = index;">
+                            <div class="col-1">
+                                <button class="btn btn-danger" type="submit"
+                                    (click)="deleteCallback(idOut,idInt)">-</button>
+                            </div>
+                            <div class="col-11">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">callback</span>
+                                    </div>
+                                    <select class="form-control" id="call{{idOut}}{{idInt}}"
+                                        name="call{{idOut}}{{idInt}}" [(ngModel)]="call.callback">
+                                        <option *ngFor="let item of allCallback" name="item._id" [ngValue]="item._id">
+                                            {{item.callback}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- {{call | json}} -->
+                            <div class="m-1" *ngIf="call.callback === callbacks.CorreoElectronico ">
+                                <!-- Correo electronico -->
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Para: </span>
+                                            </div>
+                                            <input class="form-control" id="para{{idOut}}{{idInt}}" type="gmail"
+                                                name="para{{idOut}}{{idInt}}" [(ngModel)]="call.metadata.to">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Asunto: </span>
+                                            </div>
+                                            <input class="form-control" id="asunto{{idOut}}{{idInt}}" type="text"
+                                                name="asunto{{idOut}}{{idInt}}" [(ngModel)]="call.metadata.subject">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <span class="input-group-text">Mensaje: </span>
+                                        <div class="">
+                                            <textarea class="form-control" id="textarea-input{{idOut}}"
+                                                name="textarea-input{{idOut}}" rows="2"
+                                                placeholder="Contendido de la descripción..."
+                                                [(ngModel)]="call.metadata.text"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-1" *ngIf="call.callback === callbacks.MensajeTexto ">
+                                <!-- Mensaje de texto -->
+                                <div class="row m-2">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Telefono: </span>
+                                            </div>
+                                            <input class="form-control" id="telefono{{idOut}}{{idInt}}" type="text"
+                                                name="telefono{{idOut}}{{idInt}}" [(ngModel)]="call.metadata.to">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <span class="input-group-text">Mensaje: </span>
+                                        <div class="">
+                                            <textarea class="form-control" id="textarea-input{{idOut}}"
+                                                name="textarea-input{{idOut}}" rows="2"
+                                                placeholder="Contendido de la descripción..."
+                                                [(ngModel)]="call.metadata.text"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-1" *ngIf="call.callback === callbacks.CambioPaso ">
+                                <!-- Siguiente paso-->
+                                <!-- Todos los Steps Seleccionados: {{allstepsSelect | json}} -->
+                                <!-- Step a configurar: {{idStepSelect | json}} -->
+                                <div class="row" *ngIf="allstepsSelect">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Siguiente paso: </span>
+                                            </div>
+                                            <!-- {{call.metadata.step | json}} -->
+                                            <select class="form-control" id="paso{{idOut}}{{idInt}}"
+                                                name="paso{{idOut}}{{idInt}}" [(ngModel)]="call.metadata.step">
+                                                <option *ngFor="let item of allstepsSelect" name="item._id"
+                                                    [ngValue]="item._id">
+                                                    {{item._id!=idStepSelect._id ? item.typeStep.step : null }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <div class="row justify-content-center mt-2">
+            <div class="col-sm-8">
+                <button (click)="CreateRule()" type="button" class="btn btn-dark btn-block">Agregar Reglas al paso
+                    {{nameStep}}</button>
+            </div>
+        </div>
+    </div>
+</div>

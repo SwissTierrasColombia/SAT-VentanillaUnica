@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProcessComponent } from './process/process.component';
 import { ProcessManagerRoutingModule } from './process-manager-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -9,7 +10,9 @@ import { ProcessManagerRoutingModule } from './process-manager-routing.module';
   declarations: [ProcessComponent],
   imports: [
     CommonModule,
-    ProcessManagerRoutingModule
+    ProcessManagerRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProcessManagerModule { }

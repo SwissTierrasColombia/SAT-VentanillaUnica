@@ -2,8 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const apiBaseUrl = 'http://192.168.98.61:8000';
+
 export const environment = {
-  production: false
+  production: false,
+  nameTokenSession: 'access_token_vu',
+  apiBaseUrl,
+  apiBaseUrlPrefix: apiBaseUrl + '/api'
 };
 
 /*

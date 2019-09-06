@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from 'src/app/sections/vu/services/login/login.service'
+import { LoginService } from 'src/app/services/login/login.service'
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'

@@ -34,33 +34,33 @@ export class RoreComponent implements OnInit {
   constructor(private services: ObjectEspecialRegimeService, private route: Router, private toastr: ToastrService, private modalService: ModalService) { }
 
   ngOnInit() {
-    // if (!sessionStorage.getItem('access_token')) {
-    //   this.route.navigate(['inicio']);
-    // } else {
-    //   this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
-    //   for (let index = 0; index < this.token.realm_access.roles.length; index++) {
-    //     if (this.token.realm_access.roles[index] === 'Entidad1') {
-    //       this.id = 1
-    //     } else if (this.token.realm_access.roles[index] === 'Entidad2') {
-    //       this.id = 2
-    //     } else if (this.token.realm_access.roles[index] === 'Entidad3') {
-    //       this.id = 3
-    //     } else if (this.token.realm_access.roles.length == index + 1) {
-    //       this.route.navigate(['inicio']);
-    //     }
-
-    //   }
-    this.services.getObjetoRegister(this.id).subscribe(
-      response => {
-        this.objetosRegistrados = response;
-        //console.log("this.objetosRegistrados", this.objetosRegistrados, " this.id: ", this.id);
-      },
-      error => {
-        console.log(error);
+    if (!sessionStorage.getItem('access_token')) {
+      this.route.navigate(['inicio']);
+    } else {
+      this.token = JSON.parse(atob(sessionStorage.getItem('access_token').split('.')[1]))
+      for (let index = 0; index < this.token.realm_access.roles.length; index++) {
+        if (this.token.realm_access.roles[index] === 'Entidad1') {
+          this.id = 1
+        } else if (this.token.realm_access.roles[index] === 'Entidad2') {
+          this.id = 2
+        } else if (this.token.realm_access.roles[index] === 'Entidad3') {
+          this.id = 3
+        } else if (this.token.realm_access.roles.length == index + 1) {
+          this.route.navigate(['inicio']);
+        }
 
       }
-    )
-    // }
+      this.services.getObjetoRegister(this.id).subscribe(
+        response => {
+          this.objetosRegistrados = response;
+          //console.log("this.objetosRegistrados", this.objetosRegistrados, " this.id: ", this.id);
+        },
+        error => {
+          console.log(error);
+
+        }
+      )
+    }
   }
   registrarobj() {
     this.agregar = true;

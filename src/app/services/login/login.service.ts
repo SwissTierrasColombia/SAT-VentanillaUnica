@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 
-export class LoginService {
+export class LoginOldService {
   data = [];
   apiURL: string = environment.KEYCLOAK_URL;
   httpHeaders = new HttpHeaders({

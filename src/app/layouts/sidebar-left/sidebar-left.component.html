@@ -20,14 +20,14 @@
         </div>
         <ul class="menu-items">
             <li>
-                <a href="#" routerLink="/Ruta" routerLinkActive="active">
+                <a href="#" [routerLink]="['/consultas/general']" routerLinkActive="active">
                     <i class="fa fa-search"></i>
                     <span>Consulta General</span>
                     <!-- <span class="badge badge-warning rounded-0 text-dark p-1">NEW</span> -->
                 </a>
             </li>
             <li>
-                <a href="#" routerLink="/Ruta" routerLinkActive="active">
+                <a href="#" [routerLink]="['/consultas/institucional']" routerLinkActive="active">
                     <i class="fas fa-search-location"></i>
                     <span>Consulta Institucional</span>
                 </a>
@@ -45,19 +45,20 @@
                 </a>
             </li>
             <li>
-                <a href="#" routerLink="/Ruta" routerLinkActive="active">
-                    <i class="fas fa-gem"></i>
-                    <span>Gestión de Tramites</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" routerLink="/Ruta" routerLinkActive="active" style="line-height: 23px;">
+                <a href="#" [routerLink]="['/tramites/registro-especial']" routerLinkActive="active"
+                    style="line-height: 23px;">
                     <i class="fas fa-archive"></i>
                     <span>Registro de Objeto de Régimen Especial</span>
                 </a>
             </li>
+        </ul>
+        <div class="menu-header mt-3 mb-2">
+            Administrador
+        </div>
+        <ul class="menu-items">
             <li class="mt-2">
-                <a href="#" routerLink="/Ruta" routerLinkActive="active" style="line-height: 23px;">
+                <a href="#" [routerLink]="['/gestor-procesos/procesos']" routerLinkActive="active"
+                    style="line-height: 23px;">
                     <i class="fas fa-address-book"></i>
                     <span>Generador de procesos</span>
                 </a>

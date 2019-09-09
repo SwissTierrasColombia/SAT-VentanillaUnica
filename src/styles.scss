@@ -12,6 +12,9 @@ $hamburger-layer-color: #9b9ea2 !default;
 $hamburger-layer-border-radius: 4px !default;
 $hamburger-hover-opacity: 0.7 !default;
 
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 @import "~bootstrap/scss/bootstrap";
 // @import '~font-awesome/scss/font-awesome';
 // @import '~hamburgers/_sass/hamburgers/hamburgers';
@@ -25,5 +28,8 @@ $hamburger-hover-opacity: 0.7 !default;
 @import "./assets/lightning-admin";
 
 .cursor {
+  cursor: pointer;
+}
+.nav-item {
   cursor: pointer;
 }

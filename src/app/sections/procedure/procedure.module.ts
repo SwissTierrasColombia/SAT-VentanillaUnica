@@ -12,12 +12,16 @@ import { ProcedureRoutingModule } from './procedure-routing.module';
 import { RoreComponent } from './rore/rore.component';
 import { ListComponent } from './list/list.component';
 import { StartProcedureComponent } from './start-procedure/start-procedure.component';
+import { TasksComponent } from './tasks/tasks.component';
+import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
 
 @NgModule({
   declarations: [
     RoreComponent,
     ListComponent,
-    StartProcedureComponent
+    StartProcedureComponent,
+    TasksComponent,
+    ManageProcedureComponent
   ],
   imports: [
     CommonModule,

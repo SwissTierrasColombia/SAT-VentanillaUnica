@@ -8,6 +8,8 @@ import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.com
 import { RoreComponent } from './rore/rore.component';
 import { ListComponent } from './list/list.component';
 import { StartProcedureComponent } from './start-procedure/start-procedure.component';
+import { TasksComponent } from './tasks/tasks.component';
+import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
 
 
 const routes: Routes = [{
@@ -18,7 +20,13 @@ const routes: Routes = [{
       path: '', component: ListComponent
     },
     {
-      path: ':mProcessId', component: StartProcedureComponent
+      path: 'iniciar/:mProcessId', component: StartProcedureComponent
+    },
+    {
+      path: 'tareas', component: TasksComponent
+    },
+    {
+      path: 'gestionar/:rProcessId', component: ManageProcedureComponent
     },
     {
       path: 'registro-especial', component: RoreComponent

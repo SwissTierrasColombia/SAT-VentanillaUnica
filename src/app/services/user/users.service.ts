@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
-export class RProcessesService {
+export class UsersService {
 
     public url: string;
 
@@ -11,12 +11,8 @@ export class RProcessesService {
         this.url = environment.apiBaseUrlPrefix;
     }
 
-    saveInformationStep(data: FormData) {
-        return this.http.post(this.url + '/r/processes', data, { observe: 'response' });
-    }
-
-    getProcess(rProcessId: string) {
-        return this.http.get(this.url + '/r/processes/' + rProcessId, { observe: 'response' });
+    getTasksProcedures() {
+        return this.http.get(this.url + `/vu/users/tasks`, { observe: 'response' });
     }
 
 }

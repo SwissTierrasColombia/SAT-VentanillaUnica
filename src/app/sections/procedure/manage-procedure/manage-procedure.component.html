@@ -1,0 +1,187 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h1 class="text-center">Gestionar Trámite - {{process ? process.stepNameActive: ''}}</h1>
+
+            <div class="alert alert-secondary text-center" role="alert" *ngIf="fields.length > 0 && !errorGlobal">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+            <div class="text-center mt-2" *ngIf="codeProcedure !== ''">
+                <div class="alert alert-success text-center" role="alert">
+                    Recuerde que el código que representa al trámite es:
+                    <span class="alert-link">{{codeProcedure}}</span>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <div class="table-responsive" *ngFor="let before of stepsBefore;">
+
+                <table class="table text-center table-striped table-bordered table-hover">
+
+                    <caption>Información del paso: {{before.stepBefore.typeStep.step}}</caption>
+
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Dato</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngFor="let field of before.stepBefore.fields;let i = index">
+                            <td scope="row">{{i+1}}</td>
+                            <td>{{field.description}}</td>
+                            <td>{{before.dataBefore.data[field.field]}}</td>
+                            <td>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <div *ngIf="fields.length > 0 && !errorGlobal">
+
+                <div class="form-group" *ngFor="let field of fields">
+
+                    <label>
+                        <span *ngIf="field.isRequired">*</span>
+                        <strong> {{field.description}}</strong>
+                    </label>
+
+                    <div [ngSwitch]="field.typeData">
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataText">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataNumber">
+                            <input type="number" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataEmail">
+                            <input type="email" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataPhoneNumber">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataDate">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_{{field.field}}"
+                                    [(ngModel)]="dataForm[field.field]" ngbDatepicker #d="ngbDatepicker" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                        <i class="material-icons">calendar_today</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                            <select class="form-control" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]">
+                                <option *ngFor="let option of field.metadata.options;let i = index" value="{{i}}">
+                                    {{option}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                            <select multiple class="form-control" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]">
+                                <option *ngFor="let option of field.metadata.options;let i = index" value="{{i}}">
+                                    {{option}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                    name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                                <label class="form-check-label" for="exampleCheck1">{{field.description}}</label>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataTextarea">
+                            <textarea class="form-control" rows="4" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]" style="resize: none;"
+                                placeholder="{{field.description}}"></textarea>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                            <input type="file" name="r_data_{{field.field}}" class="form-control-file"
+                                (change)="onFileChange($event, field.field)" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchDefault>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-center" *ngIf="fields.length > 0">
+                    <button type="button" class="btn btn-info btn-md btn-block" (click)="saveInformation()">
+                        Enviar Información
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="text-center" *ngIf="fields.length <= 0 || errorGlobal">
+                <div class="alert alert-danger text-center" role="alert">
+                    De momento no se puede realizar el trámite, por favor intente más tarde. <br />
+                    <a routerLink="/tramites" class="alert-link">Regresar</a>
+                </div>
+            </div>
+
+            <div class="text-center mt-2" *ngIf="codeProcedure !== ''">
+                <div class="alert alert-success text-center" role="alert">
+                    Recuerde que el código que representa al trámite es:
+                    <span class="alert-link">{{codeProcedure}}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- <pre>Model: {{ stepsBefore | json }}</pre> -->
+
+</div>

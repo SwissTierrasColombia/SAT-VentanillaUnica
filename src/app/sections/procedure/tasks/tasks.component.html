@@ -1,0 +1,46 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h1 class="text-center">Trámites Pendientes</h1>
+        </div>
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <div class="table-responsive">
+                <table class="table text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Proceso</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Fecha Creación</th>
+                            <th scope="col">Gestionar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let process of processes;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td scope="row">{{process.process.process}}</td>
+                            <td scope="row">{{process.stepNameActive}}</td>
+                            <td scope="row">{{process.process.createdAt}}</td>
+                            <td>
+                                <a routerLink="/tramites/gestionar/{{process._id}}">
+                                    Gestionar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

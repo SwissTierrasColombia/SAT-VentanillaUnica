@@ -15,4 +15,8 @@ export class RProceduresService {
         return this.http.get(this.url + `/r/procedures/${mProcessId}/fields`, { observe: 'response' });
     }
 
+    getDataContinueProcedure(rProcessId: string) {
+        return this.http.get(this.url + `/r/procedures/${rProcessId}/fields-next`, { observe: 'response' });
+    }
+
 }

@@ -29,6 +29,7 @@ import { TypeDataFieldModel } from './models/typeDataField.model';
 import { MProcessesService } from './services/process-manager/m-processes.service';
 import { RProceduresService } from './services/process-manager/r-procedures.service';
 import { RProcessesService } from './services/process-manager/r-processes.service';
+import { UsersService } from './services/user/users.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Interceptors
@@ -60,6 +61,7 @@ import { TokenInterceptor } from './services/interceptors/token-interceptor.serv
     MProcessesService,
     RProceduresService,
     RProcessesService,
+    UsersService,
     TypeDataFieldModel,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }

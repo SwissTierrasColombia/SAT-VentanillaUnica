@@ -4,7 +4,8 @@ import { AppComponent } from './app.component';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
-//Modules
+
+// Modules
 import { LayoutModule } from './layouts/layout.module';
 import { AuthModule } from './sections/auth/auth.module';
 import { HomeModule } from './sections/home/home.module';
@@ -12,18 +13,25 @@ import { ConsultModule } from './sections/consult/consult.module';
 import { ProcedureModule } from './sections/procedure/procedure.module';
 import { ProcessManagerModule } from './sections/process-manager/process-manager.module';
 
-//routing
+// Routing
 import { AppRoutingModule } from './app-routing.module';
 
-//npm
+// Libraries
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { AccordionModule } from 'ngx-bootstrap/accordion'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-//services
+// Models
+import { TypeDataFieldModel } from './models/typeDataField.model';
+
+// Services
 import { MProcessesService } from './services/process-manager/m-processes.service';
+import { RProceduresService } from './services/process-manager/r-procedures.service';
+import { RProcessesService } from './services/process-manager/r-processes.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+// Interceptors
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
 
@@ -50,6 +58,9 @@ import { TokenInterceptor } from './services/interceptors/token-interceptor.serv
   ],
   providers: [
     MProcessesService,
+    RProceduresService,
+    RProcessesService,
+    TypeDataFieldModel,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],

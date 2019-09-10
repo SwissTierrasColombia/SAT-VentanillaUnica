@@ -8,6 +8,7 @@ import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { ConfigStepsComponent } from './config-steps/config-steps.component';
 import { ConfigStepRulesComponent } from './config-step-rules/config-step-rules.component';
 import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.component';
+import { TypeDataFieldModel } from 'src/app/models/typeDataField.model';
 
 
 @NgModule({
@@ -18,6 +19,9 @@ import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.
     FormsModule,
     ReactiveFormsModule,
     NgxGraphModule
-  ]
+  ],
+  providers: [
+    TypeDataFieldModel
+  ],
 })
 export class ProcessManagerModule { }

@@ -14,6 +14,8 @@ import { Step1Component } from './step1/step1.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Step2Component } from './step2/step2.component';
 import { Step3Component } from './step3/step3.component';
+import { Step4Component } from './step4/step4.component';
+import { Step5Component } from './step5/step5.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { Step3Component } from './step3/step3.component';
     DialogBoxRegistroComponent,
     Step1Component,
     Step2Component,
-    Step3Component
+    Step3Component,
+    Step4Component,
+    Step5Component
   ],
   imports: [
     CommonModule,

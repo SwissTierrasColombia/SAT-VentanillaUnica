@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-step3',
@@ -25,7 +27,10 @@ export class Step3Component implements OnInit {
 
   public fileModelPOT: File;
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+  ) {
     this.checkProduct1 = false;
     this.checkProduct2 = false;
     this.checkProduct3 = false;
@@ -90,7 +95,8 @@ export class Step3Component implements OnInit {
   }
 
   public nextStep() {
-    console.log('hola');
+    this.toastr.success('Se ha guaradado la información con éxito', 'Información Guardada');
+    this.router.navigate(['/tramites/pot/paso4']);
   }
 
 }

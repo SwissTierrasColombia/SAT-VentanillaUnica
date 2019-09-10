@@ -1,0 +1,71 @@
+INTERLIS 2.3;
+
+MODEL LADM (en)
+AT "mailto:germap@localhost"
+VERSION "2019-07-29"  =
+  IMPORTS ISO19107_V1_UTM35N;
+
+  TOPIC Cadastre =
+
+    DOMAIN
+
+      Document_Type = (
+        NIT,
+        Personal_ID
+      );
+
+      Parcel_Type = (
+        /** Private parcels in the country
+         */
+        !!@ ili2db.dispName = "Private Parcel"
+        Private,
+        /** Public parcels in the country
+         */
+        !!@ ili2db.dispName = "Public Parcel"
+        Public
+      );
+
+      Party_Type = (
+        Non_Natural_Party,
+        Natural_Party
+      );
+
+      Right_Type = (
+        Occupation,
+        Property
+      );
+
+    CLASS Parcel =
+      parcel_code : MANDATORY TEXT*20;
+      area : TEXT*20;
+      address : TEXT*20;
+      parcel_type : MANDATORY Parcel_Type;
+      geometry : ISO19107_V1_UTM35N.GM_MultiSurface3D;
+    END Parcel;
+
+    CLASS Party =
+      Name : MANDATORY TEXT*200;
+      Documet_Type : MANDATORY Document_Type;
+      Party_Type : MANDATORY Party_Type;
+      Document_ID : TEXT*20;
+      Date_of_Birth : INTERLIS.XMLDate;
+    END Party;
+
+    CLASS Right =
+      !!@ ili2db.dispName = "Right Type"
+      Type : MANDATORY Right_Type;
+    END Right;
+
+    ASSOCIATION Rel_Parcel_Right =
+      Right_Role_In_Parcel -- {1} Parcel;
+      Parcel_Role_in_Right -- {1..*} Right;
+    END Rel_Parcel_Right;
+
+    ASSOCIATION Rel_Right_Party =
+      Party_Role_in_Right -- {1..*} Right;
+      Right_Role_in_Party -- {1..*} Party;
+    END Rel_Right_Party;
+
+  END Cadastre;
+
+END LADM.

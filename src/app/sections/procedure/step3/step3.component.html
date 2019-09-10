@@ -1,0 +1,119 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h3 class="text-center">FORMULACIÓN</h3>
+
+            <div class="alert alert-secondary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+
+        <div class="col col-lg-4 text-center">
+            <h5 class="text-center">Tener en cuenta que la formulación se basa en los siguientes componentes:</h5>
+            <img src="assets/resource_screen_3.png" class="img-fluid" />
+        </div>
+
+        <div class="col col-lg-8">
+
+            <h5 class="text-center">Subir Documentos y/o Productos</h5>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_1"
+                    [(ngModel)]="checkProduct1" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 1: DOCUMENTO de Diagnóstico + Cartografía</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product1')" />
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_2"
+                    [(ngModel)]="checkProduct2" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 2: DOCUMENTO de Formulación + Cartografía</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product2')" />
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_3"
+                    [(ngModel)]="checkProduct3" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 3: Exposición de Motivos</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product3')" />
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_4"
+                    [(ngModel)]="checkProduct4" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 4: DOCUMENTO Resumen</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product4')" />
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_5"
+                    [(ngModel)]="checkProduct5" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 5: Documento Técnico de Soporte (DTS) = Documento de diagnostico +
+                        Formulación+Cartografía</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product5')" />
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="r_data_check_product_6"
+                    [(ngModel)]="checkProduct6" disabled />
+                <label class="form-check-label">
+                    <strong>Producto 6: Proyecto de Acuerdo + Cartografía</strong>
+                </label>
+                <input type="file" class="form-control-file mt-2" (change)="onFileChange($event, 'product6')" />
+            </div>
+
+
+        </div>
+
+        <div class="col col-lg-12">
+
+            <div class="form-group mt-5">
+                <label class="text-center"><strong>Subir y Validar Modelo POT</strong></label>
+                <input type="file" class="form-control-file" (change)="onUploadFile($event)" accept=".ili" />
+                <div *ngIf="fileModelPOT">
+                    <div class="alert alert-success mt-2" role="alert" *ngIf="modelPOTValid">
+                        Modelo POT Válido
+                    </div>
+                    <div class="alert alert-danger mt-2" role="alert"
+                        *ngIf="modelPOTValid !== null && modelPOTValid === false">
+                        Modelo POT Inválido
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-md btn-block mt-2" (click)="validateFile()"
+                    [disabled]="!fileModelPOT">
+                    Validar Modelo
+                </button>
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()"
+                    [disabled]="!checkProduct1 || !checkProduct2 || !checkProduct3 || !checkProduct4 || !checkProduct5 || !checkProduct6 || !modelPOTValid">
+                    Avanzar Paso
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

@@ -5,6 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Libraries
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { UpdateObjectEspecialComponent } from './update-object-especial/update-object-especial.component';
+import { DialogBoxRegistroComponent } from 'src/app/components/dialog-box-registro/dialog-box-registro.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 // Routing
 import { ProcedureRoutingModule } from './procedure-routing.module';
 
@@ -21,14 +25,17 @@ import { ManageProcedureComponent } from './manage-procedure/manage-procedure.co
     ListComponent,
     StartProcedureComponent,
     TasksComponent,
-    ManageProcedureComponent
+    ManageProcedureComponent,
+    UpdateObjectEspecialComponent,
+    DialogBoxRegistroComponent
   ],
   imports: [
     CommonModule,
     ProcedureRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule
   ]
 })
 export class ProcedureModule { }

@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 // Models
 import { TypeDataFieldModel } from './models/typeDataField.model';
@@ -55,7 +56,8 @@ import { TokenInterceptor } from './services/interceptors/token-interceptor.serv
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CollapseModule.forRoot()
   ],
   providers: [
     MProcessesService,

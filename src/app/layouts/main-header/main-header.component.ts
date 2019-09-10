@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/services/template/app.service';
 
 @Component({
   selector: 'app-main-header',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit {
-
-  constructor() { }
+  isCollapsed = true;
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
+  }
+  toggleSidebarPin() {
+    this.appService.toggleSidebarPin();
+  }
+  toggleSidebar() {
+    this.appService.toggleSidebar();
   }
 
 }

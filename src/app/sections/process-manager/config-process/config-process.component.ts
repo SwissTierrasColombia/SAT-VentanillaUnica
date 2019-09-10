@@ -209,7 +209,7 @@ export class ConfigProcessComponent implements OnInit {
     Promise.all([promise1, promise2]).then(values => {
       //let aux = auxAllStep.filter(step => step.status == true)
       //auxStepsNew = auxSteps.filter(step => step.status == true)
-      console.log("auxSteps: ", auxSteps);
+      //console.log("auxSteps: ", auxSteps);
       let array = []
       for (let i in auxSteps) {
         if (auxSteps[i].status) {
@@ -260,7 +260,7 @@ export class ConfigProcessComponent implements OnInit {
     Promise.all([promise1, promise2]).then(values => {
       //let aux = auxAllStep.filter(step => step.status == true)
       //auxStepsNew = auxSteps.filter(step => step.status == true)
-      console.log("auxSteps: ", auxSteps);
+      //console.log("auxSteps: ", auxSteps);
       let array = []
       for (let i in auxSteps) {
         if (auxSteps[i].status) {
@@ -285,7 +285,7 @@ export class ConfigProcessComponent implements OnInit {
     });
   }
   configStepRoles(idStep: string, nameStep: string, id) {
-    console.log(this.stepsProcess[id]);
+    //console.log(this.stepsProcess[id]);
     if (this.steps[id].status) {
       //this.addstepsProcess2();
       this.router.navigate(['gestor-procesos/procesos/' + this.idProcess + '/step/' + idStep + '/' + nameStep + '/config/roles']);
@@ -304,7 +304,7 @@ export class ConfigProcessComponent implements OnInit {
 
   }
   configRules(idStep: string, nameStep: string, id) {
-    console.log(this.stepsProcess[id]);
+    //console.log(this.stepsProcess[id]);
     if (this.steps[id].status) {
       this.addstepsProcess2();
       this.router.navigate(['gestor-procesos/procesos/' + this.idProcess + '/step/' + idStep + '/' + nameStep + '/config/rules']);
@@ -487,7 +487,7 @@ export class ConfigProcessComponent implements OnInit {
       }
       this.serviceMSteps.SetOriginStep(this.idStepSelect._id).subscribe(
         data => {
-          console.log("data: ", data);
+          //console.log("data: ", data);
           this.toastr.success(name, "Haz cambiando el step de origen a:")
           setTimeout(function () { window.location.reload(); }, 1000);
         });

@@ -12,19 +12,19 @@ export class PDomainsService {
     this.url = environment.apiBaseUrlPrefix;
   }
   public GetTypeDataStepsProcess() {
-    return this.httpClient.get<any>(this.url + '/api/p/domains/types-data');
+    return this.httpClient.get<any>(this.url + '/p/domains/types-data');
 
   }
   /**
    * Get Types Callbacks
    */
   public GetTypesCallbacks() {
-    return this.httpClient.get<any>(this.url + '/api/p/domains/types-callback')
+    return this.httpClient.get<any>(this.url + '/p/domains/types-callback')
   }
   /**
    * Get Types Operators
    */
   public GetTypesOperators() {
-    return this.httpClient.get<any>(this.url + '/api/p/domains/types-operator')
+    return this.httpClient.get<any>(this.url + '/p/domains/types-operator')
   }
 }

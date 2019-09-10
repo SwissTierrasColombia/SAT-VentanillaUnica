@@ -149,24 +149,24 @@ body {
     }
   }
 
-  .table {
-    th,
-    td {
-      border-top: 1px solid darken($border-color, 2%);
-    }
+  // .table {
+  //   th,
+  //   td {
+  //     border-top: 1px solid darken($border-color, 2%);
+  //   }
 
-    thead th {
-      border-bottom: 2px solid darken($border-color, 2%);
-    }
+  //   thead th {
+  //     border-bottom: 2px solid darken($border-color, 2%);
+  //   }
 
-    &.table-striped tbody tr:nth-of-type(odd) {
-      background-color: lighten($border-color, 1%);
-    }
+  //   &.table-striped tbody tr:nth-of-type(odd) {
+  //     background-color: lighten($border-color, 9%);
+  //   }
 
-    &.table-hover tbody tr:hover {
-      background-color: lighten($border-color, 1%);
-    }
-  }
+  //   &.table-hover tbody tr:hover {
+  //     background-color: lighten($border-color, 1%);
+  //   }
+  // }
 
   .btn {
     font-size: 0.9rem;

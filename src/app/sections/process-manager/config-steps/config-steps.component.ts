@@ -52,7 +52,7 @@ export class ConfigStepsComponent implements OnInit {
         this.typedata = response;
       }
     )
-    let promiseForm = new Promise((resolve, reject) => {
+    let promiseForm = new Promise((resolve) => {
       this.servicesMProcesses.GetStepsProcess(this.idProcess).subscribe(
         response => {
           this.allstepsSelect = response;
@@ -160,8 +160,12 @@ export class ConfigStepsComponent implements OnInit {
       }
     }
     Promise.all(promise).then(values => {
-      setTimeout(function () { window.location.reload(); }, 1000);
-      this.toastr.success("Información guardada.");
+      if (values.length > 0) {
+        this.toastr.success("Información guardada.");
+        setTimeout(function () { window.location.reload(); }, 1000);
+      } else {
+        this.toastr.info("No se ha agregado ningún campo.");
+      }
     });
 
   }

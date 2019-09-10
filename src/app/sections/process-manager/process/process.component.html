@@ -1,7 +1,7 @@
 <div *ngIf="listaprocesos == true && updateprocess == false">
     <div class="row">
         <div class="col-sm">
-            <div class="card" style="height: 100%">
+            <div class="card_vu" style="height: 100%">
                 <div class="card-header">
                     <h4 class="text-center">Procesos registrados</h4>
                 </div>
@@ -46,7 +46,7 @@
     </div>
 </div>
 <div *ngIf="listaprocesos == false">
-    <div class="card">
+    <div class="card_vu">
         <div class="card-header">
             <div class="row">
                 <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
@@ -76,7 +76,7 @@
     </div>
 </div>
 <div *ngIf="updateprocess">
-    <div class="card">
+    <div class="card_vu">
         <div class="card-header">
             <div class="row">
                 <i class="material-icons cursor m-2" (click)="volver()">backspace</i>

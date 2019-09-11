@@ -75,7 +75,7 @@
             </div>
 
             <div class="form-group">
-                <label><strong>El municipio cuenta con expediente municipal?</strong></label>
+                <label><strong>¿El municipio cuenta con expediente municipal? <br> Coloque la URL aquí. </strong></label>
                 <input type="text" class="form-control" name="r_data_municipal_file_url" placeholder="URL del Documento"
                     [(ngModel)]="municipalFileURL" />
             </div>
@@ -99,7 +99,8 @@
             </div>
 
             <div class="text-center">
-                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()">
+                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()"
+                    [disabled]="!department || !municipality || !typePOT || !type || !dateStart || !observations || !responsable || !fileData">
                     Avanzar Paso
                 </button>
             </div>

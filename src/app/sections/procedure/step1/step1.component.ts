@@ -37,7 +37,7 @@ export class Step1Component implements OnInit {
     this.typePOT = '';
     this.type = '';
     this.dateStart = {};
-    this.municipalFileURL = '';
+    this.municipalFileURL = 'https://alcadiamunicipio/pot/expedienteMunicipal.org';
     this.observations = '';
     this.responsable = '';
     this.fileData = null;

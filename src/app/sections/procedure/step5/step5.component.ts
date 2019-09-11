@@ -41,8 +41,8 @@ export class Step5Component implements OnInit {
     this.dateOption5 = null;
     this.dateOption6 = null;
 
-    this.urlOption4 = '';
-    this.urlOption5 = '';
+    this.urlOption4 = 'https://sigot.igac.gov.co/repositorio/municipio/';
+    this.urlOption5 = 'https://repositorio.icdeat/';
 
     this.checkNotification = false;
 

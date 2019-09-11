@@ -35,7 +35,7 @@
                         </div>
                         <!-- {{form | json}} -->
                         <div class="row m-1" *ngFor="let item of form.conditions; let idInt = index;">
-                            {{item | json}}
+                            <!-- {{item | json}} -->
                             <div class="col-1">
                                 <button class="btn btn-danger" type="submit"
                                     (click)="deleteConditions(idOut,idInt)">-</button>

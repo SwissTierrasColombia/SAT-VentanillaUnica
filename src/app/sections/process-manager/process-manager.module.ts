@@ -9,7 +9,7 @@ import { ConfigStepsComponent } from './config-steps/config-steps.component';
 import { ConfigStepRulesComponent } from './config-step-rules/config-step-rules.component';
 import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.component';
 import { TypeDataFieldModel } from 'src/app/models/typeDataField.model';
-
+import { CallbacksModel } from 'src/app/models/callbacks.model';
 
 @NgModule({
   declarations: [ProcessComponent, ConfigProcessComponent, ConfigStepsComponent, ConfigStepRulesComponent, ConfigStepRolesComponent],
@@ -21,7 +21,8 @@ import { TypeDataFieldModel } from 'src/app/models/typeDataField.model';
     NgxGraphModule
   ],
   providers: [
-    TypeDataFieldModel
+    TypeDataFieldModel,
+    CallbacksModel
   ],
 })
 export class ProcessManagerModule { }

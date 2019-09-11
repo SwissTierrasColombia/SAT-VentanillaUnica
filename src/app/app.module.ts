@@ -26,6 +26,7 @@ import { MProcessesService } from './services/process-manager/m-processes.servic
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
+import { AuthGuard } from './guards/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { TokenInterceptor } from './services/interceptors/token-interceptor.serv
   providers: [
     MProcessesService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

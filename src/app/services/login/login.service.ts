@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +12,7 @@ export class LoginOldService {
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
   });
-  constructor(private httpClient: HttpClient, private route: Router, private toastr: ToastrService) {
+  constructor(private httpClient: HttpClient) {
 
   }
   login(username: string, password: string) {
@@ -25,15 +23,7 @@ export class LoginOldService {
       .set("username", username)
       .set("password", password)
 
-    return this.httpClient.post<any>(this.apiURL + '/realms/SAT/protocol/openid-connect/token', parametros, { headers: this.httpHeaders }).subscribe((res => {
-      this.data = JSON.parse(atob(res.access_token.split('.')[1]))
-      console.log(this.data);
-      sessionStorage.setItem('access_token', res.access_token);
-      this.route.navigate(['inicio']);
-    }), error => {
-      this.toastr.error("Nombre de usuario o contraseña, incorrectos")
-      console.log("error", error);
-    })
+    return this.httpClient.post<any>(this.apiURL + '/realms/SAT/protocol/openid-connect/token', parametros, { headers: this.httpHeaders })
   }
   logout() {
     sessionStorage.removeItem('access_token');

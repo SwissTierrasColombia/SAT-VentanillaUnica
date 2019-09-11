@@ -9,12 +9,12 @@ export const environment = {
   apiBaseUrlPrefix: apiBaseUrl + '/api',
   //ESTAS URLS TOCA CAMBIARLAS POR LOS NUEVOS SERVICIOS
   //url: 'http://192.168.98.69:8000/kong/rdm', 
-  url: 'http://192.168.98.75:9090/api',
+  url: 'http://192.168.98.61:9090/api',
   KEYCLOAK_URL: 'http://192.168.98.69:8080/auth',
   geoserver: 'http://192.168.98.69:8000/geoserver/',
   imageGeo: 'http://192.168.98.69:9090/',
   qr_base_url: 'http://localhost:4200/#/consults/basic-parcel-info',
-  urlRegistro: 'http://192.168.98.75:9091'
+  urlRegistro: 'http://192.168.98.61:9091'
 };
 
 /*

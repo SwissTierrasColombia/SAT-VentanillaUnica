@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+// Libraries
 import { ToastrService } from 'ngx-toastr';
+import { saveAs } from 'file-saver';
 
 // Models
 import { TypeDataFieldModel } from '../../../models/typeDataField.model';
@@ -94,6 +97,34 @@ export class ManageProcedureComponent implements OnInit {
             return item.active === true;
           });
 
+          this.fields.forEach(field => {
+
+            if (this.stepActive.hasOwnProperty('data')) {
+              const value = this.stepActive.data[field.field];
+
+              switch (field.typeData.toString()) {
+
+                case this.typeDataFieldModel.typeDataDate:
+                  if (value) {
+                    const parts = value.split('-');
+                    const date = { year: parseInt(parts[0]), month: parseInt(parts[1]), day: parseInt(parts[2]) };
+                    this.dataForm[field.field] = date;
+                  }
+                  break;
+
+                case this.typeDataFieldModel.typeDataMultipleResponseList:
+                  this.dataForm[field.field] = value.split(',');
+                  break;
+
+                default:
+                  this.dataForm[field.field] = value;
+                  break;
+              }
+
+            }
+
+          });
+
           this.getDataOrderStep(this.stepActive.step._id);
         }
       }, () => {
@@ -112,7 +143,6 @@ export class ManageProcedureComponent implements OnInit {
             return item.step._id === element._id.toString();
           });
           this.stepsBefore.push({ stepBefore: element, dataBefore: findBefore });
-          console.log(this.stepsBefore);
         });
       }
     );
@@ -126,6 +156,39 @@ export class ManageProcedureComponent implements OnInit {
       }
     });
     this.filesForm.push({ file: fileData, field });
+  }
+
+  public isValidOptionTypeDataMultipleResponseList(value, index) {
+
+    const responses = value.split(',');
+    for (const i in responses) {
+      if (responses.hasOwnProperty(i)) {
+        const response = responses[i];
+        if (index === parseInt(response)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public downloadFile(mStepId: string, fieldName: string) {
+    this.rProcessService.downloadFile(this.rProcessId, mStepId, fieldName).subscribe(
+      (data) => {
+        const contentType = data.headers.get('content-type');
+        const type = contentType.split(',')[0];
+        const ext = contentType.split(',')[1];
+        const dataFile = data.body;
+        const blob = new Blob([dataFile], { type });
+        const url = window.URL.createObjectURL(blob);
+        saveAs(blob, 'archivo' + ext);
+        window.open(url);
+      }
+    );
+  }
+
+  public redirectToExternalUrl(url: string) {
+    window.location.href = url;
   }
 
   public saveInformation() {
@@ -173,20 +236,8 @@ export class ManageProcedureComponent implements OnInit {
           this.toastr.success('¡Se ha actualizado la información del trámite con éxito!');
           this.codeProcedure = data.body._id.toString();
 
-          // clear fields
-          for (const prop in this.dataForm) {
-            if (this.dataForm.hasOwnProperty(prop)) {
-              this.dataForm[prop] = '';
-            }
-          }
-          // clear fields files
-          this.fields.forEach(field => {
-            if (field.typeData.toString() === this.typeDataFieldModel.typeDataFile) {
-              const element: HTMLInputElement = document.getElementsByName('r_data_' + field.field)[0] as HTMLInputElement;
-              element.value = '';
-            }
-          });
-          this.filesForm = [];
+          this.getDataContinueProcedure(this.rProcessId);
+          this.getProcess(this.rProcessId);
 
         }
 

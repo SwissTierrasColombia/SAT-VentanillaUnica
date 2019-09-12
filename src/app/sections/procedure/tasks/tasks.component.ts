@@ -25,7 +25,6 @@ export class TasksComponent implements OnInit {
   getTasksPending() {
     this.userService.getTasksProcedures().subscribe(
       (data: any) => {
-        console.log('data', data.body);
         this.processes = data.body;
       }
     );

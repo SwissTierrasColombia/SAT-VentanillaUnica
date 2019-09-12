@@ -33,20 +33,53 @@
 
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Dato</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Opciones</th>
+                            <th class="align-middle" scope="col">#</th>
+                            <th class="align-middle" scope="col">Dato</th>
+                            <th class="align-middle" scope="col">Valor</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <tr *ngFor="let field of before.stepBefore.fields;let i = index">
-                            <td scope="row">{{i+1}}</td>
-                            <td>{{field.description}}</td>
-                            <td>{{before.dataBefore.data[field.field]}}</td>
-                            <td>
+                            <td class="align-middle" scope="row">{{i+1}}</td>
+                            <td class="align-middle">{{field.description}}</td>
+                            <td class="align-middle">
+                                <div [ngSwitch]="field.typeData">
 
+                                    <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                                        {{field.metadata.options[before.dataBefore.data[field.field]]}}
+                                    </div>
+
+                                    <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                                        <ul class="list-unstyled">
+                                            <li *ngFor="let opt of field.metadata.options;let i = index">
+                                                <span
+                                                    *ngIf="isValidOptionTypeDataMultipleResponseList(before.dataBefore.data[field.field], i)">
+                                                    {{opt}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                                        <span *ngIf="before.dataBefore.data[field.field] === 'true'">Si</span>
+                                        <span *ngIf="before.dataBefore.data[field.field] === 'false'">No</span>
+                                    </div>
+
+                                    <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                                        <button class="btn btn-dark btn-sm"
+                                            (click)="downloadFile(before.stepBefore._id, field.field)">Descargar</button>
+                                    </div>
+
+                                    <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                                        {{before.dataBefore.data[field.field]}}
+                                    </div>
+
+                                    <div *ngSwitchDefault>
+                                        {{before.dataBefore.data[field.field]}}
+                                    </div>
+
+                                </div>
                             </td>
                         </tr>
 
@@ -62,6 +95,8 @@
     <div class="row mt-4 mb-5">
 
         <div class="col col-lg-12">
+
+            <h2 class="text-center">Información Requerida - {{process ? process.stepNameActive: ''}}</h2>
 
             <div *ngIf="fields.length > 0 && !errorGlobal">
 
@@ -141,6 +176,16 @@
                         <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
                             <input type="file" name="r_data_{{field.field}}" class="form-control-file"
                                 (change)="onFileChange($event, field.field)" />
+
+                            <div class="alert alert-light mt-2 text-center" role="alert"
+                                *ngIf="stepActive && stepActive.data && stepActive.data[field.field]">
+                                <span class="alert-link">Tener en cuenta:</span> Ya se ha guardado un archivo, si desea
+                                puede reemplazarlo o descargarlo para ver su información.
+                                <br />
+                                <button class="btn btn-dark btn-sm"
+                                    (click)="downloadFile(stepActive.step._id, field.field)">Descargar</button>
+                            </div>
+
                         </div>
 
                         <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
@@ -182,6 +227,6 @@
 
     </div>
 
-    <!-- <pre>Model: {{ stepsBefore | json }}</pre> -->
+    <!-- <pre>Model: {{ stepActive | json }}</pre> -->
 
 </div>

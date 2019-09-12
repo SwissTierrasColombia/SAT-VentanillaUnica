@@ -19,4 +19,9 @@ export class RProcessesService {
         return this.http.get(this.url + '/r/processes/' + rProcessId, { observe: 'response' });
     }
 
+    downloadFile(rProcessId: string, mStepId: string, fieldName: string) {
+        return this.http.get(`${this.url}/r/processes/${rProcessId}/download?step=${mStepId}&field=${fieldName}`,
+            { responseType: 'arraybuffer', observe: 'response' });
+    }
+
 }

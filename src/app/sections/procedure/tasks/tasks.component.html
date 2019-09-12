@@ -17,6 +17,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Código</th>
                             <th scope="col">Proceso</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Fecha Creación</th>
@@ -26,6 +27,7 @@
                     <tbody>
                         <tr *ngFor="let process of processes;let i = index">
                             <th scope="row">{{i+1}}</th>
+                            <th scope="row">{{process._id}}</th>
                             <td scope="row">{{process.process.process}}</td>
                             <td scope="row">{{process.stepNameActive}}</td>
                             <td scope="row">{{process.process.createdAt}}</td>

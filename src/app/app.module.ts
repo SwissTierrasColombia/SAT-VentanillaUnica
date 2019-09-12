@@ -36,6 +36,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // Interceptors
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
+import { AuthGuard } from './guards/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { TokenInterceptor } from './services/interceptors/token-interceptor.serv
     UsersService,
     TypeDataFieldModel,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -4,13 +4,18 @@ import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.com
 import { ProcessComponent } from './process/process.component';
 import { ConfigProcessComponent } from './config-process/config-process.component';
 import { ConfigStepsComponent } from './config-steps/config-steps.component';
-
+import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.component';
 import { ConfigStepRulesComponent } from './config-step-rules/config-step-rules.component';
+import { RoleGuard } from 'src/app/guards/role-guard.service';
+
+
 
 
 const routes: Routes = [{
   path: 'gestor-procesos',
   component: MainLayoutComponent,
+  // canActivate: [RoleGuard],
+  // data: { role: 'Admin' },
   children: [
     {
       path: 'procesos', component: ProcessComponent
@@ -22,10 +27,10 @@ const routes: Routes = [{
       path: 'procesos/:idProceso/step/:idStep/:nameStep/configuracion', component: ConfigStepsComponent
     },
     {
-      path: 'procesos/:idProceso/step/:idStep/:nameStep/config/rules', component: ConfigStepsComponent
+      path: 'procesos/:idProceso/step/:idStep/:nameStep/config/rules', component: ConfigStepRulesComponent
     },
     {
-      path: 'procesos/:idProceso/step/:idStep/:nameStep/config/roles', component: ConfigStepRulesComponent
+      path: 'procesos/:idProceso/step/:idStep/:nameStep/config/roles', component: ConfigStepRolesComponent
     }
   ]
 }];

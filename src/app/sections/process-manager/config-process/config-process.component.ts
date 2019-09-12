@@ -285,6 +285,7 @@ export class ConfigProcessComponent implements OnInit {
     });
   }
   configStepRoles(idStep: string, nameStep: string, id) {
+    console.log("configStepRoles");
     //console.log(this.stepsProcess[id]);
     if (this.steps[id].status) {
       //this.addstepsProcess2();
@@ -297,7 +298,7 @@ export class ConfigProcessComponent implements OnInit {
     console.log(this.stepsProcess[id]);
     if (this.steps[id].status) {
       this.addstepsProcess2();
-      this.router.navigate(['gestor-procesos/procesos/'+ this.idProcess + '/step/' + idStep + '/' + nameStep + '/configuracion/']);
+      this.router.navigate(['gestor-procesos/procesos/' + this.idProcess + '/step/' + idStep + '/' + nameStep + '/configuracion/']);
     } else {
       this.toastr.info("Al parecer no haz agregado este paso al proceso", "Por favor agregalo primero.")
     }

@@ -20,11 +20,12 @@ export class ConfigStepRulesComponent implements OnInit {
   idProcess: string;
   idStepSelect: any;
   allFieldStep: any;
-  typeOperaators: any;
+  TypeData: any;
   allstepsSelect: any;
   allCallback: any;
   steps = [];
   changeStepAux: any;
+  operatorEmpty: string;
 
   constructor(
     private servicesMProcesses: MProcessesService,
@@ -35,7 +36,9 @@ export class ConfigStepRulesComponent implements OnInit {
     private toastr: ToastrService,
     public callbacks: CallbacksModel,
     public typeDataFieldModel: TypeDataFieldModel
-  ) { }
+  ) {
+    this.operatorEmpty = '5d7bd1056887f0354a82e1b1';
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -44,6 +47,13 @@ export class ConfigStepRulesComponent implements OnInit {
         this.nameStep = response.nameStep;
         this.idProcess = response.idProceso;
         //console.log("route response", response);
+      }
+    );
+    this.servicesPDomains.GetTypeDataStepsProcess().subscribe(
+      data => {
+        this.TypeData = data;
+        //console.log(this.TypeData);
+
       }
     );
     this.servicesPDomains.GetTypesCallbacks().subscribe(
@@ -56,7 +66,7 @@ export class ConfigStepRulesComponent implements OnInit {
       this.servicesMProcesses.GetStepsProcess(this.idProcess).subscribe(
         response => {
           this.allstepsSelect = response;
-          console.log("this.allstepsSelect: ", this.allstepsSelect);
+          //console.log("this.allstepsSelect: ", this.allstepsSelect);
           this.idStepSelect = this.allstepsSelect.find((item) => {
             return item.typeStep._id == this.idStep;
           })
@@ -65,7 +75,7 @@ export class ConfigStepRulesComponent implements OnInit {
             this.serviceMSteps.GetFieldsFromStep(this.idStepSelect._id).subscribe(
               response => {
                 this.allFieldStep = response;
-                console.log("this.idStepSelect: ", this.idStepSelect._id);
+                //console.log("this.idStepSelect: ", this.idStepSelect._id);
                 resolve()
               }
             )
@@ -85,7 +95,8 @@ export class ConfigStepRulesComponent implements OnInit {
               {
                 "metadata": {
                   "options": []
-                }
+                },
+                "operators": []
               }
             ],
             "callbacks": [
@@ -100,13 +111,6 @@ export class ConfigStepRulesComponent implements OnInit {
 
 
     });
-    this.servicesPDomains.GetTypesOperators().subscribe(
-      data => {
-        this.typeOperaators = data;
-        //console.log(this.typeOperaators);
-
-      }
-    )
   }
   clone(obj: Object) {
     return JSON.parse(JSON.stringify(obj))
@@ -120,7 +124,8 @@ export class ConfigStepRulesComponent implements OnInit {
         {
           "metadata": {
             "options": []
-          }
+          },
+          "operators": []
         }
       ],
       "callbacks": [
@@ -157,8 +162,9 @@ export class ConfigStepRulesComponent implements OnInit {
   deleteCallback(idOut: number, idin: number) {
     this.formRulesStepProcess[idOut].callbacks.splice(idin, 1);
   }
-  modelChanged(idfiel, idOut, idInt, item) {
-    this.formRulesStepProcess[idOut].conditions[idInt].metadata.options = []
+  modelChanged(idfiel: string, idOut: number, idInt: number) {
+    this.formRulesStepProcess[idOut].conditions[idInt].operators = [];
+    this.formRulesStepProcess[idOut].conditions[idInt].metadata.options = [];
     let aux = this.allFieldStep.find((item) => {
       return item._id == idfiel;
     })
@@ -209,6 +215,13 @@ export class ConfigStepRulesComponent implements OnInit {
     if (aux.typeData._id === this.typeDataFieldModel.typeDataUrl) {
       this.formRulesStepProcess[idOut].conditions[idInt].typeData = this.typeDataFieldModel.typeDataUrl
     }
+    if (this.formRulesStepProcess[idOut].conditions[idInt].typeData) {
+      let auxTypeData = this.TypeData.find(item => {
+        return item._id === this.formRulesStepProcess[idOut].conditions[idInt].typeData
+      });
+      this.formRulesStepProcess[idOut].conditions[idInt].operators = auxTypeData.operators
+    }
+
   }
   CreateRule() {
     let data = this.clone(this.formRulesStepProcess)
@@ -236,5 +249,10 @@ export class ConfigStepRulesComponent implements OnInit {
       )
     }
   }
-
+  modelChangedOperator(item: any, idOut: number, idInt: number) {
+    this.formRulesStepProcess[idOut].conditions[idInt].value = ''
+    if (this.operatorEmpty === item.operator) {
+      this.formRulesStepProcess[idOut].conditions[idInt].value = 'empty'
+    }
+  }
 }

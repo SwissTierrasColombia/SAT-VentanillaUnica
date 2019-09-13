@@ -13,6 +13,7 @@ export class ProcessComponent implements OnInit {
   updateprocess = false;
   process = []
   nomProcessCreate: string;
+  desProcessCreate: string;
   ipProcessUpdate: string;
   dataUpdate: any;
   constructor(
@@ -38,7 +39,11 @@ export class ProcessComponent implements OnInit {
     this.listaprocesos = false;
   }
   CreateProcess() {
-    this.services.CreateProcess(this.nomProcessCreate).subscribe(
+    let data = {
+      'processName': this.nomProcessCreate,
+      "processDescription": this.desProcessCreate
+    }
+    this.services.CreateProcess(data).subscribe(
       data => {
         this.process.push({ 'process': data });
         this.listaprocesos = true;
@@ -61,7 +66,8 @@ export class ProcessComponent implements OnInit {
   updateProcess() {
     this.dataUpdate = {
       "process": this.ipProcessUpdate,
-      "processName": this.nomProcessCreate
+      "processName": this.nomProcessCreate,
+      "processDescription": this.desProcessCreate
     }
     this.services.UpdateaProcess(this.ipProcessUpdate, this.dataUpdate).subscribe(
       response => {

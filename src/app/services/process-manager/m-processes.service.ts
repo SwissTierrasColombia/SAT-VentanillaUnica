@@ -16,13 +16,13 @@ export class MProcessesService {
   /*
   * CreateProcess
   */
-  public CreateProcess(nombre: string) {
-    return this.httpClient.post(this.url + '/m/processes', { processName: nombre });
+  public CreateProcess(data: any) {
+    return this.httpClient.post(this.url + '/m/processes', data);
   }
 
-  /**
-   * Get processes
-   */
+  /*
+  * GetProcesos
+  */
   public GetProcesos() {
     return this.httpClient.get<any>(this.url + '/m/processes');
   }
@@ -33,7 +33,8 @@ export class MProcessesService {
   public UpdateaProcess(ipProcess: string, data: any) {
     return this.httpClient.put(this.url + '/m/processes/' + ipProcess, data);
   }
-  /**
+
+  /*
    * Remove a Process
    */
   public RemoveaProcess(idProcess: string) {

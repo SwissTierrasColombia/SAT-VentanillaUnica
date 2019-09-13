@@ -52,10 +52,10 @@
                 </a>
             </li>
         </ul>
-        <div class="menu-header mt-3 mb-2">
+        <div class="menu-header mt-3 mb-2" *ngIf="mostrarPanelAdmin">
             Administrador
         </div>
-        <ul class="menu-items">
+        <ul class="menu-items" *ngIf="mostrarPanelAdmin">
             <li class="mt-2">
                 <a href="#" [routerLink]="['/gestor-procesos/procesos']" routerLinkActive="active"
                     style="line-height: 23px;">

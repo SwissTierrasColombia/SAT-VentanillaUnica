@@ -27,6 +27,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
 import { AuthGuard } from './guards/auth-guard.service';
+import { RoleGuard } from './guards/role-guard.service';
+import { RoleModel } from './models/role.model';
+
 
 @NgModule({
   declarations: [
@@ -51,10 +54,12 @@ import { AuthGuard } from './guards/auth-guard.service';
     CollapseModule.forRoot()
   ],
   providers: [
+    RoleModel,
+    AuthGuard,
+    RoleGuard,
     MProcessesService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    AuthGuard
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

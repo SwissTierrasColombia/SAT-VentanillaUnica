@@ -15,7 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 1}" role="tab"
                         (click)="tab=1" aria-controls="steps">
-                        <i class="material-icons">add_box</i>Steps
+                        <i class="material-icons">add_box</i>Pasos
                     </a>
                 </li>
                 <!-- <li class="nav-item">
@@ -48,16 +48,27 @@
                                 [ngClass]="{'btn-success':item.status == true, 'btn-secondary':!item.status }">
                                 {{item.step.step}}
                             </div>
-                            <i [ngClass]="{'select':item.isFirst, 'noselect':!item.isFirst }"
-                                class="material-icons cursor m-1" (click)="firstOrigin(item.step._id,item.step.step)">
-                                panorama_fish_eye</i>
-                            <i class="material-icons cursor m-1"
-                                (click)="configStepRoles(item.step._id, item.step.step, i)">people</i>
-                            <i class="material-icons cursor m-1"
-                                (click)="configStep(item.step._id, item.step.step, i)">list_alt</i>
-                            <i class="material-icons cursor m-1"
-                                (click)="configRules(item.step._id, item.step.step, i)">settings</i>
-                            <i class="material-icons cursor m-1" (click)="deleteStep(item.step._id, i)">delete</i>
+                            <span tooltip="Paso inicial" placement="bottom" show-delay="500">
+                                <i [ngClass]="{'select':item.isFirst, 'noselect':!item.isFirst }"
+                                    class="material-icons cursor m-1"
+                                    (click)="firstOrigin(item.step._id,item.step.step)">
+                                    panorama_fish_eye</i>
+                            </span>
+                            <span tooltip="agregar roles" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configStepRoles(item.step._id, item.step.step, i)">people</i>
+                            </span>
+                            <span tooltip="Crear campos" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configStep(item.step._id, item.step.step, i)">list_alt</i>
+                            </span>
+                            <span tooltip="Configurar campos" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configRules(item.step._id, item.step.step, i)">settings</i>
+                            </span>
+                            <span tooltip="Eliminar paso" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1" (click)="deleteStep(item.step._id, i)">delete</i>
+                            </span>
                         </div>
                     </div>
                     <div class="row justify-content-center mt-2">

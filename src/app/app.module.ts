@@ -22,6 +22,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 // Models
 import { TypeDataFieldModel } from './models/typeDataField.model';
@@ -61,7 +62,8 @@ import { RoleModel } from './models/role.model';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    TooltipModule,
   ],
   providers: [
     RoleModel,

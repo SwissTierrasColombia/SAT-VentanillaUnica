@@ -215,6 +215,9 @@ export class ManageProcedureComponent implements OnInit {
           dataForm[field.field] = false;
         }
       }
+      if (field.typeData.toString() === this.typeDataFieldModel.typeDataFile) {
+        dataForm[field.field] = '';
+      }
     });
 
     if (this.filesForm.length > 0) {

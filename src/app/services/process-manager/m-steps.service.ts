@@ -67,6 +67,11 @@ export class MStepsService {
    * Set Origin Step
    */
   public SetOriginStep(idStep: string) {
-    return this.httpClient.put(this.url + '/m/steps/' + idStep + '/origin', {})
+    return this.httpClient.put(this.url + '/m/steps/' + idStep + '/origin', {});
   }
+
+  public getDataOrderStep(mStepId: string) {
+    return this.httpClient.get(this.url + '/m/steps/' + mStepId + '/order', { observe: 'response' });
+  }
+
 }

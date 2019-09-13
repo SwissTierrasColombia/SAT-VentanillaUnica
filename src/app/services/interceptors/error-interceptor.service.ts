@@ -34,7 +34,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           }
           break;
         default:
-          this.toastaService.error("No se a podido conectar con el servidor", "Actualiza la pagina")
+          this.toastaService.error('No se a podido conectar con el servidor', 'Actualiza la pagina');
           break;
       }
 

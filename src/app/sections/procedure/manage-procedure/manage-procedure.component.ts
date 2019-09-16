@@ -9,7 +9,6 @@ import { saveAs } from 'file-saver';
 import { TypeDataFieldModel } from '../../../models/typeDataField.model';
 
 // Services
-import { MProcessesService } from '../../../services/process-manager/m-processes.service';
 import { RProceduresService } from '../../../services/process-manager/r-procedures.service';
 import { RProcessesService } from '../../../services/process-manager/r-processes.service';
 import { MStepsService } from '../../../services/process-manager/m-steps.service';
@@ -140,9 +139,11 @@ export class ManageProcedureComponent implements OnInit {
         this.stepsBefore = [];
         before.forEach(element => {
           const findBefore = this.process.steps.find(item => {
-            return item.step._id === element._id.toString();
+            return item.step._id === element._id.toString() && item.hasOwnProperty('data');
           });
-          this.stepsBefore.push({ stepBefore: element, dataBefore: findBefore });
+          if (findBefore) {
+            this.stepsBefore.push({ stepBefore: element, dataBefore: findBefore });
+          }
         });
       }
     );

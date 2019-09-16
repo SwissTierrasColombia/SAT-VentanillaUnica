@@ -21,76 +21,6 @@
 
     </div>
 
-    <div class="row mt-4 mb-5">
-
-        <div class="col col-lg-12">
-
-            <div class="table-responsive" *ngFor="let before of stepsBefore;">
-
-                <table class="table text-center table-striped table-bordered table-hover">
-
-                    <caption>Información del paso: {{before.stepBefore.typeStep.step}}</caption>
-
-                    <thead class="thead-dark">
-                        <tr>
-                            <th class="align-middle" scope="col">#</th>
-                            <th class="align-middle" scope="col">Dato</th>
-                            <th class="align-middle" scope="col">Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr *ngFor="let field of before.stepBefore.fields;let i = index">
-                            <td class="align-middle" scope="row">{{i+1}}</td>
-                            <td class="align-middle">{{field.description}}</td>
-                            <td class="align-middle">
-                                <div [ngSwitch]="field.typeData">
-
-                                    <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
-                                        {{field.metadata.options[before.dataBefore.data[field.field]]}}
-                                    </div>
-
-                                    <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
-                                        <ul class="list-unstyled">
-                                            <li *ngFor="let opt of field.metadata.options;let i = index">
-                                                <span
-                                                    *ngIf="isValidOptionTypeDataMultipleResponseList(before.dataBefore.data[field.field], i)">
-                                                    {{opt}}
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
-                                        <span *ngIf="before.dataBefore.data[field.field] === 'true'">Si</span>
-                                        <span *ngIf="before.dataBefore.data[field.field] === 'false'">No</span>
-                                    </div>
-
-                                    <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
-                                        <button class="btn btn-dark btn-sm"
-                                            (click)="downloadFile(before.stepBefore._id, field.field)">Descargar</button>
-                                    </div>
-
-                                    <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
-                                        {{before.dataBefore.data[field.field]}}
-                                    </div>
-
-                                    <div *ngSwitchDefault>
-                                        {{before.dataBefore.data[field.field]}}
-                                    </div>
-
-                                </div>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="row mt-4 mb-5">
 
@@ -225,6 +155,89 @@
 
         </div>
 
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <h2 class="text-center" *ngIf="stepsBefore.length > 0">Información del Trámite</h2>
+
+            <ngb-tabset [justify]="'fill'">
+
+                <ngb-tab *ngFor="let before of stepsBefore;">
+                    <ng-template ngbTabTitle><b>{{before.stepBefore.typeStep.step}}</b></ng-template>
+                    <ng-template ngbTabContent>
+
+                        <div class="table-responsive">
+                            <table class="table text-center table-striped table-bordered table-hover">
+
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="align-middle" scope="col">#</th>
+                                        <th class="align-middle" scope="col">Dato</th>
+                                        <th class="align-middle" scope="col">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let field of before.stepBefore.fields;let i = index">
+                                        <td class="align-middle" scope="row">{{i+1}}</td>
+                                        <td class="align-middle">{{field.description}}</td>
+                                        <td class="align-middle">
+                                            <div [ngSwitch]="field.typeData">
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                                                    {{field.metadata.options[before.dataBefore.data[field.field]]}}
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                                                    <ul class="list-unstyled">
+                                                        <li *ngFor="let opt of field.metadata.options;let i = index">
+                                                            <span
+                                                                *ngIf="isValidOptionTypeDataMultipleResponseList(before.dataBefore.data[field.field], i)">
+                                                                {{opt}}
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                                                    <span
+                                                        *ngIf="before.dataBefore.data[field.field] === 'true'">Si</span>
+                                                    <span
+                                                        *ngIf="before.dataBefore.data[field.field] === 'false'">No</span>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                                                    <button class="btn btn-dark btn-sm"
+                                                        (click)="downloadFile(before.stepBefore._id, field.field)">Descargar</button>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                                                    {{before.dataBefore.data[field.field]}}
+                                                </div>
+
+                                                <div *ngSwitchDefault>
+                                                    {{before.dataBefore.data[field.field]}}
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+
+                    </ng-template>
+                </ngb-tab>
+
+            </ngb-tabset>
+
+        </div>
     </div>
 
     <!-- <pre>Model: {{ stepActive | json }}</pre> -->

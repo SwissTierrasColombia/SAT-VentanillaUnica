@@ -17,7 +17,7 @@ import { AuthGuard } from '../../guards/auth-guard.service';
 const routes: Routes = [{
   path: 'tramites',
   component: MainLayoutComponent,
-  canActivate: [AuthGuard, RoleEntityGuard],
+  canActivate: [AuthGuard],
   children: [
     {
       path: '', component: ListComponent

@@ -5,6 +5,7 @@ import { MProcessesService } from 'src/app/services/process-manager/m-processes.
 import { MStepsService } from 'src/app/services/process-manager/m-steps.service';
 import { PDomainsService } from 'src/app/services/process-manager/p-domains.service';
 import { RolesService } from 'src/app/services/vu/roles.service';
+import { EntitiesService } from 'src/app/services/vu/entities.service';
 
 @Component({
   selector: 'app-config-step-roles',
@@ -18,6 +19,9 @@ export class ConfigStepRolesComponent implements OnInit {
   stepRoles: any;
   allSteps: any;
   idStepSelect: any;
+  entidades: any;
+  entidad: any;
+  selectEntidad: string;
 
   constructor(
     private servicesMProcesses: MProcessesService,
@@ -26,7 +30,9 @@ export class ConfigStepRolesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private serviceRoles: RolesService) { }
+    private serviceRoles: RolesService,
+    private serviceEntities: EntitiesService
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -37,7 +43,7 @@ export class ConfigStepRolesComponent implements OnInit {
         //console.log("route response", response);
       }
     );
-    let promise1 = new Promise((resolve, reject) => {
+    let promise1 = new Promise((resolve) => {
       this.serviceRoles.GetRoles().subscribe(
         response => {
           this.stepRoles = response;
@@ -49,7 +55,7 @@ export class ConfigStepRolesComponent implements OnInit {
         }
       );
     });
-    let promise2 = new Promise((resolve, reject) => {
+    let promise2 = new Promise((resolve) => {
       this.servicesMProcesses.GetStepsProcess(this.idProcess).subscribe(
         data => {
           this.allSteps = data;
@@ -60,7 +66,18 @@ export class ConfigStepRolesComponent implements OnInit {
         }
       );
     });
-    Promise.all([promise1, promise2]).then(values => {
+    let promise3 = new Promise((resolve) => {
+      this.serviceEntities.GetEntities().subscribe(
+        data => {
+          this.entidades = data;
+          for (let i in this.entidades) {
+            this.entidades[i].status = false;
+          }
+          resolve()
+        }
+      );
+    })
+    Promise.all([promise1, promise2, promise3]).then(values => {
       //console.log("this.idStepSelect: ", this.idStepSelect);
       this.idStepSelect.roles.find((item) => {
         this.stepRoles.filter(rol => {
@@ -70,7 +87,18 @@ export class ConfigStepRolesComponent implements OnInit {
         })
       })
       //console.log("ROl: ", this.stepRoles);
-
+      this.entidades.filter(entity => {
+        if (entity._id === this.idStepSelect.entity) {
+          entity.status = true;
+        }
+      });
+      this.entidad = this.entidades.find(item => {
+        return item.status == true;
+      })
+      if (this.entidad) {
+        this.selectEntidad = this.entidad._id;
+      }
+      //console.log(this.entidad);
     });
   }
   volver() {
@@ -96,5 +124,12 @@ export class ConfigStepRolesComponent implements OnInit {
       )
     }
   }
-
+  addEntity() {
+    this.serviceMSteps.SetEntityToStep(this.idStepSelect._id, this.selectEntidad).subscribe(
+      data => {
+        //console.log("data: ", data);
+        this.toastr.success("Se a agregado la entidad al paso: " + this.nameStep)
+      }
+    )
+  }
 }

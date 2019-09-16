@@ -69,6 +69,12 @@ export class MStepsService {
   public SetOriginStep(idStep: string) {
     return this.httpClient.put(this.url + '/m/steps/' + idStep + '/origin', {});
   }
+  /**
+   * SetEntityToStep
+   */
+  public SetEntityToStep(idStep: string, idEntity: string) {
+    return this.httpClient.put(this.url + '/m/steps/' + idStep + '/entities/' + idEntity, {});
+  }
 
   public getDataOrderStep(mStepId: string) {
     return this.httpClient.get(this.url + '/m/steps/' + mStepId + '/order', { observe: 'response' });

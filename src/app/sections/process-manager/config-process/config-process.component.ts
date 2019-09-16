@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MStepsService } from 'src/app/services/process-manager/m-steps.service';
 import { PStepsService } from 'src/app/services/process-manager/p-steps.service';
 import { MProcessesService } from 'src/app/services/process-manager/m-processes.service';
+import { EntitiesService } from 'src/app/services/vu/entities.service';
 
 @Component({
   selector: 'app-config-process',
@@ -37,6 +38,7 @@ export class ConfigProcessComponent implements OnInit {
   userRolesUpdate: any;
   flowSteps: any;
   firstStep = false;
+  entidades: any;
   constructor(
     private servicesMProcesses: MProcessesService,
     private servicesPSteps: PStepsService,
@@ -44,6 +46,7 @@ export class ConfigProcessComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private servicesEntities: EntitiesService,
     /*     private node: Node,
         private edge: Edge,
         private clusterNode: ClusterNode */
@@ -122,7 +125,31 @@ export class ConfigProcessComponent implements OnInit {
         this.flowSteps = data;
         //console.log(this.flowSteps.nodes);
       }
-    )
+    );
+    this.servicesEntities.GetEntities().subscribe(
+      data => {
+        this.entidades = data;
+        for (let i in this.entidades) {
+          this.entidades[i].status = false;
+        }
+        //console.log('this.entidades', this.entidades);
+        this.servicesMProcesses.GetProcesos().subscribe(
+          data => {
+            //console.log("Procesos: ", data);
+            let proceso = data.find(item => {
+              return item._id === this.idProcess;
+            })
+            proceso.entities.find((item) => {
+              this.entidades.filter(entity => {
+                if (entity._id === item) {
+                  entity.status = true;
+                }
+              });
+            });
+          }
+        )
+      }
+    );
   }
 
   addVariableProcess() {
@@ -499,5 +526,22 @@ export class ConfigProcessComponent implements OnInit {
 
   }
 
-
+  addEntityToProcess(entity: any, status: boolean) {
+    if (status === false) {
+      let data = {
+        'entity': entity._id
+      }
+      this.servicesMProcesses.addEntityToProcess(this.idProcess, data).subscribe(
+        data => {
+          this.toastr.success("Se a agregado la entidad")
+        }
+      )
+    } else if (status === true) {
+      this.servicesMProcesses.removeEntityToProcess(this.idProcess, entity._id).subscribe(
+        data => {
+          this.toastr.info("Se a eliminado la entidad")
+        }
+      )
+    }
+  }
 }

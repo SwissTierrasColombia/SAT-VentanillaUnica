@@ -18,20 +18,31 @@
                         <tbody>
                             <!-- <pre>{{process | json}}</pre> -->
                             <tr *ngFor="let item of process; let id = index">
-                                <td><i class="material-icons cursor"
-                                        (click)="viewupdateProcess(item.process.process,id)">update</i>
+                                <td>
+                                    <span tooltip="Cambiar nombre" placement="top" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="viewupdateProcess(item.process.process,id)">update</i>
+                                    </span>
                                     {{ item.process.process }}
                                 </td>
                                 <td>{{ item.process.createdAt }}</td>
                                 <td>
-                                    <i class="material-icons cursor"
-                                        (click)="ConfigProcess(item.process._id)">settings</i>
-                                    <i class="material-icons cursor ml-2"
-                                        (click)="Deploy(item.process._id)">radio_button_checked</i>
+                                    <span tooltip="Configurar proceso" placement="top" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="ConfigProcess(item.process._id)">settings</i>
+                                    </span>
+                                    <span tooltip="Verificar Proceso" placement="top" show-delay="500">
+                                        <i class="material-icons cursor ml-2"
+                                            (click)="Deploy(item.process._id)">radio_button_checked</i>
+                                    </span>
+
                                 </td>
                                 <td>
-                                    <i class="material-icons cursor"
-                                        (click)="deleteProcess(item.process._id, id)">delete</i>
+                                    <span tooltip="Eliminar proceso" placement="bottom" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="deleteProcess(item.process._id, id)">delete</i>
+                                    </span>
+
                                 </td>
                             </tr>
                         </tbody>

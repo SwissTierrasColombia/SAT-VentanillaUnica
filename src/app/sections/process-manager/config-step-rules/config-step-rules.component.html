@@ -13,7 +13,6 @@
         </div>
     </div>
     <div class="card-body" *ngIf="formRulesStepProcess">
-        <!-- {{formRulesStepProcess | json}} -->
         <form action="" method="post">
             <div class="form-group">
                 <div class="row m-1" *ngFor="let form of formRulesStepProcess; let idOut = index;">
@@ -61,16 +60,16 @@
                                         <span class="input-group-text">Operadores</span>
                                     </div>
                                     <select class="form-control" id="operator{{idOut}}{{idInt}}"
-                                        name="operator{{idOut}}{{idInt}}" [(ngModel)]="item.operator">
-                                        <option *ngFor="let type of typeOperaators" name="type.operator"
+                                        name="operator{{idOut}}{{idInt}}" [(ngModel)]="item.operator"
+                                        (ngModelChange)="modelChangedOperator(item,idOut,idInt)">
+                                        <option *ngFor="let type of item.operators" name="type.operator"
                                             [ngValue]="type._id">
                                             {{type.operator}}
-                                            <!-- {{type.symbol}} -->
                                         </option>
                                     </select>
                                 </div>
                             </div>
-                            <div [ngSwitch]="item.typeData">
+                            <div [ngSwitch]="item.typeData" *ngIf="operatorEmpty !=item.operator ">
                                 <div *ngSwitchCase="typeDataFieldModel.typeDataText">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -116,7 +115,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Valor: </span>
                                         </div>
-                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="date"
+                                        <input class="form-control" id="valor{{idOut}}{{idInt}}" type="number"
                                             name="valor{{idOut}}{{idInt}}" [(ngModel)]="item.value">
                                     </div>
                                 </div>
@@ -295,3 +294,4 @@
         </div>
     </div>
 </div>
+<pre>{{formRulesStepProcess | json}}</pre>

@@ -10,15 +10,24 @@ import { ConfigStepRulesComponent } from './config-step-rules/config-step-rules.
 import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.component';
 import { TypeDataFieldModel } from 'src/app/models/typeDataField.model';
 import { CallbacksModel } from 'src/app/models/callbacks.model';
+import { TooltipModule } from 'ng2-tooltip-directive';
+
 
 @NgModule({
-  declarations: [ProcessComponent, ConfigProcessComponent, ConfigStepsComponent, ConfigStepRulesComponent, ConfigStepRolesComponent],
+  declarations: [
+    ProcessComponent,
+    ConfigProcessComponent,
+    ConfigStepsComponent,
+    ConfigStepRulesComponent,
+    ConfigStepRolesComponent
+  ],
   imports: [
     CommonModule,
     ProcessManagerRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxGraphModule
+    NgxGraphModule,
+    TooltipModule
   ],
   providers: [
     TypeDataFieldModel,

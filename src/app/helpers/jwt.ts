@@ -18,7 +18,7 @@ export class JwtHelper {
         } catch (error) {
             decodedToken = null;
         }
-        return decodedToken.dataToken;
+        return (decodedToken) ? decodedToken.dataToken : false;
     }
 
 }

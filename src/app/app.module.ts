@@ -12,6 +12,7 @@ import { HomeModule } from './sections/home/home.module';
 import { ConsultModule } from './sections/consult/consult.module';
 import { ProcedureModule } from './sections/procedure/procedure.module';
 import { ProcessManagerModule } from './sections/process-manager/process-manager.module';
+import { GeneralModule } from './sections/general/general.module';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
@@ -38,13 +39,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
 import { AuthGuard } from './guards/auth-guard.service';
-import { RoleGuard } from './guards/role-guard.service';
+import { RoleAdminGuard } from './guards/role-admin-guard.service';
 import { RoleModel } from './models/role.model';
+import { RoleEntityGuard } from './guards/role-entity-guard.service';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +54,7 @@ import { RoleModel } from './models/role.model';
     LayoutModule,
     AuthModule,
     HomeModule,
+    GeneralModule,
     ConsultModule,
     ProcedureModule,
     ProcessManagerModule,
@@ -68,7 +71,8 @@ import { RoleModel } from './models/role.model';
   providers: [
     RoleModel,
     AuthGuard,
-    RoleGuard,
+    RoleAdminGuard,
+    RoleEntityGuard,
     MProcessesService,
     RProceduresService,
     RProcessesService,

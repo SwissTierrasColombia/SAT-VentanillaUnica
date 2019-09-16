@@ -13,7 +13,8 @@ import {
   imports: [
     CommonModule,
     ConsultRoutingModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ConsultModule { }

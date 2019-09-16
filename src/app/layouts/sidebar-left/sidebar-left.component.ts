@@ -10,15 +10,20 @@ import { RoleModel } from 'src/app/models/role.model';
 export class SidebarLeftComponent implements OnInit {
   rol: any;
   mostrarPanelAdmin: boolean;
-  constructor(private roles: RoleModel) {
+  mostrarEntidad: boolean;
+  constructor(
+    private roles: RoleModel
+  ) {
     this.mostrarPanelAdmin = false;
+    this.mostrarEntidad = false;
   }
 
   ngOnInit() {
     this.rol = JwtHelper.getUserPublicInformation();
+    //console.log("this.rol: ", this.rol);
     if (this.rol.hasOwnProperty('roles')) {
       const role = this.rol.roles.find(elem => {
-        return elem === this.roles.administrator;
+        return elem._id === this.roles.Administrador;
       });
       if (role) {
         this.mostrarPanelAdmin = true;
@@ -26,7 +31,16 @@ export class SidebarLeftComponent implements OnInit {
         this.mostrarPanelAdmin = false;
       }
     }
-
+    if (this.rol.hasOwnProperty('roles')) {
+      const role = this.rol.roles.find(elem => {
+        return elem._id === this.roles.Administrador || elem._id === this.roles.Entidad;
+      });
+      if (role) {
+        this.mostrarEntidad = true;
+      } else {
+        this.mostrarEntidad = false;
+      }
+    }
   }
 
 }

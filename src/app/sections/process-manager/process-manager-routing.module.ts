@@ -7,15 +7,13 @@ import { ConfigStepsComponent } from './config-steps/config-steps.component';
 import { ConfigStepRolesComponent } from './config-step-roles/config-step-roles.component';
 import { ConfigStepRulesComponent } from './config-step-rules/config-step-rules.component';
 import { AuthGuard } from 'src/app/guards/auth-guard.service';
-import { RoleGuard } from 'src/app/guards/role-guard.service';
-
-
+import { RoleAdminGuard } from 'src/app/guards/role-admin-guard.service';
 
 
 const routes: Routes = [{
   path: 'gestor-procesos',
   component: MainLayoutComponent,
-  canActivate: [AuthGuard, RoleGuard],
+  canActivate: [AuthGuard, RoleAdminGuard],
   children: [
     {
       path: 'procesos', component: ProcessComponent

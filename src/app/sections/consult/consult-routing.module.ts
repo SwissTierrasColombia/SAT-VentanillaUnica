@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
 import { GeneralComponent } from './general/general.component';
 import { InstitutionalComponent } from './institutional/institutional.component';
+import { RoleEntityGuard } from 'src/app/guards/role-entity-guard.service';
 
 
 
@@ -14,7 +15,7 @@ const routes: Routes = [{
       path: 'general', component: GeneralComponent
     },
     {
-      path: 'institucional', component: InstitutionalComponent
+      path: 'institucional', component: InstitutionalComponent, canActivate: [RoleEntityGuard]
     }
   ]
 }];

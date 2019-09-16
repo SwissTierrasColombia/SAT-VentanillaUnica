@@ -10,11 +10,14 @@ import { ListComponent } from './list/list.component';
 import { StartProcedureComponent } from './start-procedure/start-procedure.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
+import { RoleEntityGuard } from '../../guards/role-entity-guard.service';
+import { AuthGuard } from '../../guards/auth-guard.service';
 
 
 const routes: Routes = [{
   path: 'tramites',
   component: MainLayoutComponent,
+  canActivate: [AuthGuard, RoleEntityGuard],
   children: [
     {
       path: '', component: ListComponent

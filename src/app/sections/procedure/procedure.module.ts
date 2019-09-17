@@ -18,6 +18,7 @@ import { ListComponent } from './list/list.component';
 import { StartProcedureComponent } from './start-procedure/start-procedure.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
+import { SearchProcedureComponent } from './search-procedure/search-procedure.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ManageProcedureComponent } from './manage-procedure/manage-procedure.co
     TasksComponent,
     ManageProcedureComponent,
     UpdateObjectEspecialComponent,
-    DialogBoxRegistroComponent
+    DialogBoxRegistroComponent,
+    SearchProcedureComponent
   ],
   imports: [
     CommonModule,

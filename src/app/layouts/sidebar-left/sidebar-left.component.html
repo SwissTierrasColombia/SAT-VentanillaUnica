@@ -38,15 +38,19 @@
         </div>
         <ul class="menu-items">
             <li>
-                <a href="#" routerLink="/tramites" routerLinkActive="active">
+                <a href="#" routerLink="/tramites">
                     <i class="fa fa-tv"></i>
                     <span>Trámites</span>
-                    <!-- <span class="badge badge-warning rounded-0 text-dark p-1">NEW</span> -->
+                </a>
+            </li>
+            <li>
+                <a href="#" routerLink="/tramites/pendientes">
+                    <i class="material-icons">list_alt</i>
+                    <span>Mis Trámites</span>
                 </a>
             </li>
             <li *ngIf="mostrarEntidad">
-                <a href="#" [routerLink]="['/tramites/registro-especial']" routerLinkActive="active"
-                    style="line-height: 23px;">
+                <a href="#" [routerLink]="['/tramites/registro-especial']" style="line-height: 23px;">
                     <i class="fas fa-archive"></i>
                     <span>Registro de Objeto de Régimen Especial</span>
                 </a>

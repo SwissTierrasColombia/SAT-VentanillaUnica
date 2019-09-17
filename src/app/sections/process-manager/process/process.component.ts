@@ -27,10 +27,10 @@ export class ProcessComponent implements OnInit {
       response => {
         for (let i in response) {
           this.process.push({
-            'process': response[i]
+            process: response[i]
           })
         }
-        //console.log("response get this.procesos: ", this.process);
+        // console.log("response get this.procesos: ", this.process);
       }
     );
   }
@@ -38,27 +38,31 @@ export class ProcessComponent implements OnInit {
   viewProcess() {
     this.listaprocesos = false;
   }
+
   CreateProcess() {
-    let data = {
-      'processName': this.nomProcessCreate,
-      "processDescription": this.desProcessCreate
-    }
+    const data = {
+      processName: this.nomProcessCreate,
+      processDescription: this.desProcessCreate
+    };
     this.services.CreateProcess(data).subscribe(
-      data => {
-        this.process.push({ 'process': data });
+      (dataServer: any) => {
+        this.process.push({ process: dataServer });
         this.listaprocesos = true;
-        this.toastr.success("Haz registrado el proceso: " + this.nomProcessCreate)
+        this.toastr.success('Haz registrado el proceso: ' + this.nomProcessCreate);
       }
     );
   }
+
   volver() {
     this.listaprocesos = true;
     this.updateprocess = false;
   }
+
   ConfigProcess(id: string, name: string) {
-    //const nameProcess = name;
+    // const nameProcess = name;
     this.route.navigate(['gestor-procesos/procesos/' + id + '/configuracion/']);
   }
+
   viewupdateProcess(nomProcess: string, id: number) {
     this.updateprocess = true;
     this.nomProcessCreate = nomProcess;
@@ -66,14 +70,14 @@ export class ProcessComponent implements OnInit {
   }
   updateProcess() {
     this.dataUpdate = {
-      "process": this.ipProcessUpdate,
-      "processName": this.nomProcessCreate,
-      "processDescription": this.desProcessCreate
+      process: this.ipProcessUpdate,
+      processName: this.nomProcessCreate,
+      processDescription: this.desProcessCreate
     }
     this.services.UpdateaProcess(this.ipProcessUpdate, this.dataUpdate).subscribe(
       response => {
         setTimeout(function () { window.location.reload(); }, 1000);
-        this.toastr.success("Haz Actualizado un proceso")
+        this.toastr.success('Has actualizado un proceso');
       }
     )
   }
@@ -81,19 +85,37 @@ export class ProcessComponent implements OnInit {
   deleteProcess(idProcess: string, id) {
     this.services.RemoveaProcess(idProcess).subscribe(
       paramName => {
-        this.toastr.success("Se a eliminado un proceso")
+        this.toastr.success('Se a eliminado un proceso');
         this.process.splice(id, 1);
       });
   }
+
   Deploy(idProcess: string, status: boolean, item: any) {
-    this.services.DeployProcess(idProcess).subscribe(
-      data => {
-        this.toastr.success("El proceso ha quedado activado")
-        item.process.active = true;
-      },
-      _ => {
-        item.process.active = false;
-      });
+
+    if (status) {
+
+      this.services.UndeployProcess(idProcess).subscribe(
+        data => {
+          this.toastr.success('El proceso ha quedado desactivado');
+          item.process.active = false;
+        },
+        _ => {
+          item.process.active = false;
+        });
+
+    } else {
+
+      this.services.DeployProcess(idProcess).subscribe(
+        data => {
+          this.toastr.success('El proceso ha quedado activado');
+          item.process.active = true;
+        },
+        _ => {
+          item.process.active = false;
+        });
+    }
+
 
   }
+
 }

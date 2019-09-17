@@ -179,4 +179,11 @@ export class MProcessesService {
     return this.httpClient.delete(this.url + '/m/processes/' + idProcess + '/entities/' + idEntity);
   }
 
+  /*
+   * Undeploy Process
+   */
+  public UndeployProcess(idProcess: string) {
+    return this.httpClient.put(this.url + '/m/processes/' + idProcess + '/undeploy', {});
+  }
+
 }

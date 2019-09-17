@@ -10,6 +10,9 @@ import { ListComponent } from './list/list.component';
 import { StartProcedureComponent } from './start-procedure/start-procedure.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
+import { SearchProcedureComponent } from './search-procedure/search-procedure.component';
+
+// Guards
 import { RoleEntityGuard } from '../../guards/role-entity-guard.service';
 import { AuthGuard } from '../../guards/auth-guard.service';
 
@@ -26,10 +29,13 @@ const routes: Routes = [{
       path: 'iniciar/:mProcessId', component: StartProcedureComponent
     },
     {
-      path: 'tareas', component: TasksComponent
+      path: 'gestionar/:rProcessId', component: ManageProcedureComponent
     },
     {
-      path: 'gestionar/:rProcessId', component: ManageProcedureComponent
+      path: 'consultar', component: SearchProcedureComponent
+    },
+    {
+      path: 'pendientes', component: TasksComponent
     },
     {
       path: 'registro-especial', component: RoreComponent

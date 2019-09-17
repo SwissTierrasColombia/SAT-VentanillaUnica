@@ -1,0 +1,140 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h1 class="text-center">Consultar Trámite</h1>
+        </div>
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Ingresar código de trámite ..."
+                    name="search_procedure" [(ngModel)]="rProcessId" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-info" (click)="searchProcess()">Buscar</button>
+                </div>
+            </div>
+
+            <div class="text-center" *ngIf="notFoundProcedure">
+                <div class="alert alert-danger text-center" role="alert">
+                    No se ha encontrado ningún trámite asociado al código ingresado.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4 mb-5" *ngIf="process">
+
+        <div class="col col-lg-12">
+
+            <h2 class="text-center">Información Trámite</h2>
+
+            <div class="alert alert-success" role="alert" *ngIf="!process.active">
+                El trámite se encuentra finalizado!
+            </div>
+
+            <ngb-tabset [justify]="'fill'">
+
+                <ngb-tab *ngFor="let stepData of steps;">
+                    <ng-template ngbTabTitle><b>{{stepData.step.typeStep.step}}</b></ng-template>
+                    <ng-template ngbTabContent *ngIf="stepData.data">
+
+                        <div class="table-responsive">
+                            <table class="table text-center table-striped table-bordered table-hover">
+
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="align-middle" scope="col">#</th>
+                                        <th class="align-middle" scope="col">Dato</th>
+                                        <th class="align-middle" scope="col">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let field of stepData.fields;let i = index">
+                                        <td class="align-middle" scope="row">{{i+1}}</td>
+                                        <td class="align-middle">{{field.description}}</td>
+                                        <td class="align-middle">
+
+
+
+                                            <div [ngSwitch]="field.typeData">
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                                                    {{field.metadata.options[stepData.data[field.field]]}}
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                                                    <ul class="list-unstyled">
+                                                        <li *ngFor="let opt of field.metadata.options;let i = index">
+                                                            <span
+                                                                *ngIf="isValidOptionTypeDataMultipleResponseList(stepData.data[field.field], i)">
+                                                                {{opt}}
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                                                    <span *ngIf="stepData.data[field.field] === 'true'">Si</span>
+                                                    <span *ngIf="stepData.data[field.field] === 'false'">No</span>
+                                                </div>
+
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                                                    <button class="btn btn-dark btn-sm"
+                                                        (click)="downloadFile(stepData.step._id, field.field)">Descargar</button>
+                                                </div>
+
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                                                    {{stepData.data[field.field]}}
+                                                </div>
+
+
+                                                <div *ngSwitchDefault>
+                                                    {{stepData.data[field.field]}}
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+
+                    </ng-template>
+                    <ng-template ngbTabContent *ngIf="!stepData.data">
+
+                        <div class="alert alert-light mt-5 text-center" role="alert">
+                            <h4 class="alert-heading">
+                                <strong>Sin información</strong>
+                            </h4>
+                            <p>
+                                Aún no se ha suministrado información para este paso del trámite, por favor intente más
+                                tarde.
+                            </p>
+                        </div>
+
+
+                    </ng-template>
+                </ngb-tab>
+
+            </ngb-tabset>
+
+        </div>
+    </div>
+
+</div>

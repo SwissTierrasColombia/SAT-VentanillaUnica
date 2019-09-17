@@ -28,7 +28,7 @@ export class SearchProcedureComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     this.process = null;
-    this.rProcessId = '5d80e2bd5dab8a17063bae6f';
+    this.rProcessId = '';
     this.notFoundProcedure = false;
     this.steps = [];
   }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelper } from '../../helpers/jwt';
 import { RoleModel } from 'src/app/models/role.model';
+import { LoginService } from '../../services/auth/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-left',
@@ -11,11 +13,15 @@ export class SidebarLeftComponent implements OnInit {
   rol: any;
   mostrarPanelAdmin: boolean;
   mostrarEntidad: boolean;
+  mostrarTramites: boolean;
   constructor(
-    private roles: RoleModel
+    private roles: RoleModel,
+    private serviceLogin: LoginService,
+    private router: Router
   ) {
     this.mostrarPanelAdmin = false;
     this.mostrarEntidad = false;
+    this.mostrarTramites = false;
   }
 
   ngOnInit() {
@@ -41,6 +47,14 @@ export class SidebarLeftComponent implements OnInit {
         this.mostrarEntidad = false;
       }
     }
+    if (this.rol) {
+      this.mostrarTramites = true;
+    }
+  }
+  logout() {
+    this.serviceLogin.logout();
+    this.router.navigate(['/inicio'])
+    window.location.reload();
   }
 
 }

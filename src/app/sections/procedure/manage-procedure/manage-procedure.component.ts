@@ -114,6 +114,9 @@ export class ManageProcedureComponent implements OnInit {
                 case this.typeDataFieldModel.typeDataMultipleResponseList:
                   this.dataForm[field.field] = value.split(',');
                   break;
+                case this.typeDataFieldModel.typeDataCheckbox:
+                  this.dataForm[field.field] = (value === 'true') ? true : false;
+                  break;
 
                 default:
                   this.dataForm[field.field] = value;

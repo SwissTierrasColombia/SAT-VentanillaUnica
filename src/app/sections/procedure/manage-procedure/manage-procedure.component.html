@@ -142,7 +142,7 @@
             <div class="text-center" *ngIf="fields.length <= 0 || errorGlobal">
                 <div class="alert alert-danger text-center" role="alert">
                     De momento no se puede realizar el trámite, por favor intente más tarde. <br />
-                    <a routerLink="/tramites" class="alert-link">Regresar</a>
+                    <a routerLink="/tramites/tareas" class="alert-link">Regresar</a>
                 </div>
             </div>
 
@@ -157,7 +157,7 @@
 
     </div>
 
-    <div class="row mt-4 mb-5">
+    <div class="row mt-4 mb-5" *ngIf="!errorGlobal">
 
         <div class="col col-lg-12">
 
@@ -239,7 +239,5 @@
 
         </div>
     </div>
-
-    <!-- <pre>Model: {{ stepActive | json }}</pre> -->
 
 </div>

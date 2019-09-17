@@ -55,7 +55,8 @@ export class ProcessComponent implements OnInit {
     this.listaprocesos = true;
     this.updateprocess = false;
   }
-  ConfigProcess(id: string) {
+  ConfigProcess(id: string, name: string) {
+    //const nameProcess = name;
     this.route.navigate(['gestor-procesos/procesos/' + id + '/configuracion/']);
   }
   viewupdateProcess(nomProcess: string, id: number) {

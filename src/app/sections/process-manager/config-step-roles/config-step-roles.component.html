@@ -27,3 +27,29 @@
         </form>
     </div>
 </div>
+<div class="card" *ngIf="entidades">
+    <div class="card-body">
+        <form action="">
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <h5>Añadir entidades {{nameStep}}</h5>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div class="col-12 form-check form-check-inline ml-5">
+                        <select name="selectEntidad" [(ngModel)]="selectEntidad">
+                            <!-- (ngModelChange)="editOption(count)" -->
+                            <option *ngFor="let option of entidades; let id = index;" [value]="option._id">
+                                {{option.entity}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="addEntity()">Actualiza o añade
+                        entidad</button>
+                    <!-- {{entidad | json}} -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -166,5 +166,17 @@ export class MProcessesService {
   public getProcessesAvailable() {
     return this.httpClient.get(this.url + '/m/processes?available=true', { observe: 'response' });
   }
+  /**
+   * AddEntityToProcess
+   */
+  public addEntityToProcess(idProcess: string, data: any) {
+    return this.httpClient.post(this.url + '/m/processes/' + idProcess + '/entities', data);
+  }
+  /**
+   * RemoveEntityToProcess
+   */
+  public removeEntityToProcess(idProcess: string, idEntity: string) {
+    return this.httpClient.delete(this.url + '/m/processes/' + idProcess + '/entities/' + idEntity);
+  }
 
 }

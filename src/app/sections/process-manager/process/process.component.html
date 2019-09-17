@@ -6,17 +6,18 @@
                     <h4 class="text-center">Procesos registrados</h4>
                 </div>
                 <div class="card-body">
+                    <!-- <pre>{{process | json}}</pre> -->
                     <table class="table" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>Nombre del procesos</th>
                                 <th>Fecha de creación</th>
                                 <th>Configurar</th>
+                                <th>Estado</th>
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <pre>{{process | json}}</pre> -->
                             <tr *ngFor="let item of process; let id = index">
                                 <td>
                                     <span tooltip="Cambiar nombre" placement="top" show-delay="500">
@@ -29,13 +30,22 @@
                                 <td>
                                     <span tooltip="Configurar proceso" placement="top" show-delay="500">
                                         <i class="material-icons cursor"
-                                            (click)="ConfigProcess(item.process._id)">settings</i>
+                                            (click)="ConfigProcess(item.process._id,item.process.process)">settings</i>
                                     </span>
                                     <span tooltip="Verificar Proceso" placement="top" show-delay="500">
                                         <i class="material-icons cursor ml-2"
                                             (click)="Deploy(item.process._id)">radio_button_checked</i>
                                     </span>
 
+                                </td>
+                                <td>
+                                    {{item.process.active?'Activo':'Desactivado'}}
+                                    <span tooltip="Cambiar estado" placement="bottom" show-delay="500">
+                                        <i class="material-icons cursor" [ngClass]="{'activo': item.process.active}"
+                                            (click)="item.process.active=!item.process.active">
+                                            stars
+                                        </i>
+                                    </span>
                                 </td>
                                 <td>
                                     <span tooltip="Eliminar proceso" placement="bottom" show-delay="500">

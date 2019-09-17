@@ -18,12 +18,12 @@
                         <i class="material-icons">add_box</i>Pasos
                     </a>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 2}" role="tab"
                         (click)="tab=2" aria-controls="roles">
-                        <i class="material-icons">people_outline</i>Roles
+                        <i class="material-icons">people_outline</i>Agregar Entidades
                     </a>
-                </li> -->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 3}" role="tab"
                         (click)="tab=3" aria-controls="variables">
@@ -54,7 +54,7 @@
                                     (click)="firstOrigin(item.step._id,item.step.step)">
                                     panorama_fish_eye</i>
                             </span>
-                            <span tooltip="agregar roles" placement="bottom" show-delay="500">
+                            <span tooltip="agregar roles y entidades" placement="bottom" show-delay="500">
                                 <i class="material-icons cursor m-1"
                                     (click)="configStepRoles(item.step._id, item.step.step, i)">people</i>
                             </span>
@@ -78,57 +78,28 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div id="roles" class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel"><br>
-                    <div class="row justify-content-start" *ngIf="roles">
-                        <ul id="ul-{{i}}" class="col-2 m-2 mostrarRoles" *ngFor="let item of roles; let i= index">
-                            <li id="li-{{i}}">
-                                <i class="material-icons">person</i>
-                                {{item.role}}
-                                <i class="material-icons cursor m-2" (click)="configRol(item._id, i)">update</i>
-                                <i class="material-icons cursor m-2" (click)="deleteRol(item._id, i)">delete</i>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12" *ngIf="actualizarRol==false">
-                        <form action="" method="post">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Nombre del Rol: </span>
+                <div id="roles" class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel"><br>
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-12 col-sm-4">
+                                        <h5>Agrega los entidades al proceso</h5>
                                     </div>
-                                    <input class="form-control" id="nomRolCreate" type="text" name="nomRolCreate"
-                                        [(ngModel)]="nomRolCreate">
+                                    <div class="col-12 col-sm-8">
+                                        <div class="col-12 col-sm-3 form-check form-check-inline ml-5"
+                                            *ngFor="let item of entidades; let id = index;">
+                                            <input name="role{{id}}" class="form-check-input" type="checkbox"
+                                                id="inlineCheckbox{{id}}" [(ngModel)]="item.status"
+                                                (click)="addEntityToProcess(item, item.status)">
+                                            <label class="form-check-label" for="inlineCheckbox{{id}}">{{item.entity}}</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                        <div class="row justify-content-center mt-2">
-                            <div class="col-sm-8">
-                                <button (click)="addRolProcess()" type="button" class="btn btn-dark btn-block">Añadir
-                                    rol al proceso</button>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-12" *ngIf="actualizarRol">
-                        <form action="" method="post">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Nombre del Rol: </span>
-                                    </div>
-                                    <input class="form-control" id="nomRolCreate" type="text" name="nomRolCreate"
-                                        [(ngModel)]="nomRolCreate">
-                                </div>
-                            </div>
-                        </form>
-                        <div class="row justify-content-center mt-2">
-                            <div class="col-sm-8">
-                                <button (click)="updateRolProcess()" type="button"
-                                    class="btn btn-dark btn-block">Actualizar
-                                    rol del proceso</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                </div>
                 <div id="variables" class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel"><br>
                     <div class="row justify-content-start" *ngIf="variables">
                         <ul id="ul-{{i}}" class="col-2 m-2 mostrarRoles" *ngFor="let item of variables; let i= index">

@@ -32,19 +32,21 @@
                                         <i class="material-icons cursor"
                                             (click)="ConfigProcess(item.process._id,item.process.process)">settings</i>
                                     </span>
-                                    <span tooltip="Verificar Proceso" placement="top" show-delay="500">
+                                    <!-- <span tooltip="Verificar Proceso" placement="top" show-delay="500">
                                         <i class="material-icons cursor ml-2"
                                             (click)="Deploy(item.process._id)">radio_button_checked</i>
-                                    </span>
-
+                                    </span> -->
                                 </td>
                                 <td>
-                                    {{item.process.active?'Activo':'Desactivado'}}
                                     <span tooltip="Cambiar estado" placement="bottom" show-delay="500">
-                                        <i class="material-icons cursor" [ngClass]="{'activo': item.process.active}"
-                                            (click)="item.process.active=!item.process.active">
-                                            stars
-                                        </i>
+                                        <div class="custom-control custom-switch">
+                                            <input [(ngModel)]="item.process.active" type="checkbox"
+                                                class="custom-control-input" id="customSwitch{{id}}"
+                                                (click)="Deploy(item.process._id, item.process.active, item)">
+                                            <label class="custom-control-label" for="customSwitch{{id}}">
+                                                <!--{{item.process.active?'Activo':'Desactivado'}} item.process.active=!item.process.active;-->
+                                            </label>
+                                        </div>
                                     </span>
                                 </td>
                                 <td>

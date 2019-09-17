@@ -55,9 +55,6 @@ export class InstitutionalComponent implements OnInit {
   constructor(private service: QueryService, private toastr: ToastrService, private route: Router) { }
 
   ngOnInit(): void {
-    if (!sessionStorage.getItem('access_token')) {
-      this.route.navigate(['inicio']);
-    }
   }
   /**/
 

@@ -88,6 +88,22 @@ export class ConfigStepRulesComponent implements OnInit {
         //console.log("this.idStepSelect.rules: ", this.idStepSelect.rules);
 
         this.formRulesStepProcess = this.idStepSelect.rules;
+        //console.log(this.formRulesStepProcess);
+        this.formRulesStepProcess.forEach(element => {
+          element.conditions.forEach(element => {
+            if (this.typeDataFieldModel.typeDataSingleResponseList === element.typeData) {
+              element.value = parseInt(element.value)
+            }
+            if (this.typeDataFieldModel.typeDataMultipleResponseList === element.typeData) {
+              let values = element.value.split(",");
+              values = values.map(element => {
+                return parseInt(element);
+              });
+              element.value = values
+            }
+          });
+
+        });
       } else {
         this.formRulesStepProcess = [
           {
@@ -243,21 +259,29 @@ export class ConfigStepRulesComponent implements OnInit {
         }
       }
     }
-    for (let i in data) {
-      if (data[i]._id) {
-        this.serviceMSteps.UpdateRuleToStep(this.idStepSelect._id, data[i]._id, data[i]).subscribe(
-          response => {
-            this.toastr.success("Se han actualizado las reglas")
-          }
-        )
-      } else {
-        this.serviceMSteps.AddRuleToStep(this.idStepSelect._id, data[i]).subscribe(
-          response => {
-            this.toastr.success("Se han registrado las reglas")
-          }
-        );
+    let promiseForm = new Promise((resolve, reject) => {
+      for (let i in data) {
+        if (data[i]._id) {
+          this.serviceMSteps.UpdateRuleToStep(this.idStepSelect._id, data[i]._id, data[i]).subscribe(
+            response => {
+              this.toastr.success("Se han actualizado las reglas")
+              resolve()
+            }
+          )
+        } else {
+          this.serviceMSteps.AddRuleToStep(this.idStepSelect._id, data[i]).subscribe(
+            response => {
+              this.toastr.success("Se han registrado las reglas")
+              resolve()
+            }
+          );
+        }
       }
-    }
+    });
+    Promise.all([promiseForm]).then(values => {
+      window.location.reload();
+    });
+
   }
   modelChangedOperator(item: any, idOut: number, idInt: number) {
     this.formRulesStepProcess[idOut].conditions[idInt].value = ''

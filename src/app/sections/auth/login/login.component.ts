@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
       response => {
         console.log(this.dataLoginOld = JSON.parse(atob(response.body.token.split('.')[1])));
         sessionStorage.setItem(environment.nameTokenSession, response.body.token)
+        this.route.navigate(['inicio']);
       }); //login nuevo
   }
   public onKey(event: any) {

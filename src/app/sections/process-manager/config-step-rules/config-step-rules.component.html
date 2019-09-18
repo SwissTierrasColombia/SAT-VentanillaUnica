@@ -157,7 +157,6 @@
                                 </div>
 
                                 <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
-                                    <input type="file" class="form-control-file" [(ngModel)]="item.value">
                                 </div>
                                 <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
                                     <div class="input-group">
@@ -168,7 +167,6 @@
                                             name="url{{idOut}}{{idInt}}" [(ngModel)]="item.value">
                                     </div>
                                 </div>
-
                                 <div *ngSwitchDefault>
                                     <h5>No hay ningún campo seleccionado</h5>
                                 </div>
@@ -288,7 +286,7 @@
         </form>
         <div class="row justify-content-center mt-2">
             <div class="col-sm-8">
-                <button (click)="CreateRule()" type="button" class="btn btn-dark btn-block">Agregar Reglas al paso
+                <button (click)="CreateRule()" type="button" class="btn btn-dark btn-block">Guardar información de
                     {{nameStep}}</button>
             </div>
         </div>

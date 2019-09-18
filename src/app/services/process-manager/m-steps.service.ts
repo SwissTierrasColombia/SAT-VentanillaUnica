@@ -46,6 +46,12 @@ export class MStepsService {
     return this.httpClient.post(this.url + '/m/steps/' + idStep + '/rules', data);
   }
   /**
+   * UpdateRuleToStep
+   */
+  public UpdateRuleToStep(idStep: string, idRule: string, data: any) {
+    return this.httpClient.put(this.url + '/m/steps/' + idStep + '/rules/'+idRule, data);
+  }
+  /**
    * Remove rule to step
    */
   public RemoveRuleToStep(idStep: string, idRule: string) {

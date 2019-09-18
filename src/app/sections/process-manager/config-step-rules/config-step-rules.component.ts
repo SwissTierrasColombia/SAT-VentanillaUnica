@@ -225,6 +225,9 @@ export class ConfigStepRulesComponent implements OnInit {
   }
   CreateRule() {
     let data = this.clone(this.formRulesStepProcess)
+
+
+
     for (let i in data) {
       for (let j in data[i].conditions) {
         if (data[i].conditions[j].hasOwnProperty('metadata')) {
@@ -241,12 +244,19 @@ export class ConfigStepRulesComponent implements OnInit {
       }
     }
     for (let i in data) {
-      this.serviceMSteps.AddRuleToStep(this.idStepSelect._id, data[i]).subscribe(
-        response => {
-          this.toastr.success("Se han registrado las reglas")
-          setTimeout(function () { window.location.reload(); }, 1000);
-        }
-      )
+      if (data[i]._id) {
+        this.serviceMSteps.UpdateRuleToStep(this.idStepSelect._id, data[i]._id, data[i]).subscribe(
+          response => {
+            this.toastr.success("Se han actualizado las reglas")
+          }
+        )
+      } else {
+        this.serviceMSteps.AddRuleToStep(this.idStepSelect._id, data[i]).subscribe(
+          response => {
+            this.toastr.success("Se han registrado las reglas")
+          }
+        );
+      }
     }
   }
   modelChangedOperator(item: any, idOut: number, idInt: number) {

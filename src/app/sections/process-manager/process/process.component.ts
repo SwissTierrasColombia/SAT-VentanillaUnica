@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MProcessesService } from 'src/app/services/process-manager/m-processes.service';
+import * as _moment from 'moment'; 
 
+const moment = _moment;
 @Component({
   selector: 'app-process',
   templateUrl: './process.component.html',
@@ -116,6 +118,9 @@ export class ProcessComponent implements OnInit {
     }
 
 
+  }
+  formatDate(date:string){
+    return moment(date).format('DD-MMM-YYYY h:mm:ss')
   }
 
 }

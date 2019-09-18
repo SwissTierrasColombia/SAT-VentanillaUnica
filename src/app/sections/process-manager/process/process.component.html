@@ -11,33 +11,22 @@
                         <thead>
                             <tr>
                                 <th class="text-center">Nombre del proceso</th>
-                                <th class="text-center">Fecha de creación</th>
-                                <th class="text-center">Configurar</th>
-                                <th class="text-center">Estado</th>
                                 <th class="text-center">Trámites ejecución</th>
-                                <th class="text-center">Eliminar</th>
+                                <th class="text-center">Fecha de creación</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of process; let id = index">
                                 <td class="text-center">
-                                    <span tooltip="Cambiar nombre" placement="top" show-delay="500">
-                                        <i class="material-icons cursor"
-                                            (click)="viewupdateProcess(item.process.process,id)">update</i>
-                                    </span>
                                     {{ item.process.process }}
                                 </td>
-                                <td class="text-center">{{ item.process.createdAt }}</td>
                                 <td class="text-center">
-                                    <span tooltip="Configurar proceso" placement="top" show-delay="500">
-                                        <i class="material-icons cursor"
-                                            (click)="ConfigProcess(item.process._id,item.process.process)">settings</i>
-                                    </span>
-                                    <!-- <span tooltip="Verificar Proceso" placement="top" show-delay="500">
-                                        <i class="material-icons cursor ml-2"
-                                            (click)="Deploy(item.process._id)">radio_button_checked</i>
-                                    </span> -->
-                                </td>
+                                        {{item.process.inAction}}
+                                    </td>
+                                <td class="text-center">{{ formatDate(item.process.createdAt) }}</td>
+                              
                                 <td class="text-center">
                                     <span tooltip="Cambiar estado" placement="bottom" show-delay="500">
                                         <div class="custom-control custom-switch">
@@ -51,9 +40,14 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    {{item.process.inAction}}
-                                </td>
-                                <td class="text-center">
+                                        <span tooltip="Cambiar nombre" placement="top" show-delay="500">
+                                                <i class="material-icons cursor"
+                                                    (click)="viewupdateProcess(item.process.process,id)">update</i>
+                                            </span>
+                                            <span tooltip="Configurar proceso" placement="top" show-delay="500">
+                                                    <i class="material-icons cursor"
+                                                        (click)="ConfigProcess(item.process._id,item.process.process)">settings</i>
+                                                </span>
                                     <span tooltip="Eliminar proceso" placement="bottom" show-delay="500">
                                         <i class="material-icons cursor"
                                             (click)="deleteProcess(item.process._id, id)">delete</i>

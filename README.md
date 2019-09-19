@@ -1,27 +1,25 @@
-# SATVentanillaUnica
+# SAT Ventanilla Unica
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.1.
+versión [Angular CLI](https://github.com/angular/angular-cli) 8.2.1.
 
-## Development server
+La ventanilla única es un prototipo de punto único de acceso a la información y servicios de Administración de Tierras; pudiendo integrar diferentes actores que intervienen en los servicios que requiere el ciudadano.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Su alcance está conceptualizado en cuatro etapas:
 
-## Code scaffolding
+- Consulta
+- Certificación
+- Radicación y seguimiento de trámites
+- Gestión de mutaciones
+## Requerimientos
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [Nodejs](https://nodejs.org)  >= **10.x.x**
+- [Angular](https://angular.io/) >= **8.x.x**
 
-## Build
+## Instalación
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```bash
+git clone https://github.com/AgenciaImplementacion/SAT-VentanillaUnica.git
+cd SAT-VentanillaUnica/
+npm i
+ng serve -o
+```

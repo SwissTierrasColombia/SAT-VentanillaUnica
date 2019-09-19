@@ -5,7 +5,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
-import Image from 'ol/layer/Image';
+import ImageLayer from 'ol/layer/Image';
 import XYZ from 'ol/source/XYZ';
 import ImageWMS from 'ol/source/ImageWMS';
 import { Vector as VectorSource } from 'ol/source.js';
@@ -177,7 +177,7 @@ export class GeneralComponent implements OnInit {
           crossOrigin: 'anonymous'
         });
     */
-    const sterreno = new Image({
+    const sterreno = new ImageLayer({
       source: new ImageWMS({
         ratio: 1,
         url: this.urlGeoserver + 'LADM/wms',

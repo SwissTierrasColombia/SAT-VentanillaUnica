@@ -1,0 +1,327 @@
+<div class="card mt-2">
+    <div class="card-header">
+        <div class="row">
+            <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+            <div class="col-11">
+                <h2>Configuración del proceso</h2>
+                <br>
+                <!-- Nav tabs -->
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="col-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 1}" role="tab"
+                        (click)="tab=1" aria-controls="steps">
+                        <i class="material-icons">add_box</i>Pasos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 2}" role="tab"
+                        (click)="tab=2" aria-controls="roles">
+                        <i class="material-icons">people_outline</i>Agregar Entidades
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 3}" role="tab"
+                        (click)="tab=3" aria-controls="variables">
+                        <i class="material-icons">list</i>Variables
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link active cursor" data-toggle="tab" [ngClass]="{'active':tab === 4}" role="tab"
+                        (click)="tab=4; getRoles()" aria-controls="usuarios">
+                        <i class="material-icons">person_add</i>Registrar Usuarios
+                    </a>
+                </li> -->
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="steps" class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel"><br>
+                    <div class="row justify-content-center">
+                        <div *ngFor="let item of steps; let i = index" class="col-12 col-md-2 m-2">
+                            <!-- {{item | json}} -->
+                            <div class="cursor" (click)="addColorstep(i)"
+                                [ngClass]="{'btn-success':item.status == true, 'btn-secondary':!item.status }">
+                                {{item.step.step}}
+                            </div>
+                            <span tooltip="Paso inicial" placement="bottom" show-delay="500">
+                                <i [ngClass]="{'select':item.isFirst, 'noselect':!item.isFirst }"
+                                    class="material-icons cursor m-1"
+                                    (click)="firstOrigin(item.step._id,item.step.step)">
+                                    panorama_fish_eye</i>
+                            </span>
+                            <span tooltip="agregar roles y entidades" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configStepRoles(item.step._id, item.step.step, i)">people</i>
+                            </span>
+                            <span tooltip="Crear campos" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configStep(item.step._id, item.step.step, i)">list_alt</i>
+                            </span>
+                            <span tooltip="Configurar campos" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1"
+                                    (click)="configRules(item.step._id, item.step.step, i)">settings</i>
+                            </span>
+                            <span tooltip="Eliminar paso" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor m-1" (click)="deleteStep(item.step._id, i)">delete</i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-2">
+                        <div class="col-sm-8">
+                            <button (click)="addstepsProcess()" type="button" class="btn btn-dark btn-block">Añadir
+                                steps al proceso</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="roles" class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel"><br>
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-12 col-sm-4">
+                                        <h5>Agrega los entidades al proceso</h5>
+                                    </div>
+                                    <div class="col-12 col-sm-8">
+                                        <div class="col-12 col-sm-3 form-check form-check-inline ml-5"
+                                            *ngFor="let item of entidades; let id = index;">
+                                            <input name="role{{id}}" class="form-check-input" type="checkbox"
+                                                id="inlineCheckbox{{id}}" [(ngModel)]="item.status"
+                                                (click)="addEntityToProcess(item, item.status)">
+                                            <label class="form-check-label" for="inlineCheckbox{{id}}">{{item.entity}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="variables" class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel"><br>
+                    <div class="row justify-content-start" *ngIf="variables">
+                        <ul id="ul-{{i}}" class="col-2 m-2 mostrarRoles" *ngFor="let item of variables; let i= index">
+                            <li id="li-{{i}}">
+                                <i class="material-icons">details</i>
+                                {{item.variable}} : {{item.value}}
+                                <i class="material-icons cursor m-2" (click)="configVariable(item._id, i)">update</i>
+                                <i class="material-icons cursor m-2" (click)="deleteVariable(item._id, i)">delete</i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12" *ngIf="actualizarVariable==false">
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Nombre de la Variable: </span>
+                                            </div>
+                                            <input class="form-control" id="nomVariableCreate" type="text"
+                                                name="nomVariableCreate" [(ngModel)]="nomVariableCreate">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Valor de la Variable: </span>
+                                            </div>
+                                            <input class="form-control" id="valorVariableCreate" type="text"
+                                                name="valorVariableCreate" [(ngModel)]="valorVariableCreate">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-sm-8">
+                                <button (click)="addVariableProcess()" type="button"
+                                    class="btn btn-dark btn-block">Añadir
+                                    Variable al proceso</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="actualizarVariable">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nombre de la Variable: </span>
+                                        </div>
+                                        <input class="form-control" id="nomVariableCreate" type="text"
+                                            name="nomVariableCreate" [(ngModel)]="nomVariableCreate">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Valor de la Variable: </span>
+                                        </div>
+                                        <input class="form-control" id="valorVariableCreate" type="text"
+                                            name="valorVariableCreate" [(ngModel)]="valorVariableCreate">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-sm-8">
+                                <button (click)="updateVariableProcess()" type="button"
+                                    class="btn btn-dark btn-block">Actualizar
+                                    variable del proceso</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div id="usuarios" class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel"><br>
+                    <div class="row justify-content-start" *ngIf="usuarios">
+                        <ul id="ul-{{i}}-User" class="col-2 m-2 mostrarRoles"
+                            *ngFor="let item of usuarios; let i= index">
+                            <li id="li-{{i}}-username">
+                                <i class="material-icons">details</i>
+                                Usuario: {{item.username}}
+                            </li>
+                            <li id="li-{{i}}-firstName-lastName">
+                                Nombre: {{item.firstName}} {{item.lastName}}
+                            </li>
+                            <li id="li-{{i}}-roles">
+                                Roles: <span *ngFor="let rol of item.roles">
+                                    {{rol.role}}
+                                </span>
+                            </li>
+                            <li id="li-{{i}}">
+                                <i class="material-icons cursor m-2" (click)="configUser(item._id, i)">update</i>
+                                <i class="material-icons cursor m-2" (click)="deleteUser(item._id, i)">delete</i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12" *ngIf="actualizarUsuario==false">
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Primer Nombre: </span>
+                                            </div>
+                                            <input class="form-control" id="firstName" type="text" name="firstName"
+                                                [(ngModel)]="firstName">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Segundo Nombre: </span>
+                                            </div>
+                                            <input class="form-control" id="lastName" type="text" name="lastName"
+                                                [(ngModel)]="lastName">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Nombre de usuario </span>
+                                            </div>
+                                            <input class="form-control" id="username" type="text" name="username"
+                                                [(ngModel)]="username">
+                                        </div>
+                                    </div>
+                                    {{userRoles | json}} 
+                                    <div class="col-12 mt-3">
+                                        <div class="form-check form-check-inline ml-5"
+                                            *ngFor="let item of userRoles; let id = index;">
+                                            <input name="role{{id}}" class="form-check-input" type="checkbox"
+                                                id="inlineCheckbox{{id}}" [(ngModel)]="item.status">
+                                            <label class="form-check-label"
+                                                for="inlineCheckbox{{id}}">{{item.role}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-sm-8">
+                                <button (click)="addUserProcess()" type="button" class="btn btn-dark btn-block">Añadir
+                                    Usuario</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="actualizarUsuario">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="col-12 col-lg-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Primer Nombre: </span>
+                                        </div>
+                                        <input class="form-control" id="firstName" type="text" name="firstName"
+                                            [(ngModel)]="firstName">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Segundo Nombre: </span>
+                                        </div>
+                                        <input class="form-control" id="lastName" type="text" name="lastName"
+                                            [(ngModel)]="lastName">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nombre de usuario </span>
+                                        </div>
+                                        <input class="form-control" id="username" type="text" name="username"
+                                            [(ngModel)]="username">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="form-check form-check-inline ml-5"
+                                        *ngFor="let item of userRolesUpdate; let id = index;">
+                                        <input name="role{{id}}" class="form-check-input" type="checkbox"
+                                            id="inlineCheckbox{{id}}" [(ngModel)]="item.status">
+                                        <label class="form-check-label" for="inlineCheckbox{{id}}">{{item.role}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row justify-content-center mt-2">
+                            <div class="col-sm-8">
+                                <button (click)="updateUserProcess()" type="button"
+                                    class="btn btn-dark btn-block">Actualizar
+                                    usuario</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-4" *ngIf="flowSteps">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <h2>Flujo de pasos</h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <ngx-graph class="chart-container" [view]="[1600,300]" [links]="flowSteps.links" [nodes]="flowSteps.nodes"
+                layout="dagreCluster">
+                <ng-template #nodeTemplate let-node>
+                    <svg:g class="node" ngx-tooltip>
+                        <svg:rect [attr.width]="node.dimension.width" [attr.height]="node.dimension.height"
+                            [attr.fill]="node.data.color" />
+                        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+                            {{node.label}}
+                        </svg:text>
+                    </svg:g>
+                </ng-template>
+            </ngx-graph>
+        </div>
+    </div>
+</div>

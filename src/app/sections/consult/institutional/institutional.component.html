@@ -1,0 +1,423 @@
+<div class="animated fadeInRight dura-2">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="icon-magnifier"></i> Consulta Institucional</h3>
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-12">
+                <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
+                <label for="inputNupre">NUPRE</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputNupre"
+                    [(ngModel)]="inputNupre" placeholder="AAAA-00000000000-00">
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=2">
+                <label for="inputCadastralCode">Número Predial</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputCadastralCode"
+                    [(ngModel)]="inputCadastralCode" placeholder="00000000000000000000">
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=3">
+                <label for="inputFMI">Folio de Matrícula Inmobiliaria</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputFMI"
+                    [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+            </div>
+            <div class="text-center col-12">
+                <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showResult">
+
+        <!-- PARTE A -->
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Punto Único de Verdad</h3>
+            </div>
+            <div class="card-body">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab"
+                            (click)="tab=1" aria-controls="home">
+                            <i class="fa fa-legal fa-lg"></i> Verdad Jurídica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab"
+                            (click)="tab=2" aria-controls="profile">
+                            <i class="fa fa-map-o fa-lg"></i> Verdad Física</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab"
+                            (click)="tab=3" aria-controls="messages">
+                            <i class="fa fa-group fa-lg"></i> Partes Interesadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab"
+                            (click)="tab=4" aria-controls="messages">
+                            <i class="fa fa-institution fa-lg"></i> Verdad Administrativa</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" [ngClass]="{'active':tab === 1}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Verdad Jurídica</h3>
+                            <br>
+                            <div>
+                                <h4 class="text-left">Derechos Inscritos</h4>
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No. Matrícula</th>
+                                            <th scope="col">Tipo Derecho</th>
+                                            <th scope="col">Tipo Documento</th>
+                                            <th scope="col">Vigencia</th>
+                                            <th scope="col">Detalle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="legalInfo.FMI!=null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <th scope="row">{{legalInfo.FMI}}</th>
+                                            <td>{{item.attributes['Tipo de derecho']}}</td>
+                                            <td>{{item.attributes['col_fuenteadministrativa'][0].attributes['Tipo de fuente administrativa']}}
+                                            </td>
+                                            <td>-</td>
+                                            <td><a
+                                                    href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i
+                                                        class="fa fa-file fa-lg"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="legalInfo.FMI==null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">-</td>
+                                            <td scope="row">-</td>
+                                            <td scope="row">-</td>
+                                            <td scope="row">-</td>
+                                            <td scope="row">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            <div style="margin-top:30px;">
+                                <h4 class="text-left">Derechos NO Inscritos</h4>
+                                <table class="table" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Proceso Regularización</th>
+                                            <th scope="col">Derecho no inscrito</th>
+                                            <th scope="col">Conflictos</th>
+                                            <th scope="col">Detalle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="legalInfo.FMI==null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">-</td>
+                                            <td>{{item.attributes['Tipo de derecho']}}</td>
+                                            <td>-</td>
+                                            <td><a
+                                                    href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i
+                                                        class="fa fa-file fa-lg"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="legalInfo.FMI!=null">
+                                        <tr *ngFor="let item of legalInfo.col_derecho">
+                                            <td scope="row">--</td>
+                                            <td scope="row">--</td>
+                                            <td scope="row">--</td>
+                                            <td scope="row">--</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- VERDAD FISICA-->
+                    <div class="tab-pane" [ngClass]="{'active':tab === 2}" role="tabpanel">
+                        <h3 class="text-center">Verdad Física</h3>
+                        <hr>
+                        <table class="table" style="width: 100%">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 30%;">Delegación Catastral</th>
+                                    <td>SUCRE</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Municipio del Predio</th>
+                                    <td>OVEJAS</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Ubicación del Predio</th>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Dirección del Predio</th>
+                                    <td>311_2_nombre_calle</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Número Catastral</th>
+                                    <td>
+                                        {{physicalInfo.attributes.predio[0].attributes['Número predial'] ? physicalInfo.attributes.predio[0].attributes['Número predial'] : '--'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Área Catastral (m<sup>2</sup>)</th>
+                                    <td>
+                                        {{physicalInfo.attributes['Área calculada [m2]'] ? physicalInfo.attributes['Área calculada [m2]']: '--'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Tipo de Parcela</th>
+                                    <td>
+                                        {{physicalInfo.attributes.predio[0].attributes['Tipo'] ? physicalInfo.attributes.predio[0].attributes['Tipo'] : '--'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Estado</th>
+                                    <td>ACTIVO</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%;">Otros Datos</th>
+                                    <td style="color: #20a8d8; cursor: pointer;">Catastro Municipal</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- FIN VERDAD FISICA-->
+
+
+
+                    <div class="tab-pane" [ngClass]="{'active':tab === 3}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Interesados</h3>
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Completo</th>
+                                        <th scope="col">Tipo de Documento</th>
+                                        <th scope="col">Número de Documento</th>
+                                        <th scope="col">Tipo de Persona</th>
+                                        <th scope="col">Tipo de Interés</th>
+                                        <th scope="col">% de Derecho</th>
+                                        <th scope="col">Vigencia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of interesadosInfo">
+                                        <td>{{item.razon_social != null ? item.razon_social: item.nombre ? item.razon_social : '--'}}
+                                        </td>
+                                        <td>{{item.tipo_documento ? item.tipo_documento : '--'}}</td>
+                                        <td>{{item.documento_identidad ? item.documento_identidad  : '--'}}</td>
+                                        <td>{{item.interesado_juridico != null ? item.interesado_juridico: 'Natural'}}
+                                        </td>
+                                        <td>{{item.tipo ? item.tipo : '--' }}</td>
+                                        <td>{{item.participacion ? item.participacion : '--'}}</td>
+                                        <td>{{item.comienzo_vida_util_version ? item.comienzo_vida_util_version: '--'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" [ngClass]="{'active':tab === 4}" role="tabpanel">
+                        <div class="col-12">
+                            <h3 class="text-center">Afectaciones</h3>
+                            <hr>
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Código</th>
+                                        <th scope="col">Objeto que afecta</th>
+                                        <th scope="col">Área afectada (m<sup>2</sup>)</th>
+                                        <th scope="col">% de afectación</th>
+                                        <th scope="col">Fecha constitución</th>
+                                        <th scope="col">Fecha expiración</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Detalle Afectación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of admInfo">
+                                        <td>{{item.t_id? item.t_id : '--'}}</td>
+                                        <td>{{item.objeto? item.objeto : '--'}}</td>
+                                        <td>{{item.area? item.area : '--'}}</td>
+                                        <td>{{item.proportion ? item.proportion : '--'}}</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>Activo</td>
+                                        <td>--</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIN PARTE A -->
+
+        <!-- PARTE B -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Mapa</h3>
+            </div>
+            <div class="card-body">
+                <div id="map" class="map mapa" tabindex="0"></div>
+                <img src="{{urlGeoserver}}wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:sat_basic_query"
+                    alt="">
+                <a href="https://ide.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
+                    type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Históricos</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="text-center">Solicitudes de Conservación Radicadas</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Radicación</th>
+                                        <th scope="col">Nº Solicitud</th>
+                                        <th scope="col">Fecha Solicitud</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Tipo Solicitud</th>
+                                        <th scope="col">Modifica Identificador</th>
+                                        <th scope="col">Modifica Geometría</th>
+                                        <th scope="col">Estado del Trámite</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>654654</td>
+                                        <td><a href="#">565654654</a></td>
+                                        <td>2016-05-06</td>
+                                        <td>RADICADO</td>
+                                        <td>Compraventa Total</td>
+                                        <td>No</td>
+                                        <td>Si</td>
+                                        <td>EN PROCESO</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="text-center">Derechos</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nombre Completo</th>
+                                        <th scope="col">Tipo Derecho</th>
+                                        <th scope="col">% Derecho</th>
+                                        <th scope="col">Vigencia</th>
+                                        <th scope="col">Tipo Documento</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Detalle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let item of lealInfoDercho'>
+                                        <td>{{item.attributes['Código registral'] ? item.attributes['Código registral']: '--'}}
+                                        </td>
+                                        <td>
+                                            {{item.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] ? item.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre']: '--'}}
+                                        </td>
+                                        <td>{{item.attributes['Tipo de derecho'] ? item.attributes['Tipo de derecho']: '--'}}
+                                        </td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>
+                                            {{item.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] ? item.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa']:'--'}}
+                                        </td>
+                                        <td>
+                                            {{item.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? item.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad']:'--'}}
+                                        </td>
+                                        <td>
+                                            <img *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] == null"
+                                                src="http://portal.proadmintierra.info:18888/filemanager/v1/file/Local?id=default.2019.2.18.10h18i&thumbnail=true"
+                                                style="width: 20px" alt="">
+                                            <a *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] != null"
+                                                href="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']}}">
+                                                <img src="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']+'&thumbnail=true'}}"
+                                                    style="width: 20px" alt=""></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="text-center">Afectaciones</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <table class="table" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Código</th>
+                                        <th scope="col">Objeto que afecta</th>
+                                        <th scope="col">Área afectada (m<sup>2</sup>)</th>
+                                        <th scope="col">% de afectación</th>
+                                        <th scope="col">Fecha constitución</th>
+                                        <th scope="col">Fecha expiración</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Detalle Afectación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of admInfo">
+                                        <td>{{item.t_id ? item.t_id : '--' }}</td>
+                                        <td>{{item.objeto ? item.objeto : '--' }}</td>
+                                        <td>{{item.area ? item.area : '--' }}</td>
+                                        <td>{{item.proportion ? item.proportion : '--' }}</td>
+                                        <td>--</td>
+                                        <td>--</td>
+                                        <td>Activo</td>
+                                        <td>--</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- FIN PARTE B -->
+        <div *ngIf="showResult">
+            <button class="btn btn-secondary btn-lg btn-block" (click)="generatepdf()">Descargar Reporte</button>
+        </div>
+    </div>
+</div>

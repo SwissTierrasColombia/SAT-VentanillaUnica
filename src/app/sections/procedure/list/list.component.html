@@ -1,0 +1,43 @@
+<div class="container">
+
+    <div class="row mt-5">
+        <div class="col col-lg-12">
+            <h1 class="text-center">Trámites Disponibles</h1>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="card mb-3 ml-3" style="width: 21rem;" *ngFor="let process of processes;">
+
+            <div class="text-center mt-2">
+                <img src="assets/process_default.png" class="card-img-top" alt="..." style="width: 40%">
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{process.process}}
+                </h5>
+                <p class="card-text text-justify">
+                    {{process.description}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <a routerLink="/tramites/consultar">
+                        <button type="button" class="btn btn-secondary btn-sm btn-block mb-1">
+                            Consultar Trámite
+                        </button>
+                    </a>
+                    <a routerLink="/tramites/iniciar/{{process._id}}">
+                        <button type="button" class="btn btn-info btn-sm btn-block mt-1">
+                            Iniciar Trámite
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,243 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h1 class="text-center">Gestionar Trámite - {{process ? process.stepNameActive: ''}}</h1>
+
+            <div class="alert alert-secondary text-center" role="alert" *ngIf="fields.length > 0 && !errorGlobal">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+            <div class="text-center mt-2" *ngIf="codeProcedure !== ''">
+                <div class="alert alert-success text-center" role="alert">
+                    Recuerde que el código que representa al trámite es:
+                    <span class="alert-link">{{codeProcedure}}</span>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <h2 class="text-center">Información Requerida - {{process ? process.stepNameActive: ''}}</h2>
+
+            <div *ngIf="fields.length > 0 && !errorGlobal">
+
+                <div class="form-group" *ngFor="let field of fields">
+
+                    <label>
+                        <span *ngIf="field.isRequired">*</span>
+                        <strong> {{field.description}}</strong>
+                    </label>
+
+                    <div [ngSwitch]="field.typeData">
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataText">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataNumber">
+                            <input type="number" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataEmail">
+                            <input type="email" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataPhoneNumber">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataDate">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_{{field.field}}"
+                                    [(ngModel)]="dataForm[field.field]" ngbDatepicker #d="ngbDatepicker" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                        <i class="material-icons">calendar_today</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                            <select class="form-control" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]">
+                                <option *ngFor="let option of field.metadata.options;let i = index" value="{{i}}">
+                                    {{option}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                            <select multiple class="form-control" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]">
+                                <option *ngFor="let option of field.metadata.options;let i = index" value="{{i}}">
+                                    {{option}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                    name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                                <label class="form-check-label" for="exampleCheck1">{{field.description}}</label>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataTextarea">
+                            <textarea class="form-control" rows="4" name="r_data_{{field.field}}"
+                                [(ngModel)]="dataForm[field.field]" style="resize: none;"
+                                placeholder="{{field.description}}"></textarea>
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                            <input type="file" name="r_data_{{field.field}}" class="form-control-file"
+                                (change)="onFileChange($event, field.field)" />
+
+                            <div class="alert alert-light mt-2 text-center" role="alert"
+                                *ngIf="stepActive && stepActive.data && stepActive.data[field.field]">
+                                <span class="alert-link">Tener en cuenta:</span> Ya se ha guardado un archivo, si desea
+                                puede reemplazarlo o descargarlo para ver su información.
+                                <br />
+                                <button class="btn btn-dark btn-sm"
+                                    (click)="downloadFile(stepActive.step._id, field.field)">Descargar</button>
+                            </div>
+
+                        </div>
+
+                        <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                            <input type="text" class="form-control" placeholder="{{field.description}}"
+                                name="r_data_{{field.field}}" [(ngModel)]="dataForm[field.field]" />
+                        </div>
+
+                        <div *ngSwitchDefault>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-center" *ngIf="fields.length > 0">
+                    <button type="button" class="btn btn-info btn-md btn-block" (click)="saveInformation()">
+                        Enviar Información
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="text-center" *ngIf="fields.length <= 0 || errorGlobal">
+                <div class="alert alert-danger text-center" role="alert">
+                    De momento no se puede realizar el trámite, por favor intente más tarde. <br />
+                    <a routerLink="/tramites/pendientes" class="alert-link">Regresar</a>
+                </div>
+            </div>
+
+            <div class="text-center mt-2" *ngIf="codeProcedure !== ''">
+                <div class="alert alert-success text-center" role="alert">
+                    Recuerde que el código que representa al trámite es:
+                    <span class="alert-link">{{codeProcedure}}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4 mb-5" *ngIf="!errorGlobal">
+
+        <div class="col col-lg-12">
+
+            <h2 class="text-center" *ngIf="stepsBefore.length > 0">Información del Trámite</h2>
+
+            <ngb-tabset [justify]="'fill'">
+
+                <ngb-tab *ngFor="let before of stepsBefore;">
+                    <ng-template ngbTabTitle><b>{{before.stepBefore.typeStep.step}}</b></ng-template>
+                    <ng-template ngbTabContent>
+
+                        <div class="table-responsive">
+                            <table class="table text-center table-striped table-bordered table-hover">
+
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="align-middle" scope="col">#</th>
+                                        <th class="align-middle" scope="col">Dato</th>
+                                        <th class="align-middle" scope="col">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let field of before.stepBefore.fields;let i = index">
+                                        <td class="align-middle" scope="row">{{i+1}}</td>
+                                        <td class="align-middle">{{field.description}}</td>
+                                        <td class="align-middle">
+                                            <div [ngSwitch]="field.typeData">
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataSingleResponseList">
+                                                    {{field.metadata.options[before.dataBefore.data[field.field]]}}
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataMultipleResponseList">
+                                                    <ul class="list-unstyled">
+                                                        <li *ngFor="let opt of field.metadata.options;let i = index">
+                                                            <span
+                                                                *ngIf="isValidOptionTypeDataMultipleResponseList(before.dataBefore.data[field.field], i)">
+                                                                {{opt}}
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataCheckbox">
+                                                    <span
+                                                        *ngIf="before.dataBefore.data[field.field] === 'true'">Si</span>
+                                                    <span
+                                                        *ngIf="before.dataBefore.data[field.field] === 'false'">No</span>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataFile">
+                                                    <button class="btn btn-dark btn-sm"
+                                                        (click)="downloadFile(before.stepBefore._id, field.field)">Descargar</button>
+                                                </div>
+
+                                                <div *ngSwitchCase="typeDataFieldModel.typeDataUrl">
+                                                    {{before.dataBefore.data[field.field]}}
+                                                </div>
+
+                                                <div *ngSwitchDefault>
+                                                    {{before.dataBefore.data[field.field]}}
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+
+                    </ng-template>
+                </ngb-tab>
+
+            </ngb-tabset>
+
+        </div>
+    </div>
+
+</div>

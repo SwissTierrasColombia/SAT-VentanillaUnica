@@ -1,0 +1,194 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="icon-magnifier"></i> Consulta General</h3>
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-12">
+                <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    #buscarNumeroPredial (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
+                    (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
+                <label for="inputNupre">NUPRE</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputNupre"
+                    [(ngModel)]="inputNupre" placeholder="AAAA-00000000000-00">
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=2">
+                <label for="inputCadastralCode">Número Predial</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputCadastralCode"
+                    [(ngModel)]="inputCadastralCode" placeholder="00000000000000000000">
+            </div>
+            <div class="form-group col-12" [hidden]="tipoBusqueda!=3">
+                <label for="inputFMI">Folio de Matrícula Inmobiliaria</label>
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputFMI"
+                    [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+            </div>
+            <div class="text-center col-12">
+                <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="showResult">
+        <div id="card" class="card" *ngFor="let item of basicConsult">
+            <form>
+                <div class="card-header">Predio {{item.id ? item.id: '--'}}</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6 col-sm-12">
+                            <div id="map{{item.id}}" class="map mapa" tabindex="0"></div>
+                            <img src="http://192.168.98.69:8000/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:sat_basic_query"
+                                alt="">
+                            <a href="https://ide.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
+                                type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal</a>
+                        </div>
+                        <div class="col-xs-12 col-md-6 col-sm-12">
+                            <h3>Predio: </h3>
+                            <div *ngFor="let predio of item.attributes.predio" class="bc-result-parcel">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Tipo:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Tipo"] ? predio.attributes["Tipo"]: '--'}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Nombre:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Nombre"] ? predio.attributes["Nombre"]: '--'}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Departamento:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Departamento"] ? predio.attributes["Departamento"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Municipio:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Municipio"] ? predio.attributes["Municipio"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Zona:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Zona"] ? predio.attributes["Zona"]: '--'}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">NUPRE:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["NUPRE"] ? predio.attributes["NUPRE"]: '--'}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">FMI:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["FMI"] ? predio.attributes["FMI"]: '--'}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Número predial:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Número predial"] ? predio.attributes["Número predial"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Número predial anterior:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{predio.attributes["Número predial anterior"] ? predio.attributes["Número predial anterior"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Terreno: </h3>
+                            <div class="bc-result-parcel">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Área de terreno (m<sup>2</sup>):</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{item.attributes["Área de terreno [m2]"] ? item.attributes["Área de terreno [m2]"] : '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Direcciones: </h3>
+                            <div *ngFor="let direccion of item.attributes.extdireccion" class="bc-result-parcel">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">País:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["País"] ? direccion.attributes["País"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Departamento:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["Departamento"] ? direccion.attributes["Departamento"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Ciudad:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["Ciudad"] ? direccion.attributes["Ciudad"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Código postal:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["Código postal"] ? direccion.attributes["Código postal"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Apartado correo:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["Apartado correo"] ? direccion.attributes["Apartado correo"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Nombre calle:</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-control">
+                                            {{direccion.attributes["Nombre calle"] ? direccion.attributes["Nombre calle"]: '--'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div *ngIf="showResult">
+        <button class="btn btn-secondary btn-lg btn-block" (click)="captureScreen()">Descargar Reporte</button>
+    </div>
+</div>

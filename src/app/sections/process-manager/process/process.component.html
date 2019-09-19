@@ -1,0 +1,147 @@
+<div *ngIf="listaprocesos == true && updateprocess == false">
+    <div class="row">
+        <div class="col-sm">
+            <div class="card" style="height: 100%">
+                <div class="card-header">
+                    <h4 class="text-center">Procesos registrados</h4>
+                </div>
+                <div class="card-body">
+                    <!-- <pre>{{process | json}}</pre> -->
+                    <table class="table" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Nombre del proceso</th>
+                                <th class="text-center">Trámites ejecución</th>
+                                <th class="text-center">Fecha de creación</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of process; let id = index">
+                                <td class="text-center">
+                                    {{ item.process.process }}
+                                </td>
+                                <td class="text-center">
+                                        {{item.process.inAction}}
+                                    </td>
+                                <td class="text-center">{{ formatDate(item.process.createdAt) }}</td>
+                              
+                                <td class="text-center">
+                                    <span tooltip="Cambiar estado" placement="bottom" show-delay="500">
+                                        <div class="custom-control custom-switch">
+                                            <input [(ngModel)]="item.process.active" type="checkbox"
+                                                class="custom-control-input" id="customSwitch{{id}}"
+                                                (click)="Deploy(item.process._id, item.process.active, item)">
+                                            <label class="custom-control-label" for="customSwitch{{id}}">
+                                                <!--{{item.process.active?'Activo':'Desactivado'}} item.process.active=!item.process.active;-->
+                                            </label>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                        <span tooltip="Cambiar nombre" placement="top" show-delay="500">
+                                                <i class="material-icons cursor"
+                                                    (click)="viewupdateProcess(item.process.process,id)">update</i>
+                                            </span>
+                                            <span tooltip="Configurar proceso" placement="top" show-delay="500">
+                                                    <i class="material-icons cursor"
+                                                        (click)="ConfigProcess(item.process._id,item.process.process)">settings</i>
+                                                </span>
+                                    <span tooltip="Eliminar proceso" placement="bottom" show-delay="500">
+                                        <i class="material-icons cursor"
+                                            (click)="deleteProcess(item.process._id, id)">delete</i>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-2">
+            <button type="button" class="btn btn-secondary" (click)="viewProcess()">Añadir proceso</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="listaprocesos == false">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+                <div class="col-11">
+                    <h4 class="text-center">Creando Proceso</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre del proceso: </span>
+                        </div>
+                        <input class="form-control" id="nomProcessCreate" type="text" name="nomProcessCreate"
+                            [(ngModel)]="nomProcessCreate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Descripción del proceso: </span>
+                        </div>
+                        <textarea class="form-control" id="desProcessCreate" rows="2" name="desProcessCreate"
+                            [(ngModel)]="desProcessCreate"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-2">
+            <button type="button" class="btn btn-secondary" (click)="CreateProcess()">Crear proceso</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="updateprocess">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <i class="material-icons cursor m-2" (click)="volver()">backspace</i>
+                <div class="col-11">
+                    <h4 class="text-center">Actualizando el proceso {{nomProcessCreate}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre del proceso: </span>
+                        </div>
+                        <input class="form-control" id="nomProcessCreate" type="text" name="nomProcessCreate"
+                            [(ngModel)]="nomProcessCreate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Descripción del proceso: </span>
+                        </div>
+                        <textarea class="form-control" id="desProcessCreate" rows="2" name="desProcessCreate"
+                            [(ngModel)]="desProcessCreate"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-2">
+            <button type="button" class="btn btn-secondary" (click)="updateProcess()">Actualizar proceso</button>
+        </div>
+    </div>
+</div>

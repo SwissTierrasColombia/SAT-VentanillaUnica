@@ -155,5 +155,8 @@ export class RoreComponent implements OnInit {
   volver() {
     window.location.reload()
   }
+  getKeys(item:any){
+   return Object.keys(item)
+  }
 
 }

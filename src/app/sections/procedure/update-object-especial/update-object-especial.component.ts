@@ -136,5 +136,7 @@ export class UpdateObjectEspecialComponent implements OnInit {
     }
     this.services.updateObjectRegister(id, idorganization, name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
   }
-
+  getKeys(item:any){
+    return Object.keys(item)
+   }
 }

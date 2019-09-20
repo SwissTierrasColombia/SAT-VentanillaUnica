@@ -97,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <br>
+            <br />
             <div class="col-10 offset-1" *ngIf="ObjetoSeleccionado" id="Nodo">
                 <div id="child" *ngFor="let cat of formcategories; let count = index">
                     <div id="child{{count}}">
@@ -114,15 +114,17 @@
                                 </div>
                                 <br>
                                 <div class="input-group" *ngIf="camposFeature">
+                                <!-- <pre>{{camposFeature.features[0].properties | json}}</pre> -->
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Campo</span>
                                     </div>
                                     <select class="form-control" id="campo{{count}}" name="campo{{count}}"
                                         [(ngModel)]="cat.category.field">
                                         <!-- <option value="0">Por favor seleccione el campo</option> -->
-                                        <option *ngFor="let item of camposFeature.features[0].properties | keyvalue"
-                                            name="item.key" [ngValue]="item.key">
-                                            {{item.key}}
+                                        <option *ngFor="let item of getKeys(camposFeature.features[0].properties)"
+                                        [ngValue]="item">
+                                            <!-- {{item.key}}  -->
+                                            {{item}}
                                         </option>
                                     </select>
                                 </div>
@@ -253,7 +255,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-center"><i (click)="updateTopic(id)"
-                                        class="icons font-2xl d-block cui-action-redo pointer"></i></td>
+                                        class="material-icons pointer">update</i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -270,7 +272,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-center"><i (click)="openModal(id,'custom-modal-2')"
-                                        class="icons font-2xl d-block cui-trash pointer"></i>
+                                        class="material-icons pointer">delete_forever</i>
                                 </td>
                             </tr>
                         </tbody>

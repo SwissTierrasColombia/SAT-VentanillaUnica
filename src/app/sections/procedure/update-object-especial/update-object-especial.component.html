@@ -97,9 +97,9 @@
                   <select class="form-control" id="campo{{count}}" name="campo{{count}}"
                     [(ngModel)]="cat.category.field">
                     <!-- <option value="0">Por favor seleccione el campo</option> -->
-                    <option *ngFor="let item of camposFeature.features[0].properties | keyvalue" name="item.key"
-                      [ngValue]="item.key">
-                      {{item.key}}
+                    <option *ngFor="let item of getKeys(camposFeature.features[0].properties)" name="item"
+                      [ngValue]="item">
+                      {{item}}
                     </option>
                   </select>
                 </div>

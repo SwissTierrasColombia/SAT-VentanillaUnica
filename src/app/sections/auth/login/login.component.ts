@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   public login() {
     this.service.login(this.loginData.username, this.loginData.password).subscribe(
       response => {
-        console.log(this.dataLoginOld = JSON.parse(atob(response.body.token.split('.')[1])));
+        //console.log(this.dataLoginOld = JSON.parse(atob(response.body.token.split('.')[1])));
         sessionStorage.setItem(environment.nameTokenSession, response.body.token)
         this.route.navigate(['inicio']);
       }); //login nuevo

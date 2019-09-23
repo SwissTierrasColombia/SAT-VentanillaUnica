@@ -53,104 +53,127 @@ export class ConfigProcessComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (response: any) => {
-        this.idProcess = response.idProceso
-      }
-    );
-    this.servicesPSteps.GetSteps().subscribe(
-      response => {
-        for (let i in response) {
-          this.steps.push({
-            "step": response[i],
-            "status": false,
-            "isFirst": false
-          })
+    let promise1 = new Promise((resolve) => {
+      this.route.params.subscribe(
+        (response: any) => {
+          this.idProcess = response.idProceso;
+          resolve();
         }
-      }
-
-    );
-    this.servicesMProcesses.GetRolesProcess(this.idProcess).subscribe(
-      response => {
-        this.roles = response;
-        this.userRoles = this.clone(this.roles)
-        for (let i in this.userRoles) {
-          this.userRoles[i].status = false;
-        }
-        //console.log("this.roles: ", this.roles);
-      }
-    );
-    this.servicesMProcesses.GetStepsProcess(this.idProcess).subscribe(
-      response => {
-        this.stepsProcess = response;
-        //console.log("stepsProcess: ", this.stepsProcess);
-
-        let self = this;
-        this.steps = this.steps.map(function (variable, index, array) {
-          if (self.stepsProcess.find((elem: any) => elem.typeStep._id == variable.step._id)) {
-            variable.status = true;
-          }
-          return variable
-        });
-        this.stepsProcess.forEach(item => {
-          //console.log("item: ", item);
-          if (item.isFirst) {
-            this.steps.find(elem => {
-              if (item.typeStep._id == elem.step._id) {
-                return elem.isFirst = true;
-              }
-            });
-          }
-        });
-      });
-    this.servicesMProcesses.GetVariablesFromProcess(this.idProcess).subscribe(
-      response => {
-        this.variables = response;
-      }
-    )
-    this.servicesMProcesses.GetUsersToProcess(this.idProcess).subscribe(
-      data => {
-        this.usuarios = data;
-        for (let i in this.usuarios) {
-          for (let j in this.usuarios[i].roles) {
-            this.usuarios[i].roles[j].status = true;
-          }
-        }
-        //console.log("this.usuarios: ", this.usuarios);
-
-      }
-    )
-    this.servicesMProcesses.GetStepsFlow(this.idProcess).subscribe(
-      data => {
-        this.flowSteps = data;
-        //console.log(this.flowSteps.nodes);
-      }
-    );
-    this.servicesEntities.GetEntities().subscribe(
-      data => {
-        this.entidades = data;
-        for (let i in this.entidades) {
-          this.entidades[i].status = false;
-        }
-        //console.log('this.entidades', this.entidades);
-        this.servicesMProcesses.GetProcesos().subscribe(
-          data => {
-            //console.log("Procesos: ", data);
-            let proceso = data.find(item => {
-              return item._id === this.idProcess;
+      );
+    });
+    let promise2 = new Promise((resolve) => {
+      this.servicesPSteps.GetSteps().subscribe(
+        response => {
+          for (let i in response) {
+            this.steps.push({
+              "step": response[i],
+              "status": false,
+              "isFirst": false
             })
-            proceso.entities.find((item) => {
-              this.entidades.filter(entity => {
-                if (entity._id === item) {
-                  entity.status = true;
+          }
+          resolve();
+        }
+      );
+    });
+    let promise3 = new Promise((resolve) => {
+      this.servicesMProcesses.GetRolesProcess(this.idProcess).subscribe(
+        response => {
+          this.roles = response;
+          this.userRoles = this.clone(this.roles)
+          for (let i in this.userRoles) {
+            this.userRoles[i].status = false;
+          }
+          //console.log("this.roles: ", this.roles);
+          resolve();
+        }
+      );
+    });
+    let promise4 = new Promise((resolve) => {
+      this.servicesMProcesses.GetStepsProcess(this.idProcess).subscribe(
+        response => {
+          this.stepsProcess = response;
+          //console.log("stepsProcess: ", this.stepsProcess);
+
+          let self = this;
+          this.steps = this.steps.map(function (variable, index, array) {
+            if (self.stepsProcess.find((elem: any) => elem.typeStep._id == variable.step._id)) {
+              variable.status = true;
+            }
+            return variable
+          });
+          this.stepsProcess.forEach(item => {
+            //console.log("item: ", item);
+            if (item.isFirst) {
+              this.steps.find(elem => {
+                if (item.typeStep._id == elem.step._id) {
+                  return elem.isFirst = true;
                 }
               });
-            });
+            }
+          });
+          resolve();
+        });
+    });
+    let promise5 = new Promise((resolve) => {
+      this.servicesMProcesses.GetVariablesFromProcess(this.idProcess).subscribe(
+        response => {
+          this.variables = response;
+          resolve();
+        });
+    });
+    let promise6 = new Promise((resolve) => {
+      this.servicesMProcesses.GetUsersToProcess(this.idProcess).subscribe(
+        data => {
+          this.usuarios = data;
+          for (let i in this.usuarios) {
+            for (let j in this.usuarios[i].roles) {
+              this.usuarios[i].roles[j].status = true;
+            }
           }
-        )
-      }
-    );
-  }
+          //console.log("this.usuarios: ", this.usuarios);
+          resolve();
+        });
+    });
+    let promise7 = new Promise((resolve) => {
+      this.servicesEntities.GetEntities().subscribe(
+        data => {
+          this.entidades = data;
+          for (let i in this.entidades) {
+            this.entidades[i].status = false;
+          }
+          //console.log('this.entidades', this.entidades);
+          this.servicesMProcesses.GetProcesos().subscribe(
+            data => {
+              //console.log("Procesos: ", data);
+              let proceso = data.find(item => {
+                return item._id === this.idProcess;
+              })
+              proceso.entities.find((item) => {
+                this.entidades.filter(entity => {
+                  if (entity._id === item) {
+                    entity.status = true;
+                  }
+                });
+              });
+              resolve();
+            }
+          )
+        }
+      );
+    });
+    let promise8 = new Promise((resolve) => {
+      this.servicesMProcesses.GetStepsFlow(this.idProcess).subscribe(
+        data => {
+          this.flowSteps = data;
+          //console.log(this.flowSteps.nodes);
+          resolve();
+        }
+      );
+    });
+    Promise.all([promise1, promise2, promise3,promise4, promise5, promise6, promise7, promise8]).then(values => {
+    });
+
+  }//fin init
 
   addVariableProcess() {
     let data = {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ObjectEspecialRegimeService } from 'src/app/services/object-especial-regime/object-especial-regime.service';
 import { FeaturesObjectEspecial } from 'src/app/models/features-object-especial.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-object-especial',
@@ -17,7 +18,10 @@ export class UpdateObjectEspecialComponent implements OnInit {
   restricciones = [];
   camposFeature: FeaturesObjectEspecial;
 
-  constructor(private services: ObjectEspecialRegimeService) { }
+  constructor(
+    private services: ObjectEspecialRegimeService,
+    private toastr: ToastrService
+    ) { }
 
   ngOnInit() {
     console.log("OBJ TOTAL:", this.updateObject);
@@ -33,12 +37,6 @@ export class UpdateObjectEspecialComponent implements OnInit {
             "status": false
           })
         }
-        /*         this.restricciones = response
-                for (let i in this.restricciones) {
-                  this.restricciones[i].status = false
-                } */
-        console.log("this.restricciones: ", this.restricciones);
-
         this.formcategories = this.updateObject.categories
         for (let i in this.formcategories) {
           if (this.formcategories[i].restrictions.length < 4) {
@@ -56,23 +54,14 @@ export class UpdateObjectEspecialComponent implements OnInit {
             );
           }
           //console.log("auxrestriciones: ", auxrestriciones);
-
           this.formcategories[i].restrictions = auxrestriciones;
         }
-
-      },
-      error => {
-        console.error("error restricciones: ", error);
       }
     );
 
     this.services.GetFeatures(this.updateObject.objSpecialRegime.wsurl).subscribe(
       response => {
         this.camposFeature = response
-      },
-      error => {
-        console.error(error);
-
       }
     );
   }
@@ -134,7 +123,27 @@ export class UpdateObjectEspecialComponent implements OnInit {
         }
       }
     }
-    this.services.updateObjectRegister(id, idorganization, name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
+    let data = {
+      "objSpecialRegime": {
+        "id": id,
+        "organization": {
+          "id": idorganization,
+          "name": name
+        },
+        "model": model,
+        "object": object,
+        "wsurl": wsurl,
+        "createAt": fechaInicio,
+        "dueDate": fechaFin
+      },
+      "categories": dataCategorias
+    };
+    this.services.updateObjectRegister(data).subscribe(
+      _ => {
+        this.toastr.success("¡Objeto actualizado!")
+        window.location.reload()
+      }
+    );
   }
   getKeys(item:any){
     return Object.keys(item)

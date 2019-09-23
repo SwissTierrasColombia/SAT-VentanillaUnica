@@ -92,7 +92,7 @@ export class GeneralComponent implements OnInit {
           // tslint:disable-next-line:no-string-literal
           if (data['error']) {
             // tslint:disable-next-line:no-string-literal
-            console.log(data['error']);
+            //console.log(data['error']);
             this.showResult = false;
             this.toastr.error('No se encontraron registros.');
           } else {
@@ -102,11 +102,6 @@ export class GeneralComponent implements OnInit {
             });
             this.showResult = true;
           }
-        },
-        error => {
-          console.log(error);
-          this.showResult = false;
-          this.toastr.error('No se encontraron registros.');
         }
       );
   }

@@ -39,10 +39,6 @@ export class RoreComponent implements OnInit {
       response => {
         this.objetosRegistrados = response;
         //console.log("this.objetosRegistrados", this.objetosRegistrados, " this.id: ", this.id);
-      },
-      error => {
-        console.log(error);
-
       }
     )
 
@@ -52,10 +48,6 @@ export class RoreComponent implements OnInit {
     this.services.GetDataModel(this.id).subscribe(
       response => {
         this.entityModels = response;
-      },
-      error => {
-        console.log(error);
-
       }
     );
   }
@@ -75,10 +67,6 @@ export class RoreComponent implements OnInit {
     this.services.GetFeatures(this.ObjetoSeleccionado[0].url).subscribe(
       response => {
         this.camposFeature = response
-      },
-      error => {
-        console.error(error);
-
       }
     );
     this.services.GetRestrictions().subscribe(
@@ -90,10 +78,6 @@ export class RoreComponent implements OnInit {
             "status": false
           })
         }
-      },
-      error => {
-        console.error(error);
-
       }
     );
   }
@@ -114,21 +98,38 @@ export class RoreComponent implements OnInit {
           delete dataCategorias[i].restrictions[j].status;
         }
         const result = dataCategorias[i].restrictions.filter(word => word != null);
-        console.log("result: ", j, " : ", result);
+        //console.log("result: ", j, " : ", result);
         if (j == '3') {
           dataCategorias[i].restrictions = result
         }
       }
     }
-    this.services.PostObjectRegister(name, model, object, wsurl, fechaInicio, fechaFin, dataCategorias);
+    let data = {
+      "objSpecialRegime": {
+        "id": 0,
+        "organization": {
+          "id": 1,
+          "name": name
+        },
+        "model": model,
+        "object": object,
+        "wsurl": wsurl,
+        "createAt": fechaInicio,
+        "dueDate": fechaFin
+      },
+      "categories": dataCategorias
+    };
+    this.services.PostObjectRegister(data).subscribe(
+      _ => {
+        this.toastr.success("¡Objeto Registrado!")
+        window.location.reload()
+      }
+    );
     delete this.ObjetoSeleccionado[0].name;
     this.restricciones = [];
     this.services.getObjetoRegister(this.id).subscribe(
       response => {
         this.objetosRegistrados = response;
-      },
-      error => {
-        console.log(error);
       }
     )
     this.agregar = false
@@ -141,7 +142,12 @@ export class RoreComponent implements OnInit {
   closeModal(option: number, id: string) {
     if (option == 1) {
       this.comprobarEliminar = true
-      this.services.deleteObject(this.objetosRegistrados[this.idDeleteObjet].objSpecialRegime.id)
+      this.services.deleteObject(this.objetosRegistrados[this.idDeleteObjet].objSpecialRegime.id).subscribe(
+        _ => {
+          this.toastr.success("¡Objeto Eliminado!")
+          window.location.reload()
+        }
+      );
     } else if (option == 0) {
       this.toastr.error("No se elimino el objeto")
     }

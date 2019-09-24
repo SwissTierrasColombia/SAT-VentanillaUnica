@@ -12,6 +12,7 @@
                             <tr>
                                 <th class="text-center">Nombre del proceso</th>
                                 <th class="text-center">Trámites ejecución</th>
+                                <th class="text-center">Trámites finalizados</th>
                                 <th class="text-center">Fecha de creación</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Opciones</th>
@@ -24,6 +25,9 @@
                                 </td>
                                 <td class="text-center">
                                         {{item.process.inAction}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{item.process.finished}}
                                     </td>
                                 <td class="text-center">{{ formatDate(item.process.createdAt) }}</td>
                               

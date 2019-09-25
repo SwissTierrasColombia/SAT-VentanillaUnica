@@ -88,5 +88,13 @@
                 </a>
             </li>
         </ul>
+        <ul class="menu-items" *ngIf="mostrarPanelAdmin">
+                <li class="mt-2">
+                    <a href="#" [routerLink]="['/usuarios']" style="line-height: 23px;">
+                        <i class="fas fa-address-book"></i>
+                        <span>Gestor de usuarios</span>
+                    </a>
+                </li>
+            </ul>
     </nav>
 </aside>

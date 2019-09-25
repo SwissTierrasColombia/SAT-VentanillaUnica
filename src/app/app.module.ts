@@ -13,6 +13,7 @@ import { ConsultModule } from './sections/consult/consult.module';
 import { ProcedureModule } from './sections/procedure/procedure.module';
 import { ProcessManagerModule } from './sections/process-manager/process-manager.module';
 import { GeneralModule } from './sections/general/general.module';
+import { ManageUsersModule } from './sections/manage-users/manage-users.module';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
@@ -67,6 +68,7 @@ import { RoleEntityGuard } from './guards/role-entity-guard.service';
     HttpClientModule,
     CollapseModule.forRoot(),
     TooltipModule,
+    ManageUsersModule
   ],
   providers: [
     RoleModel,

@@ -30,4 +30,7 @@ export class LoginService {
   logout() {
     sessionStorage.removeItem(environment.nameTokenSession);
   }
+  registerUser(data: any) {
+    return this.httpClient.post<any>(this.apiURL + '/vu/account/register', data, { observe: 'response' });
+  }
 }

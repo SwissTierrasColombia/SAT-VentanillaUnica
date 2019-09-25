@@ -33,16 +33,6 @@
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="material-icons">
-                                                    email
-                                                </i></span>
-                                        </div>
-                                        <input type="email" name="email" class="form-control"
-                                            placeholder="Correo electronico" autocomplete="email"
-                                            [(ngModel)]="registerData.email" required>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
                                             <span class="input-group-text">
                                                 <i class="material-icons">
                                                     account_circle
@@ -53,6 +43,17 @@
                                             placeholder="Nombre de usuario" autocomplete="username"
                                             [(ngModel)]="registerData.username" required>
                                     </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="material-icons">
+                                                    email
+                                                </i></span>
+                                        </div>
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="Correo electronico" autocomplete="email"
+                                            [(ngModel)]="registerData.email" required>
+                                    </div>
+
                                     <div class="input-group mb-4">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">

@@ -26,7 +26,12 @@ export class RolesService {
    * Update Rol
    */
   public UpdateRole(idRol:string,data: any) {
-    return this.httpClient.put(this.url + '/vu/roles/'+idRol, data)
-    
+    return this.httpClient.put(this.url + '/vu/roles/'+idRol, data) 
+  }
+    /**
+   * Delete Rol
+   */
+  public DeleteRole(idRol:string) {
+    return this.httpClient.delete(this.url + '/vu/roles/'+idRol) 
   }
 }

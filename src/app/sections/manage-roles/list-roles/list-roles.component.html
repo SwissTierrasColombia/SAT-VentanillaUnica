@@ -11,6 +11,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Actualizar</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,12 @@
                         <td> <span tooltip="Actualizar nombre del rol" placement="bottom" show-delay="500">
                                 <i class="material-icons cursor" (click)="updateRol(item)">
                                     update
+                                </i>
+                            </span>
+                        </td>
+                        <td> <span tooltip="Eliminar rol" placement="bottom" show-delay="500">
+                                <i class="material-icons cursor" (click)="deleteRol(item)">
+                                    delete
                                 </i>
                             </span>
                         </td>

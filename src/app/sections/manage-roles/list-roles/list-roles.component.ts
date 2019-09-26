@@ -29,5 +29,13 @@ export class ListRolesComponent implements OnInit {
   updateRol(item: any) {
     this.route.navigate(['/roles/actualizar/' + item._id + '/' + item.role]);
   }
+  deleteRol(item:any){
+    this.serviceRoles.DeleteRole(item._id).subscribe(
+      res=>{
+        this.roles=res;
+        this.toastr.success("Se ha eliminado el rol")
+      }
+    )
+  }
 
 }

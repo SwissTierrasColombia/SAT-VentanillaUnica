@@ -33,16 +33,16 @@ export class ListUsersComponent implements OnInit {
     this.getPage(1);
   }
   getPage(page: number) {
-    console.log("page: ", page);
+    //console.log("page: ", page);
 
     this.asyncListUser = this.service.GetUsers(page.toString()).pipe(
       tap(res => {
-        console.log("res: ", res);
+        //console.log("res: ", res);
         this.totalUsers = res.body.total;
         this.page = page;
       }),
       map(res => {
-        console.log("Map res: ", res);
+        //console.log("Map res: ", res);
         return res.body.docs;
       })
     )

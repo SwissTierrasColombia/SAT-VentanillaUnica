@@ -4,8 +4,8 @@ import { RolesService } from 'src/app/services/vu/roles.service';
 import { EntitiesService } from 'src/app/services/vu/entities.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
-
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
@@ -14,8 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListUsersComponent implements OnInit {
 
-  listUsers: Array<{}>;
-  paginas: number;
+  asyncListUser: Observable<any[]>;
   totalUsers: number;
   page: number;
   limit: number;
@@ -27,40 +26,31 @@ export class ListUsersComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.page = 1;
-    //this.listUsers = [];
     this.limit = 10;
   }
 
   ngOnInit() {
-    this.getUsers();
+    this.getPage(1);
   }
-  getUsers() {
-    this.service.GetUsers('1').subscribe(
-      (data: any) => {
-        console.log("data: ", data);
-        this.listUsers = data.body.docs;
-        this.paginas = data.body.page;
-        this.totalUsers = data.body.total;
-        this.page = data.body.page;
-        console.log("this.listUsers: ", this.listUsers);
-      }
-    );
-  }
-  changePage(numberPage) {
-    console.log("numberPage: ", numberPage);
+  getPage(page: number) {
+    console.log("page: ", page);
 
-    /*      this.service.GetUsers(numberPage.toString()).subscribe(
-           data => {
-             this.listUsers = data.body.docs;
-             this.page = data.body.page;
-             console.log("this.listUsers: ",this.listUsers);
-           }
-         ); */
+    this.asyncListUser = this.service.GetUsers(page.toString()).pipe(
+      tap(res => {
+        console.log("res: ", res);
+        this.totalUsers = res.body.total;
+        this.page = page;
+      }),
+      map(res => {
+        console.log("Map res: ", res);
+        return res.body.docs;
+      })
+    )
   }
   createUser() {
     this.route.navigate(['/usuarios/nuevo']);
   }
-  updateUser(item:any){
-    this.route.navigate(['/usuarios/actualizar/'+item._id+'/'+item.username]);
+  updateUser(item: any) {
+    this.route.navigate(['/usuarios/actualizar/' + item._id + '/' + item.username]);
   }
 }

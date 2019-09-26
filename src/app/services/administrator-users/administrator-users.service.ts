@@ -13,20 +13,26 @@ export class AdministratorUsersService {
   /**
    * RegisterUser
    */
-  public RegisterUser(data:any) {
-    return this.httpClient.post(this.url + '/vu/users', data);    
+  public RegisterUser(data: any) {
+    return this.httpClient.post(this.url + '/vu/users', data);
   }
   /**
    * GetUsers
    */
-  public GetUsers(pagina:string) {
-    return this.httpClient.get<any>(this.url + '/vu/users?page='+pagina, { observe: 'response' });    
+  public GetUsers(pagina: string) {
+    return this.httpClient.get<any>(this.url + '/vu/users?page=' + pagina, { observe: 'response' });
   }
   /**
    * UpdateUser
    */
-  public UpdateUser(idUser: string,data:any) {
-    return this.httpClient.put(this.url + '/vu/users'+idUser, data);    
-    
+  public UpdateUser(idUser: string, data: any) {
+    return this.httpClient.put(this.url + '/vu/users/' + idUser, data);
+
+  }
+  /**
+   * GetOnlyUser
+   */
+  public GetOnlyUser(idUser: string) {
+    return this.httpClient.get<any>(this.url + '/vu/users/' + idUser);
   }
 }

@@ -37,36 +37,54 @@ export class UpdateUserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (response: any) => {
-        this.idUser=response.idUser;
-        this.username = response.userName;
-        //console.log(this.idUser);
-      }
-    );
-    this.serviceRoles.GetRoles().subscribe(
-      data=>{
-        this.roles=data;
-        //console.log(this.roles);
-      }
-    );
-    this.serviceEntities.GetEntities().subscribe(
-      data=>{
-        this.entities=data;
-        //console.log(this.entities);
-      }
-    )
+    let promise1 = new Promise((resolve) => {
+      this.route.params.subscribe(
+        (response: any) => {
+          this.idUser = response.idUser;
+          this.username = response.userName;
+          resolve(response);
+        }
+      );
+    });
+    let promise2 = new Promise((resolve) => {
+      this.serviceRoles.GetRoles().subscribe(
+        data => {
+          this.roles = data;
+          resolve(this.roles);
+        }
+      );
+    });
+    let promise3 = new Promise((resolve) => {
+      this.serviceEntities.GetEntities().subscribe(
+        data => {
+          this.entities = data;
+          resolve(this.entities);
+        }
+      );
+    });
+    let promise4 = new Promise((resolve) => {
+      this.service.GetOnlyUser(this.idUser).subscribe(
+        res => {
+          this.registerData = res
+          //console.log("registerData", this.registerData);
+          resolve(this.registerData);
+        }
+      );
+    });
+    Promise.all([promise1, promise2, promise3, promise4]).then(values => {
+      console.log(this.registerData);
+    })
   }
-  update(){
+  update() {
     if (this.registerData.password === this.registerData.confirmationPassword) {
       this.service.UpdateUser(this.idUser, this.registerData).subscribe(
-        data=>{
+        data => {
           //console.log(data);
-          this.toastr.success("Se ha actualizado la cuenta exitosamente.");        
+          this.toastr.success("Se ha actualizado la cuenta exitosamente.");
           this.router.navigate(['/usuarios']);
         }
-      ); 
-    }else{
+      );
+    } else {
       this.toastr.show("las contraseñas no coinciden");
     }
   }

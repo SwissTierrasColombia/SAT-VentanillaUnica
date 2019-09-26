@@ -77,24 +77,34 @@
                 </a>
             </li>
         </ul>
-        <div class="menu-header mt-3 mb-2" *ngIf="mostrarPanelAdmin">
+        <div class="menu-header mt-2 mb-1" *ngIf="mostrarPanelAdmin">
             Administrador
         </div>
         <ul class="menu-items" *ngIf="mostrarPanelAdmin">
-            <li class="mt-2">
+            <li class="">
                 <a href="#" [routerLink]="['/gestor-procesos/procesos']" style="line-height: 23px;">
-                    <i class="fas fa-address-book"></i>
+                    <i class="material-icons">
+                        forum
+                    </i>
                     <span>Generador de procesos</span>
                 </a>
             </li>
         </ul>
         <ul class="menu-items" *ngIf="mostrarPanelAdmin">
-                <li class="mt-2">
-                    <a href="#" [routerLink]="['/usuarios']" style="line-height: 23px;">
-                        <i class="fas fa-address-book"></i>
-                        <span>Gestor de usuarios</span>
-                    </a>
-                </li>
-            </ul>
+            <li class="">
+                <a href="#" [routerLink]="['/usuarios']">
+                    <i class="fas fa-address-book"></i>
+                    <span>Gestor de usuarios</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu-items" *ngIf="mostrarPanelAdmin">
+            <li class="">
+                <a href="#" [routerLink]="['/roles']">
+                    <i class="fas fa-address-book"></i>
+                    <span>Gestor de roles</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 </aside>

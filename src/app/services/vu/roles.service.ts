@@ -16,4 +16,17 @@ export class RolesService {
   public GetRoles() {
     return this.httpClient.get<any>(this.url + '/vu/roles')
   }
+  /**
+   * CreateRole
+   */
+  public CreateRole(data: any) {
+    return this.httpClient.post(this.url + '/vu/roles', data)
+  }
+  /**
+   * Update Rol
+   */
+  public UpdateRole(idRol:string,data: any) {
+    return this.httpClient.put(this.url + '/vu/roles/'+idRol, data)
+    
+  }
 }

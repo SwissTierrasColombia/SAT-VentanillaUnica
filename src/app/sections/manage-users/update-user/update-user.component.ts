@@ -72,7 +72,7 @@ export class UpdateUserComponent implements OnInit {
       );
     });
     Promise.all([promise1, promise2, promise3, promise4]).then(values => {
-      console.log(this.registerData);
+      //console.log(this.registerData);
     })
   }
   update() {

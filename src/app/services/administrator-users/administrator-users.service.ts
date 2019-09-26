@@ -35,4 +35,16 @@ export class AdministratorUsersService {
   public GetOnlyUser(idUser: string) {
     return this.httpClient.get<any>(this.url + '/vu/users/' + idUser);
   }
+  /**
+   * DisableUser
+   */
+  public DisableUser(idUser: string) {
+    return this.httpClient.put<any>(this.url + '/vu/users/' + idUser+'/disable',{});
+  }
+    /**
+   * EnableUser
+   */
+  public EnableUser(idUser: string) {
+    return this.httpClient.put<any>(this.url + '/vu/users/' + idUser+'/enable',{});
+  }
 }

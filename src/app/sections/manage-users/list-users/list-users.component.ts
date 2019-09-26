@@ -53,4 +53,19 @@ export class ListUsersComponent implements OnInit {
   updateUser(item: any) {
     this.route.navigate(['/usuarios/actualizar/' + item._id + '/' + item.username]);
   }
+  changeStete(idUser:string, state:boolean){
+    if (state) {
+      this.service.DisableUser(idUser).subscribe(
+        _=>{
+          this,this.toastr.info("Se a desabilidato el usuario")
+        }
+      );
+    }else{
+      this.service.EnableUser(idUser).subscribe(
+        _=>{
+          this,this.toastr.success("Se a habilitado el usuario")
+        }
+      );
+    }
+  }
 }

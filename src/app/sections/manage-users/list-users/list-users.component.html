@@ -26,9 +26,9 @@
                         <td>
                             <span tooltip="Cambiar estado" placement="bottom" show-delay="500">
                                 <div class="custom-control custom-switch">
-                                    <input [(ngModel)]="item.enabled" type="checkbox" class="custom-control-input"
-                                        id="customSwitch">
-                                    <label class="custom-control-label" for="customSwitch">
+                                    <input (click)="changeStete(item._id, item.enabled)" [(ngModel)]="item.enabled" type="checkbox" class="custom-control-input"
+                                        id="customSwitch-{{item.username}}">
+                                    <label class="custom-control-label" for="customSwitch-{{item.username}}">
                                         <!--{{item.process.active?'Activo':'Desactivado'}} item.process.active=!item.process.active;-->
                                     </label>
                                 </div>

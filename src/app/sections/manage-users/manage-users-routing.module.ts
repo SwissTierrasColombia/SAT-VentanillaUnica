@@ -4,11 +4,14 @@ import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.com
 import { ListUsersComponent } from './list-users/list-users.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
+import { AuthGuard } from 'src/app/guards/auth-guard.service';
+import { RoleAdminGuard } from 'src/app/guards/role-admin-guard.service';
 
 
 const routes: Routes = [{
   path: 'usuarios',
   component: MainLayoutComponent,
+  canActivate: [AuthGuard, RoleAdminGuard],
   children: [
     {
       path: '', component: ListUsersComponent,

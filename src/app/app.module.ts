@@ -15,6 +15,7 @@ import { ProcessManagerModule } from './sections/process-manager/process-manager
 import { GeneralModule } from './sections/general/general.module';
 import { ManageUsersModule } from './sections/manage-users/manage-users.module';
 import { ManageRolesModule } from './sections/manage-roles/manage-roles.module';
+import { ManageEntityModule } from './sections/manage-entities/manage-entity.module';
 
 // Routing
 import { AppRoutingModule } from './app-routing.module';
@@ -70,7 +71,8 @@ import { RoleEntityGuard } from './guards/role-entity-guard.service';
     CollapseModule.forRoot(),
     TooltipModule,
     ManageUsersModule,
-    ManageRolesModule
+    ManageRolesModule,
+    ManageEntityModule
   ],
   providers: [
     RoleModel,

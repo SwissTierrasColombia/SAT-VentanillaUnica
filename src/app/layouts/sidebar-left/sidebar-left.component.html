@@ -106,5 +106,13 @@
                 </a>
             </li>
         </ul>
+        <ul class="menu-items" *ngIf="mostrarPanelAdmin">
+            <li class="">
+                <a href="#" [routerLink]="['/entidades']">
+                    <i class="fas fa-address-book"></i>
+                    <span>Gestor de entidades</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 </aside>

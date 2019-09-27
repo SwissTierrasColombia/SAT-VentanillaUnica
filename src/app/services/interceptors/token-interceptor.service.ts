@@ -2,14 +2,17 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs/internal/Observable';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-    constructor() {
+    constructor(private spinner: NgxSpinnerService) {
 
     }
+
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
         const token = window.sessionStorage.getItem(environment.nameTokenSession);
         if (token) {
             request = request.clone({
@@ -18,6 +21,9 @@ export class TokenInterceptor implements HttpInterceptor {
                 }
             });
         }
+
+        this.spinner.show();
+
         return next.handle(request);
     }
 

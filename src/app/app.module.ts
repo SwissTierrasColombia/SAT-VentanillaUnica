@@ -27,6 +27,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 // Models
 import { TypeDataFieldModel } from './models/typeDataField.model';
@@ -41,6 +42,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // Interceptors
 import { ErrorInterceptorService } from './services/interceptors/error-interceptor.service';
 import { TokenInterceptor } from './services/interceptors/token-interceptor.service';
+import { ResponseInterceptorService } from './services/interceptors/response.interceptor.service';
 import { AuthGuard } from './guards/auth-guard.service';
 import { RoleAdminGuard } from './guards/role-admin-guard.service';
 import { RoleModel } from './models/role.model';
@@ -70,6 +72,7 @@ import { RoleEntityGuard } from './guards/role-entity-guard.service';
     HttpClientModule,
     CollapseModule.forRoot(),
     TooltipModule,
+    NgxSpinnerModule,
     ManageUsersModule,
     ManageRolesModule,
     ManageEntityModule
@@ -85,7 +88,8 @@ import { RoleEntityGuard } from './guards/role-entity-guard.service';
     UsersService,
     TypeDataFieldModel,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

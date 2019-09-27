@@ -33,4 +33,11 @@ export class LoginService {
   registerUser(data: any) {
     return this.httpClient.post<any>(this.apiURL + '/vu/account/register', data, { observe: 'response' });
   }
+  restorePassword(data: any) {
+    return this.httpClient.put(this.apiURL + '/vu/account/restore', data)
+  }
+  updatePassword(data: any) {
+    return this.httpClient.put(this.apiURL + '/vu/account/update', data)
+
+  }
 }

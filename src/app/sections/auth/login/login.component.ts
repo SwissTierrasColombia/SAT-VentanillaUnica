@@ -37,4 +37,7 @@ export class LoginComponent implements OnInit {
       this.login();
     }
   }
+  recover(){
+    this.route.navigate(['autenticacion/recuperar']);
+  }
 }

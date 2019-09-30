@@ -44,4 +44,7 @@ export class RegisterComponent implements OnInit {
       this.register();
     }
   }
+  volver(){
+    this.route.navigate(['/autenticacion/login']);
+  }
 }

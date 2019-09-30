@@ -5,16 +5,19 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class ErrorInterceptorService implements HttpInterceptor {
 
-  constructor(public toastaService: ToastrService, private router: Router) {
+  constructor(public toastaService: ToastrService, private router: Router, private spinner: NgxSpinnerService) {
 
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
+
+      this.spinner.hide();
 
       const error = err.error.message || err.statusText;
 

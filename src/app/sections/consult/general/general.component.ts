@@ -55,13 +55,15 @@ export class GeneralComponent implements OnInit {
   ) {
     this.departamento = false;
     this.idSelectDepartament = '';
-    this.idMunicipality= '';
+    this.idMunicipality = '';
   }
 
   ngOnInit() {
     this.serviceDepartament.GetDepartaments().subscribe(
       data => {
         this.allDepartaments = data;
+        console.log("this.allDepartaments: ", this.allDepartaments);
+
       }
     )
     this.route.queryParamMap.subscribe(
@@ -84,17 +86,19 @@ export class GeneralComponent implements OnInit {
       }
     )
   }
-  changeDepartament(){
+  changeDepartament() {
     this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
-      data=>{
-        this.allminucipalities=data;
+      data => {
+        this.allminucipalities = data;
+        console.log("this.allminucipalities: ", this.allminucipalities);
+
       }
     )
   }
-  selectMunicipality(){
+  selectMunicipality() {
     this.departamento = true;
   }
-  volver(){
+  volver() {
     this.departamento = false;
   }
   selectTypeSearch(id) {

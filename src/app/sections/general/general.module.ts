@@ -6,10 +6,12 @@ import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { MapOpenLayerComponent } from './map-open-layer/map-open-layer.component';
 
 @NgModule({
   declarations: [
-    NotFoundComponent
+    NotFoundComponent,
+    MapOpenLayerComponent
   ],
   imports: [
     CommonModule,
@@ -17,6 +19,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    MapOpenLayerComponent
   ]
 })
 export class GeneralModule { }

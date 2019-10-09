@@ -132,6 +132,7 @@ export class GeneralComponent implements OnInit {
   }
 
   private drawGeometry(geom: any) {
+    console.log('geo', JSON.stringify(geom));
 
     /*
     const m = new Map('map' + this.basicConsult[0].id, {

@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as turf from '@turf/turf';
 import { ActivatedRoute } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
+import { DepartamentsService } from 'src/app/services/vu/departaments.service';
 @Component({
   selector: 'app-general',
   templateUrl: './general.component.html',
@@ -34,17 +35,35 @@ export class GeneralComponent implements OnInit {
   inputCadastralCode = '';
   basicConsult: any;
   image: any;
+  departamento: boolean;
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
   tipoBusqueda = 1;
+  allDepartaments: any;
+  idSelectDepartament: string;
+  allminucipalities: any;
+  idMunicipality: string;
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
 
-  constructor(private service: QueryService, private toastr: ToastrService, private route: ActivatedRoute) { }
+  constructor(private service: QueryService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private serviceDepartament: DepartamentsService
+  ) {
+    this.departamento = false;
+    this.idSelectDepartament = '';
+    this.idMunicipality= '';
+  }
 
   ngOnInit() {
+    this.serviceDepartament.GetDepartaments().subscribe(
+      data => {
+        this.allDepartaments = data;
+      }
+    )
     this.route.queryParamMap.subscribe(
       params => {
         if (params.has("t_id")) {
@@ -64,6 +83,19 @@ export class GeneralComponent implements OnInit {
         }
       }
     )
+  }
+  changeDepartament(){
+    this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
+      data=>{
+        this.allminucipalities=data;
+      }
+    )
+  }
+  selectMunicipality(){
+    this.departamento = true;
+  }
+  volver(){
+    this.departamento = false;
   }
   selectTypeSearch(id) {
     this.inputCadastralCode = '';

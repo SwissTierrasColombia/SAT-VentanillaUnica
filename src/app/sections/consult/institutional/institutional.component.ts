@@ -20,6 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as turf from '@turf/turf';
 import { Router } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
+import { DepartamentsService } from 'src/app/services/vu/departaments.service';
+import { ParcelsService } from 'src/app/services/RDM/parcels.service';
 
 @Component({
   selector: 'app-institutional',
@@ -50,11 +52,47 @@ export class InstitutionalComponent implements OnInit {
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
+  departamento: boolean;
+  allDepartaments: any;
+  idSelectDepartament: string;
+  allminucipalities: any;
+  idMunicipality: string;
 
-
-  constructor(private service: QueryService, private toastr: ToastrService, private route: Router) { }
+  constructor(
+    private service: QueryService,
+    private toastr: ToastrService,
+    private route: Router,
+    private serviceDepartament: DepartamentsService,
+    private serviceRDM: ParcelsService
+  ) {
+    this.departamento = false;
+    this.idSelectDepartament = '';
+    this.idMunicipality = '';
+  }
 
   ngOnInit(): void {
+    this.serviceDepartament.GetDepartaments().subscribe(
+      data => {
+        this.allDepartaments = data;
+        console.log("this.allDepartaments: ", this.allDepartaments);
+
+      }
+    )
+  }
+  changeDepartament() {
+    this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
+      data => {
+        this.allminucipalities = data;
+        console.log("this.allminucipalities: ", this.allminucipalities);
+
+      }
+    )
+  }
+  selectMunicipality() {
+    this.departamento = true;
+  }
+  volver() {
+    this.departamento = false;
   }
   /**/
 
@@ -76,8 +114,8 @@ export class InstitutionalComponent implements OnInit {
         .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           data => {
-            this.service
-              .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+            this.serviceRDM
+              .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
               .subscribe(
                 basicData => {
                   this.physicalInfo = data[0] ? data[0] : [];
@@ -97,7 +135,7 @@ export class InstitutionalComponent implements OnInit {
                           this.toastr.error('Datos no encontrados');
                         }
                       );
-                    this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality,this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
                       this.drawGeometry(geom);
                     });
                     this.showResult = true;
@@ -421,8 +459,12 @@ export class InstitutionalComponent implements OnInit {
 
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
-    // tslint:disable-next-line:no-string-literal
-    newImg.src = this.service.getTerrainGeometryImage(this.physicalInfo['id']);
+
+    this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']).subscribe(
+      data => {
+        newImg.src = data;
+      }
+    )
   }
 
 }

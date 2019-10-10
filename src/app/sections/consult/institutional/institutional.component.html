@@ -1,7 +1,49 @@
-<div class="animated fadeInRight dura-2">
+<div class="card" *ngIf="departamento==false">
+    <div class="card-header">
+        <h3>Consulta Institucional</h3>
+    </div>
+    <div class="card-body">
+        <form action="">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="material-icons">
+                            assistant_photo
+                        </i>
+                    </span>
+                </div>
+                <select class="custom-select" name="selectDepartament" select required
+                    [(ngModel)]="idSelectDepartament">
+                    <option (click)="changeDepartament()" *ngFor="let item of allDepartaments" name="item.department"
+                        [ngValue]="item._id">
+                        {{item.department}}</option>
+                </select>
+            </div>
+            <small id="departamento" class="form-text text-muted">Seleccione el departamento. </small>
+            <div class="input-group" *ngIf="idSelectDepartament">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="material-icons">
+                            outlined_flag
+                        </i>
+                    </span>
+                </div>
+                <select class="custom-select" name="selectMunicipio" select required [(ngModel)]="idMunicipality">
+                    <option (click)="selectMunicipality()" *ngFor="let item of allminucipalities"
+                        name="item.municipality" [ngValue]="item._id">
+                        {{item.municipality}}</option>
+                </select>
+            </div>
+            <small *ngIf="idSelectDepartament" id="departamento" class="form-text text-muted">Seleccione el municipio.
+            </small>
+        </form>
+    </div>
+</div>
+
+<div class="animated fadeInRight dura-2" *ngIf="departamento">
     <div class="card">
         <div class="card-header">
-            <h3><i class="icon-magnifier"></i> Consulta Institucional</h3>
+            <h3><i class="material-icons cursor mr-2" (click)="volver()">backspace</i> Consulta Institucional</h3>
         </div>
         <div class="card-body row">
             <div class="form-group col-12">

@@ -15,25 +15,8 @@ export class QueryService {
     apiURL: string = environment.url;
     constructor(private httpClient: HttpClient) {
     }
-
-    public getBasicConsult(fmi: string, cadastralCode: string, nupre: string) {
-        // tslint:disable-next-line:max-line-length
-        return this.httpClient.get<BasicParcelInfo>(`${this.apiURL}/public/parcel?fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`);
-    }
-
-    public getTerrainGeometry(id: number) {
-        return this.httpClient.get<any>(`${this.apiURL}/public/terrain/geometry?id=${id}`);
-    }
-
-    public getTerrainGeometryImage(id: number) {
-        return this.apiURL + '/public/parcel/geometry/png?id=' + id;
-    }
-
-    public getParcelGeometry(id: number) {
-        return this.httpClient.get<any>(`${this.apiURL}/public/parcel/geometry?id=${id}`);
-    }
-
-    public getParcelEconomicQuery(fmi: string, cadastralCode: string, nupre: string) {
+    // /api/rdm/parcels/economic Get information economic parcel
+    public getParcelEconomicQuery(idMunicipality: string,fmi: string, cadastralCode: string, nupre: string) {
         const params = `fmi=${fmi}&cadastralCode=${cadastralCode}&nupre=${nupre}`;
         return this.httpClient.get<EconomicParcelInfo>(`${this.apiURL}/private/parcel/economic?${params}`);
     }

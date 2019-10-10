@@ -22,6 +22,8 @@ import * as turf from '@turf/turf';
 import { ActivatedRoute } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
 import { DepartamentsService } from 'src/app/services/vu/departaments.service';
+import { ParcelsService } from 'src/app/services/RDM/parcels.service';
+
 @Component({
   selector: 'app-general',
   templateUrl: './general.component.html',
@@ -51,7 +53,8 @@ export class GeneralComponent implements OnInit {
   constructor(private service: QueryService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private serviceDepartament: DepartamentsService
+    private serviceDepartament: DepartamentsService,
+    private serviceRDM: ParcelsService
   ) {
     this.departamento = false;
     this.idSelectDepartament = '';
@@ -120,11 +123,10 @@ export class GeneralComponent implements OnInit {
   }
 
   getBasicInfo() {
-    this.service
-      .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+    this.serviceRDM
+      .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
       .subscribe(
         data => {
-
           // tslint:disable-next-line:no-string-literal
           if (data['error']) {
             // tslint:disable-next-line:no-string-literal
@@ -133,7 +135,7 @@ export class GeneralComponent implements OnInit {
             this.toastr.error('No se encontraron registros.');
           } else {
             this.basicConsult = [data[0]];
-            this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
+            this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
               this.drawGeometry(geom);
             });
             this.showResult = true;
@@ -402,7 +404,11 @@ export class GeneralComponent implements OnInit {
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
-    newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
+    this.serviceRDM.GetImageGeometryParcel(this.idMunicipality,this.basicConsult[0].id).subscribe(
+      data=>{
+        newImg.src=data;
+      }
+    );
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {

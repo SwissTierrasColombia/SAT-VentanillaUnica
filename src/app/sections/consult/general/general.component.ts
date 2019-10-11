@@ -74,7 +74,7 @@ export class GeneralComponent implements OnInit {
         if (params.has("t_id")) {
           //arams.get('tid')
           console.log("llegue: ", params.get('t_id'));
-          this.service.getCadastralCode(Number(params.get('t_id'))).subscribe((result: any) => {
+          this.serviceRDM.GetInformationCatastralParcel(this.idMunicipality, Number(params.get('t_id'))).subscribe((result: any) => {
             console.log(result);
             if (result) {
               this.selectTypeSearch(2);
@@ -291,6 +291,8 @@ export class GeneralComponent implements OnInit {
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
+      console.log("llegue");
+      
       let tipo = '--';
       let nombre = '--';
       let departamento = '--';
@@ -404,11 +406,7 @@ export class GeneralComponent implements OnInit {
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
-    this.serviceRDM.GetImageGeometryParcel(this.idMunicipality,this.basicConsult[0].id).subscribe(
-      data=>{
-        newImg.src=data;
-      }
-    );
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality,this.basicConsult[0].id);
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {

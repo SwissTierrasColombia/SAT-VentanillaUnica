@@ -110,8 +110,8 @@ export class InstitutionalComponent implements OnInit {
     this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
       this.getInteresadosInfo();
-      this.service
-        .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+      this.serviceRDM
+        .GetInformationPhysicalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           data => {
             this.serviceRDM
@@ -135,7 +135,7 @@ export class InstitutionalComponent implements OnInit {
                           this.toastr.error('Datos no encontrados');
                         }
                       );
-                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality,this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality, this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
                       this.drawGeometry(geom);
                     });
                     this.showResult = true;
@@ -150,8 +150,8 @@ export class InstitutionalComponent implements OnInit {
           }
         );
 
-      this.service
-        .getParcelLegalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+      this.serviceRDM
+        .GetInformationLegalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           (data: any) => {
             if (data.length) {
@@ -179,7 +179,7 @@ export class InstitutionalComponent implements OnInit {
   }
   private getInteresadosInfo() {
     if (this.inputCadastralCode !== '') {
-      this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'cadastralCode', this.inputCadastralCode).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -190,7 +190,7 @@ export class InstitutionalComponent implements OnInit {
       );
     }
     if (this.inputNupre !== '') {
-      this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'nupre', this.inputNupre).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -201,7 +201,7 @@ export class InstitutionalComponent implements OnInit {
       );
     }
     if (this.inputFMI !== '') {
-      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'fmi', this.inputFMI).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -460,11 +460,7 @@ export class InstitutionalComponent implements OnInit {
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
 
-    this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']).subscribe(
-      data => {
-        newImg.src = data;
-      }
-    )
+    newImg.src =this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']);
   }
 
 }

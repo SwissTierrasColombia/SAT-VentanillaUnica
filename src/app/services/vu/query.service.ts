@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BasicParcelInfo } from 'src/app/models/basic-parcel-info.interface';
-import { LegalParcelInfo } from 'src/app/models/legal-parcel-info.interface';
-import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
-import { EconomicParcelInfo } from 'src/app/models/economic-parcel-info.interface';
-
 @Injectable({
     providedIn: 'root'
 })

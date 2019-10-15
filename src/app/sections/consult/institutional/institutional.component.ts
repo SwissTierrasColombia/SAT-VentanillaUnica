@@ -57,7 +57,7 @@ export class InstitutionalComponent implements OnInit {
   idSelectDepartament: string;
   allminucipalities: any;
   idMunicipality: string;
-
+  dataRecords: any;
   constructor(
     private service: QueryService,
     private toastr: ToastrService,
@@ -163,14 +163,15 @@ export class InstitutionalComponent implements OnInit {
               // console.log(data[0]['attributes']['predio'][0]);
 
             }
-          },
-          error => {
-            console.log(error);
-            this.showResult = false;
-            this.toastr.error('Datos no encontrados');
           }
         );
-
+      if (this.inputNupre) {
+        this.getRecord('nupre', this.inputNupre)
+      } else if (this.inputCadastralCode) {
+        this.getRecord('cadastralCode', this.inputCadastralCode)
+      } else if (this.inputFMI) {
+        this.getRecord('fmi', this.inputFMI)
+      }
 
     } else {
       this.showResult = false;
@@ -460,7 +461,15 @@ export class InstitutionalComponent implements OnInit {
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
 
-    newImg.src =this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']);
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']);
+  }
+  getRecord(tipo: string, idTipo: string) {
+    this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
+      data => {
+        this.dataRecords = data;
+        console.log("this.dataRecords", this.dataRecords);
+      }
+    );
   }
 
 }

@@ -49,7 +49,7 @@ export class GeneralComponent implements OnInit {
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
-
+  dataRecords: any;
   constructor(private service: QueryService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
@@ -93,7 +93,7 @@ export class GeneralComponent implements OnInit {
     this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
       data => {
         this.allminucipalities = data;
-        console.log("this.allminucipalities: ", this.allminucipalities);
+        // console.log("this.allminucipalities: ", this.allminucipalities);
 
       }
     )
@@ -117,6 +117,13 @@ export class GeneralComponent implements OnInit {
       this.inputCadastralCode = this.inputCadastralCode.trim();
       this.inputNupre = this.inputNupre.trim();
       this.getBasicInfo();
+      if (this.inputNupre) {
+        this.getRecord('nupre', this.inputNupre)
+      } else if (this.inputCadastralCode) {
+        this.getRecord('cadastralCode', this.inputCadastralCode)
+      } else if (this.inputFMI) {
+        this.getRecord('fmi', this.inputFMI)
+      }
     } else {
       this.showResult = false;
     }
@@ -170,7 +177,7 @@ export class GeneralComponent implements OnInit {
   }
 
   private drawGeometry(geom: any) {
-    console.log('geo', JSON.stringify(geom));
+    // console.log('geo', JSON.stringify(geom));
 
     /*
     const m = new Map('map' + this.basicConsult[0].id, {
@@ -292,7 +299,7 @@ export class GeneralComponent implements OnInit {
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
       console.log("llegue");
-      
+
       let tipo = '--';
       let nombre = '--';
       let departamento = '--';
@@ -406,11 +413,19 @@ export class GeneralComponent implements OnInit {
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
-    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality,this.basicConsult[0].id);
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.basicConsult[0].id);
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+  getRecord(tipo: string, idTipo: string) {
+    this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
+      data => {
+        this.dataRecords = data;
+        console.log("this.dataRecords",this.dataRecords);
+      }
+    );
   }
 }

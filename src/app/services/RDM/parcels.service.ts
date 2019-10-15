@@ -48,4 +48,10 @@ export class ParcelsService {
   public GetInformationCatastralParcel(idMunicipality: string, terrainId: number) {
     return this.httpClient.get<any>(`${this.url}/rdm/parcels/catastral-code?municipality=${idMunicipality}&terrainId=${terrainId}`);
   }
+  /**
+   * Get Basic Information Parcel
+   */
+  public GetBasicInformationParcelRecord(idMunicipality: string, tipo: string, idTipo: string) {
+    return this.httpClient.get<any>(`${this.url}/rdm/parcels/record?municipality=${idMunicipality}&${tipo}=${idTipo}`)
+  }
 }

@@ -295,10 +295,10 @@ export class GeneralComponent implements OnInit {
   public captureScreen() {
     // Few necessary setting options 216 x 279 tamaño carta
     const doc = new jspdf('portrait', 'px', 'a4');
+    doc.setFontSize(12);
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
-      console.log("llegue");
 
       let tipo = '--';
       let nombre = '--';
@@ -408,6 +408,25 @@ export class GeneralComponent implements OnInit {
           [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
+      if (this.dataRecords.length>0) {
+        let bodyAntecedentes =[]
+        this.dataRecords.forEach(element => {
+          element.attributes.predio.forEach(item => {
+            bodyAntecedentes.push(
+              [item.attributes.Nombre,item.attributes.NUPRE,item.attributes.FMI,item.attributes['Número predial'],item.attributes['Número predial anterior'],element.attributes['Área de terreno [m2]']]
+            ) 
+          });
+        });
+        doc.text('Antecedentes', 20, 495);
+        doc.autoTable({
+          margin: 20,
+          tableWidth: 396.46,
+          headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
+          head: [['Nombre', 'Nupre', 'FMI', 'Número predial', 'Número predial anterior', 'Área terreno']],
+          body: bodyAntecedentes
+        });
+      }
+
       doc.setFontSize(9);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
@@ -424,7 +443,7 @@ export class GeneralComponent implements OnInit {
     this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
       data => {
         this.dataRecords = data;
-        console.log("this.dataRecords",this.dataRecords);
+        console.log("this.dataRecords", this.dataRecords);
       }
     );
   }

@@ -324,6 +324,7 @@ export class InstitutionalComponent implements OnInit {
 
   public generatepdf() {
     const doc = new jspdf('portrait', 'px', 'a4');
+    doc.setFontSize(12);
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
@@ -424,7 +425,24 @@ export class InstitutionalComponent implements OnInit {
         head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: bodyAfectaciones
       });
-
+      if (this.dataRecords.length>0) {
+        let bodyAntecedentes =[]
+        this.dataRecords.forEach(element => {
+          element.attributes.predio.forEach(item => {
+            bodyAntecedentes.push(
+              [item.attributes.Nombre,item.attributes.NUPRE,item.attributes.FMI,item.attributes['Número predial'],item.attributes['Número predial anterior'],element.attributes['Área de terreno [m2]']]
+            ) 
+          });
+        });
+        doc.text('Antecedentes', 20, 530);
+        doc.autoTable({
+          margin: 20,
+          tableWidth: 396.46,
+          headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
+          head: [['Nombre', 'Nupre', 'FMI', 'Número predial', 'Número predial anterior', 'Área terreno']],
+          body: bodyAntecedentes
+        });
+      }
       doc.setFontSize(9);
       doc.text('Fuente de consulta: ', 15, 600);
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);

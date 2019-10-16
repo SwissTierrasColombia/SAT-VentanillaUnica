@@ -242,16 +242,13 @@
                     <table class="table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th scope="col">Código</th>
                                 <th scope="col">Área de terreno [m<sub>2</sub>]</th>
                                 <th scope="col">Direcciones anteriores</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dataRecords;">
-                                <td>
-                                    {{item.id}}
-                                </td>
+                       
                                 <td>
                                     {{item.attributes['Área de terreno [m2]']}}
                                 </td>
@@ -267,7 +264,6 @@
                     <table class="table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th scope="col">Código</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Departamento</th>
                                 <th scope="col">Municipio</th>
@@ -282,9 +278,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dataRecords[0].attributes.predio;">
-                                <td>
-                                    {{item.id}}
-                                </td>
+        
                                 <td>
                                     {{item.attributes.Nombre}}
                                 </td>

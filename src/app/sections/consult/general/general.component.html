@@ -79,7 +79,7 @@
                 <div class="card-header">Predio {{item.id ? item.id: '--'}}</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-xs-12 col-md-6 col-sm-12">
+                        <div class="col-xs-12 col-md-6 col-sm-12" *ngIf="extralayers">
                             <app-map [geom]="geom" [extralayers]="extralayers" baselayer="ladm_col_2_2_1_p1"></app-map>
                         </div>
                         <div class="col-xs-12 col-md-6 col-sm-12">

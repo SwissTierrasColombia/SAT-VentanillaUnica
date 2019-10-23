@@ -60,6 +60,10 @@ export class GeneralComponent implements OnInit {
     this.departamento = false;
     this.idSelectDepartament = '';
     this.idMunicipality = '';
+    this.extralayers = {
+      'versions': []
+    };
+    this.dataRecords = [];
   }
 
   geom: any;
@@ -117,45 +121,60 @@ export class GeneralComponent implements OnInit {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
       this.inputNupre = this.inputNupre.trim();
-      this.getBasicInfo();
-      if (this.inputNupre) {
-        this.getRecord('nupre', this.inputNupre)
-      } else if (this.inputCadastralCode) {
-        this.getRecord('cadastralCode', this.inputCadastralCode)
-      } else if (this.inputFMI) {
-        this.getRecord('fmi', this.inputFMI)
-      }
+      let promiseBasicInfo = this.getBasicInfo();
+      Promise.all([promiseBasicInfo]).then(values => {
+        if (this.inputNupre) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('nupre', this.inputNupre)
+          }
+        } else if (this.inputCadastralCode) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('cadastralCode', this.inputCadastralCode)
+          }
+        } else if (this.inputFMI) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('fmi', this.inputFMI)
+          }
+        }
+      })
     } else {
       this.showResult = false;
     }
   }
 
   getBasicInfo() {
-    this.serviceRDM
-      .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
-      .subscribe(
-        data => {
-          // tslint:disable-next-line:no-string-literal
-          if (data['error']) {
+    return new Promise((resolve) => {
+      this.serviceRDM
+        .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
+        .subscribe(
+          data => {
             // tslint:disable-next-line:no-string-literal
-            //console.log(data['error']);
-            this.showResult = false;
-            this.toastr.error('No se encontraron registros.');
-          } else {
-            this.basicConsult = [data[0]];
-            this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
-              //this.drawGeometry(geom);
-              this.geom = geom;
-              this.extralayers = this.allminucipalities.find((obj) => {
-                if (obj._id = this.idMunicipality) {
-                  return obj;
-                }
+            if (data['error']) {
+              // tslint:disable-next-line:no-string-literal
+              //console.log(data['error']);
+              this.showResult = false;
+              this.toastr.error('No se encontraron registros.');
+            } else {
+              this.basicConsult = [data[0]];
+              this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
+                //this.drawGeometry(geom);
+                this.geom = geom;
+                console.log("this.geom: ", this.geom);
+
+                this.extralayers = this.allminucipalities.find((obj) => {
+                  if (obj._id = this.idMunicipality) {
+                    return obj;
+                  }
+                });
+                console.log("this.extralayers: ", this.extralayers);
+                resolve();
               });
-            });
-            this.showResult = true;
+              this.showResult = true;
+            }
           }
-        }
-      );
+        );
+    });
+
   }
 
   public xOffset(text) {
@@ -277,7 +296,7 @@ export class GeneralComponent implements OnInit {
           [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
-      if (this.dataRecords.length > 0) {
+      if (this.extralayers.versions.length > 1 && this.dataRecords.length > 0) {
         let bodyAntecedentes = []
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {

@@ -47,6 +47,7 @@ import { AuthGuard } from './guards/auth-guard.service';
 import { RoleAdminGuard } from './guards/role-admin-guard.service';
 import { RoleModel } from './models/role.model';
 import { RoleEntityGuard } from './guards/role-entity-guard.service';
+import { MapComponent } from './components/map/map.component';
 
 
 @NgModule({

@@ -50,6 +50,7 @@ export class GeneralComponent implements OnInit {
     geometry: { coordinates: [0, 0] }
   };
   dataRecords: any;
+  extralayers: any;
   constructor(private service: QueryService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
@@ -61,19 +62,21 @@ export class GeneralComponent implements OnInit {
     this.idMunicipality = '';
   }
 
+  geom: any;
+
   ngOnInit() {
     this.serviceDepartament.GetDepartaments().subscribe(
       data => {
         this.allDepartaments = data;
-        console.log("this.allDepartaments: ", this.allDepartaments);
+        console.log('this.allDepartaments: ', this.allDepartaments);
 
       }
-    )
+    );
     this.route.queryParamMap.subscribe(
       params => {
-        if (params.has("t_id")) {
-          //arams.get('tid')
-          console.log("llegue: ", params.get('t_id'));
+        if (params.has('t_id')) {
+          // arams.get('tid')
+          console.log('llegue: ', params.get('t_id'));
           this.serviceRDM.GetInformationCatastralParcel(this.idMunicipality, Number(params.get('t_id'))).subscribe((result: any) => {
             console.log(result);
             if (result) {
@@ -87,16 +90,14 @@ export class GeneralComponent implements OnInit {
           });
         }
       }
-    )
+    );
   }
   changeDepartament() {
     this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
       data => {
         this.allminucipalities = data;
-        // console.log("this.allminucipalities: ", this.allminucipalities);
-
       }
-    )
+    );
   }
   selectMunicipality() {
     this.departamento = true;
@@ -143,7 +144,13 @@ export class GeneralComponent implements OnInit {
           } else {
             this.basicConsult = [data[0]];
             this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
-              this.drawGeometry(geom);
+              //this.drawGeometry(geom);
+              this.geom = geom;
+              this.extralayers = this.allminucipalities.find((obj) => {
+                if (obj._id = this.idMunicipality) {
+                  return obj;
+                }
+              });
             });
             this.showResult = true;
           }
@@ -151,144 +158,6 @@ export class GeneralComponent implements OnInit {
       );
   }
 
-  private getBaseMap(type: string, op: number) {
-    let source = '';
-    switch (type) {
-      case 'googleLayerRoadNames': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerRoadmap': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerSatellite': source = 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid': source = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerTerrain': source = 'http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid2': source = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerOnlyRoad': source = 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}'; break;
-      case 'OSM': source = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
-    }
-    if (source !== '') {
-      return new LayerTile({
-        title: type,
-        source: new XYZ({
-          url: source
-        }),
-        opacity: op
-      });
-    } else {
-      return null;
-    }
-  }
-
-  private drawGeometry(geom: any) {
-    // console.log('geo', JSON.stringify(geom));
-
-    /*
-    const m = new Map('map' + this.basicConsult[0].id, {
-      crs: CRS.EPSG3857
-    });
-
-    new TileLayer('http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}', {
-      crs: CRS.EPSG3857
-    }).addTo(m);
-
-    const parcel = geoJSON(geom, {
-      style: {
-        fillColor: '#BD0026',
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-      }
-    }).addTo(m);
-
-    m.fitBounds(parcel.getBounds());
-
-    //LADM:vw_terreno
-
-    */
-
-    this.centroid = turf.centroid(geom);
-
-    const vs = new VectorSource({
-      features: (new GeoJSON()).readFeatures(geom)
-    });
-    /*
-        const sterreno = new TileWMS({
-          url: this.urlGeoserver + 'LADM/wms',
-          params: { LAYERS: 'LADM:sat_mapa_base' },
-          serverType: 'geoserver',
-          crossOrigin: 'anonymous'
-        });
-    */
-    const sterreno = new ImageLayer({
-      source: new ImageWMS({
-        ratio: 1,
-        url: this.urlGeoserver + 'LADM/wms',
-        params: {
-          FORMAT: 'image/png',
-          VERSION: '1.1.1',
-          LAYERS: 'LADM:sat_mapa_base',
-          exceptions: 'application/vnd.ogc.se_inimage',
-        }
-      })
-    });
-    /*
-        const terreno = new LayerTile({
-          title: 'Terreno',
-          source: sterreno,
-          opacity: 1
-        });
-        */
-
-
-    const vl = new VectorLayer({
-      source: vs,
-      style: new Style({
-        fill: new Fill({
-          color: 'rgba(96, 58, 58, 0.1)'
-        }),
-        stroke: new Stroke({
-          color: '#ff2929',
-          width: 5
-        }),
-        image: new CircleStyle({
-          radius: 5,
-          fill: new Fill({
-            color: 'rgba(96, 58, 58, 0.2)'
-          }),
-          stroke: new Stroke({
-            color: '#319FD3',
-            width: 1
-          })
-        })
-      })
-    });
-
-    const v = new View({ projection: 'EPSG:3857' });
-    const polygon = vs.getFeatures()[0].getGeometry();
-    v.fit(polygon, { size: [500, 500] });
-    const m = new Map({
-      interactions: defaultInteractions({
-        doubleClickZoom: true,
-        dragAndDrop: true,
-        dragPan: true,
-        keyboardPan: true,
-        keyboardZoom: true,
-        mouseWheelZoom: true,
-        pointer: true,
-        select: true
-      }),
-      target: 'map' + this.basicConsult[0].id,
-      layers: [
-        this.getBaseMap('googleLayerSatellite', 1),
-        this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        sterreno,
-        vl
-      ],
-      view: v
-    });
-
-    return m;
-
-  }
   public xOffset(text) {
     return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
@@ -408,13 +277,13 @@ export class GeneralComponent implements OnInit {
           [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
-      if (this.dataRecords.length>0) {
-        let bodyAntecedentes =[]
+      if (this.dataRecords.length > 0) {
+        let bodyAntecedentes = []
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {
             bodyAntecedentes.push(
-              [item.attributes.Nombre,item.attributes.NUPRE,item.attributes.FMI,item.attributes['Número predial'],item.attributes['Número predial anterior'],element.attributes['Área de terreno [m2]']]
-            ) 
+              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
+            )
           });
         });
         doc.text('Antecedentes', 20, 495);

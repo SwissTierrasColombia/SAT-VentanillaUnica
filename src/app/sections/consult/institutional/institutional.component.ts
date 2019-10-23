@@ -231,7 +231,6 @@ export class InstitutionalComponent implements OnInit {
     });
 
     const terreno = new LayerTile({
-      title: 'Terreno',
       source: sterreno,
       opacity: 1
     });
@@ -261,17 +260,12 @@ export class InstitutionalComponent implements OnInit {
 
     const v = new View({ projection: 'EPSG:3857' });
     const polygon = vs.getFeatures()[0].getGeometry();
-    v.fit(polygon, { size: [500, 500] });
+    v.fit(polygon.getExtent(), { size: [500, 500] });
     const m = new Map({
       interactions: defaultInteractions({
         doubleClickZoom: true,
-        dragAndDrop: true,
         dragPan: true,
-        keyboardPan: true,
-        keyboardZoom: true,
-        mouseWheelZoom: false,
-        pointer: true,
-        select: true
+        mouseWheelZoom: false
       }),
       target: 'map',
       layers: [
@@ -301,7 +295,6 @@ export class InstitutionalComponent implements OnInit {
     }
     if (source !== '') {
       return new LayerTile({
-        title: type,
         source: new XYZ({
           url: source
         }),

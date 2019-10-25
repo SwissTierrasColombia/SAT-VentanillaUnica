@@ -1,24 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
-import Map from 'ol/Map';
-import View from 'ol/View';
-import LayerTile from 'ol/layer/Tile';
-import ImageLayer from 'ol/layer/Image';
-import XYZ from 'ol/source/XYZ';
-import ImageWMS from 'ol/source/ImageWMS';
-import { Vector as VectorSource } from 'ol/source.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
-import { defaults as defaultInteractions } from 'ol/interaction.js';
-import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-import * as turf from '@turf/turf';
 import { ActivatedRoute } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
 import { DepartamentsService } from 'src/app/services/vu/departaments.service';

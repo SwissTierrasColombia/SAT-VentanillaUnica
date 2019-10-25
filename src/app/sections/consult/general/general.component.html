@@ -12,8 +12,8 @@
                         </i>
                     </span>
                 </div>
-                <select class="custom-select" name="selectDepartament" (change)="changeDepartament()" select required [(ngModel)]="idSelectDepartament">
-                    <option (click)="changeDepartament()" *ngFor="let item of allDepartaments" name="item.department"
+                <select class="custom-select" name="selectDepartament" (change)="changeDepartament()"  select required [(ngModel)]="idSelectDepartament">
+                    <option *ngFor="let item of allDepartaments" name="item.department"
                         [ngValue]="item._id">
                         {{item.department}}</option>
                 </select>
@@ -28,7 +28,7 @@
                     </span>
                 </div>
                 <select class="custom-select" name="selectMunicipio" (change)="selectMunicipality()" select required [(ngModel)]="idMunicipality">
-                    <option (click)="selectMunicipality()" *ngFor="let item of allminucipalities"
+                    <option *ngFor="let item of allminucipalities"
                         name="item.municipality" [ngValue]="item._id">
                         {{item.municipality}}</option>
                 </select>

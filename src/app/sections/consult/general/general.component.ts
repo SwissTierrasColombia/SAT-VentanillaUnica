@@ -1,26 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { BasicConsult } from 'src/app/models/basic-parcel-info.interface';
 
 
-import Map from 'ol/Map';
-import View from 'ol/View';
-import LayerTile from 'ol/layer/Tile';
-import ImageLayer from 'ol/layer/Image';
-import XYZ from 'ol/source/XYZ';
-import ImageWMS from 'ol/source/ImageWMS';
-import { Vector as VectorSource } from 'ol/source.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
-import { defaults as defaultInteractions } from 'ol/interaction.js';
-import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-import * as turf from '@turf/turf';
 import { ActivatedRoute } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
+import { DepartamentsService } from 'src/app/services/vu/departaments.service';
+import { ParcelsService } from 'src/app/services/RDM/parcels.service';
+
 @Component({
   selector: 'app-general',
   templateUrl: './general.component.html',
@@ -34,24 +24,47 @@ export class GeneralComponent implements OnInit {
   inputCadastralCode = '';
   basicConsult: any;
   image: any;
+  departamento: boolean;
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
   tipoBusqueda = 1;
+  allDepartaments: any;
+  idSelectDepartament: string;
+  allminucipalities: any;
+  idMunicipality: string;
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
+  dataRecords: any;
+  extralayers: any;
+  constructor(private service: QueryService,
+              private toastr: ToastrService,
+              private route: ActivatedRoute,
+              private serviceDepartament: DepartamentsService,
+              private serviceRDM: ParcelsService
+  ) {
+    this.departamento = false;
+    this.idSelectDepartament = '';
+    this.idMunicipality = '';
+    this.extralayers = {
+      versions: []
+    };
+    this.dataRecords = [];
+  }
 
-  constructor(private service: QueryService, private toastr: ToastrService, private route: ActivatedRoute) { }
+  geom: any;
 
   ngOnInit() {
+    this.serviceDepartament.GetDepartaments().subscribe(
+      data => {
+        this.allDepartaments = data;
+      }
+    );
     this.route.queryParamMap.subscribe(
       params => {
-        if (params.has("t_id")) {
-          //arams.get('tid')
-          console.log("llegue: ", params.get('t_id'));
-          this.service.getCadastralCode(Number(params.get('t_id'))).subscribe((result: any) => {
-            console.log(result);
+        if (params.has('t_id')) {
+          this.serviceRDM.GetInformationCatastralParcel(this.idMunicipality, Number(params.get('t_id'))).subscribe((result: any) => {
             if (result) {
               this.selectTypeSearch(2);
               this.inputCadastralCode = result.numero_predial;
@@ -63,7 +76,20 @@ export class GeneralComponent implements OnInit {
           });
         }
       }
-    )
+    );
+  }
+  changeDepartament() {
+    this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
+      data => {
+        this.allminucipalities = data;
+      }
+    );
+  }
+  selectMunicipality() {
+    this.departamento = true;
+  }
+  volver() {
+    this.departamento = false;
   }
   selectTypeSearch(id) {
     this.inputCadastralCode = '';
@@ -77,181 +103,70 @@ export class GeneralComponent implements OnInit {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
       this.inputNupre = this.inputNupre.trim();
-      this.getBasicInfo();
+      const promiseBasicInfo = this.getBasicInfo();
+      Promise.all([promiseBasicInfo]).then(values => {
+        if (this.inputNupre) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('nupre', this.inputNupre);
+          }
+        } else if (this.inputCadastralCode) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('cadastralCode', this.inputCadastralCode);
+          }
+        } else if (this.inputFMI) {
+          if (this.extralayers.versions.length > 1) {
+            this.getRecord('fmi', this.inputFMI);
+          }
+        }
+      });
     } else {
       this.showResult = false;
     }
   }
 
   getBasicInfo() {
-    this.service
-      .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
-      .subscribe(
-        data => {
-
-          // tslint:disable-next-line:no-string-literal
-          if (data['error']) {
+    return new Promise((resolve) => {
+      this.serviceRDM
+        .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
+        .subscribe(
+          data => {
             // tslint:disable-next-line:no-string-literal
-            //console.log(data['error']);
-            this.showResult = false;
-            this.toastr.error('No se encontraron registros.');
-          } else {
-            this.basicConsult = [data[0]];
-            this.service.getTerrainGeometry(this.basicConsult[0].id).subscribe(geom => {
-              this.drawGeometry(geom);
-            });
-            this.showResult = true;
+            if (data['error']) {
+              // tslint:disable-next-line:no-string-literal
+              // console.log(data['error']);
+              this.showResult = false;
+              this.toastr.error('No se encontraron registros.');
+            } else {
+              this.basicConsult = [data[0]];
+              this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
+                // this.drawGeometry(geom);
+                this.geom = geom;
+                this.extralayers = this.allminucipalities.find((obj) => {
+                  if (obj._id === this.idMunicipality) {
+                    return obj;
+                  }
+                });
+                resolve();
+              });
+              this.showResult = true;
+            }
           }
-        }
-      );
+        );
+    });
+
   }
 
-  private getBaseMap(type: string, op: number) {
-    let source = '';
-    switch (type) {
-      case 'googleLayerRoadNames': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerRoadmap': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerSatellite': source = 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid': source = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerTerrain': source = 'http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid2': source = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerOnlyRoad': source = 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}'; break;
-      case 'OSM': source = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
-    }
-    if (source !== '') {
-      return new LayerTile({
-        title: type,
-        source: new XYZ({
-          url: source
-        }),
-        opacity: op
-      });
-    } else {
-      return null;
-    }
-  }
-
-  private drawGeometry(geom: any) {
-
-    /*
-    const m = new Map('map' + this.basicConsult[0].id, {
-      crs: CRS.EPSG3857
-    });
-
-    new TileLayer('http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}', {
-      crs: CRS.EPSG3857
-    }).addTo(m);
-
-    const parcel = geoJSON(geom, {
-      style: {
-        fillColor: '#BD0026',
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-      }
-    }).addTo(m);
-
-    m.fitBounds(parcel.getBounds());
-
-    //LADM:vw_terreno
-
-    */
-
-    this.centroid = turf.centroid(geom);
-
-    const vs = new VectorSource({
-      features: (new GeoJSON()).readFeatures(geom)
-    });
-    /*
-        const sterreno = new TileWMS({
-          url: this.urlGeoserver + 'LADM/wms',
-          params: { LAYERS: 'LADM:sat_mapa_base' },
-          serverType: 'geoserver',
-          crossOrigin: 'anonymous'
-        });
-    */
-    const sterreno = new ImageLayer({
-      source: new ImageWMS({
-        ratio: 1,
-        url: this.urlGeoserver + 'LADM/wms',
-        params: {
-          FORMAT: 'image/png',
-          VERSION: '1.1.1',
-          LAYERS: 'LADM:sat_mapa_base',
-          exceptions: 'application/vnd.ogc.se_inimage',
-        }
-      })
-    });
-    /*
-        const terreno = new LayerTile({
-          title: 'Terreno',
-          source: sterreno,
-          opacity: 1
-        });
-        */
-
-
-    const vl = new VectorLayer({
-      source: vs,
-      style: new Style({
-        fill: new Fill({
-          color: 'rgba(96, 58, 58, 0.1)'
-        }),
-        stroke: new Stroke({
-          color: '#ff2929',
-          width: 5
-        }),
-        image: new CircleStyle({
-          radius: 5,
-          fill: new Fill({
-            color: 'rgba(96, 58, 58, 0.2)'
-          }),
-          stroke: new Stroke({
-            color: '#319FD3',
-            width: 1
-          })
-        })
-      })
-    });
-
-    const v = new View({ projection: 'EPSG:3857' });
-    const polygon = vs.getFeatures()[0].getGeometry();
-    v.fit(polygon, { size: [500, 500] });
-    const m = new Map({
-      interactions: defaultInteractions({
-        doubleClickZoom: true,
-        dragAndDrop: true,
-        dragPan: true,
-        keyboardPan: true,
-        keyboardZoom: true,
-        mouseWheelZoom: true,
-        pointer: true,
-        select: true
-      }),
-      target: 'map' + this.basicConsult[0].id,
-      layers: [
-        this.getBaseMap('googleLayerSatellite', 1),
-        this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        sterreno,
-        vl
-      ],
-      view: v
-    });
-
-    return m;
-
-  }
   public xOffset(text) {
     return (this.docG.internal.pageSize.width / 2) - (this.docG.getStringUnitWidth(text) * this.docG.internal.getFontSize() / 2);
   }
   public captureScreen() {
     // Few necessary setting options 216 x 279 tamaño carta
     const doc = new jspdf('portrait', 'px', 'a4');
+    doc.setFontSize(12);
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
+
       let tipo = '--';
       let nombre = '--';
       let departamento = '--';
@@ -360,16 +275,42 @@ export class GeneralComponent implements OnInit {
           [País, Departamento, Ciudad, codigoPostal, Apartado_correo, Nombre_calle]
         ]
       });
+      if (this.extralayers.versions.length > 1 && this.dataRecords.length > 0) {
+        let bodyAntecedentes = [];
+        this.dataRecords.forEach(element => {
+          element.attributes.predio.forEach(item => {
+            bodyAntecedentes.push(
+              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
+            )
+          });
+        });
+        doc.text('Antecedentes', 20, 495);
+        doc.autoTable({
+          margin: 20,
+          tableWidth: 396.46,
+          headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
+          head: [['Nombre', 'Nupre', 'FMI', 'Número predial', 'Número predial anterior', 'Área terreno']],
+          body: bodyAntecedentes
+        });
+      }
+
       doc.setFontSize(9);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
       doc.text('http://localhost:4200/#/consults/basic-parcel-info?fmi=' + FMI, 20, 609.4175);
       doc.save('ConsultaGeneral.pdf'); // Generated PDF
     }.bind(this);
-    newImg.src = this.service.getTerrainGeometryImage(this.basicConsult[0].id);
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.basicConsult[0].id);
   }
   public onKey(event: any) {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+  getRecord(tipo: string, idTipo: string) {
+    this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
+      data => {
+        this.dataRecords = data;
+      }
+    );
   }
 }

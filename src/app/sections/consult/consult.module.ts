@@ -6,6 +6,7 @@ import { ConsultRoutingModule } from './consult-routing.module';
 import {
   FormsModule, ReactiveFormsModule
 } from '@angular/forms';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {
     CommonModule,
     ConsultRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ComponentsModule
   ]
 })
 export class ConsultModule { }

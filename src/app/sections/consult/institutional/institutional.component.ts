@@ -1,25 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
 
-// import PluggableMap from 'ol/PluggableMap.js';
-import Map from 'ol/Map';
-import View from 'ol/View';
-import LayerTile from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
-import { Vector as VectorSource } from 'ol/source.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
-import { defaults as defaultInteractions } from 'ol/interaction.js';
-// import { transform } from 'ol/proj';
-import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-import * as turf from '@turf/turf';
 import { Router } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
+import { DepartamentsService } from 'src/app/services/vu/departaments.service';
+import { ParcelsService } from 'src/app/services/RDM/parcels.service';
 
 @Component({
   selector: 'app-institutional',
@@ -50,11 +39,52 @@ export class InstitutionalComponent implements OnInit {
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
+  departamento: boolean;
+  allDepartaments: any;
+  idSelectDepartament: string;
+  allminucipalities: any;
+  idMunicipality: string;
+  dataRecords: any;
+  extralayers: any;
+  geom: any;
 
-
-  constructor(private service: QueryService, private toastr: ToastrService, private route: Router) { }
+  constructor(
+    private service: QueryService,
+    private toastr: ToastrService,
+    private serviceDepartament: DepartamentsService,
+    private serviceRDM: ParcelsService
+  ) {
+    this.departamento = false;
+    this.idSelectDepartament = '';
+    this.idMunicipality = '';
+    this.extralayers = {
+      versions: []
+    };
+  }
 
   ngOnInit(): void {
+    this.serviceDepartament.GetDepartaments().subscribe(
+      data => {
+        this.allDepartaments = data;
+        console.log("this.allDepartaments: ", this.allDepartaments);
+
+      }
+    )
+  }
+  changeDepartament() {
+    this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
+      data => {
+        this.allminucipalities = data;
+        console.log("this.allminucipalities: ", this.allminucipalities);
+
+      }
+    )
+  }
+  selectMunicipality() {
+    this.departamento = true;
+  }
+  volver() {
+    this.departamento = false;
   }
   /**/
 
@@ -72,12 +102,12 @@ export class InstitutionalComponent implements OnInit {
     this.inputNupre = this.inputNupre.trim();
     if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
       this.getInteresadosInfo();
-      this.service
-        .getParcelPhysicalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+      this.serviceRDM
+        .GetInformationPhysicalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           data => {
-            this.service
-              .getBasicConsult(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+            this.serviceRDM
+              .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
               .subscribe(
                 basicData => {
                   this.physicalInfo = data[0] ? data[0] : [];
@@ -97,8 +127,15 @@ export class InstitutionalComponent implements OnInit {
                           this.toastr.error('Datos no encontrados');
                         }
                       );
-                    this.service.getParcelGeometry(this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
-                      this.drawGeometry(geom);
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality, this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                      this.geom = geom;
+                      this.extralayers = this.allminucipalities.find((obj) => {
+                        if (obj._id === this.idMunicipality) {
+                          return obj;
+                        }
+                      });
+                      console.log(this.geom, this.extralayers);
+                      
                     });
                     this.showResult = true;
 
@@ -112,8 +149,8 @@ export class InstitutionalComponent implements OnInit {
           }
         );
 
-      this.service
-        .getParcelLegalQuery(this.inputFMI, this.inputCadastralCode, this.inputNupre)
+      this.serviceRDM
+        .GetInformationLegalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
         .subscribe(
           (data: any) => {
             if (data.length) {
@@ -125,14 +162,15 @@ export class InstitutionalComponent implements OnInit {
               // console.log(data[0]['attributes']['predio'][0]);
 
             }
-          },
-          error => {
-            console.log(error);
-            this.showResult = false;
-            this.toastr.error('Datos no encontrados');
           }
         );
-
+      if (this.inputNupre) {
+        this.getRecord('nupre', this.inputNupre)
+      } else if (this.inputCadastralCode) {
+        this.getRecord('cadastralCode', this.inputCadastralCode)
+      } else if (this.inputFMI) {
+        this.getRecord('fmi', this.inputFMI)
+      }
 
     } else {
       this.showResult = false;
@@ -141,7 +179,7 @@ export class InstitutionalComponent implements OnInit {
   }
   private getInteresadosInfo() {
     if (this.inputCadastralCode !== '') {
-      this.service.getInteresadosQuery('cadastralCode', this.inputCadastralCode).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'cadastralCode', this.inputCadastralCode).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -152,7 +190,7 @@ export class InstitutionalComponent implements OnInit {
       );
     }
     if (this.inputNupre !== '') {
-      this.service.getInteresadosQuery('nupre', this.inputNupre).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'nupre', this.inputNupre).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -163,7 +201,7 @@ export class InstitutionalComponent implements OnInit {
       );
     }
     if (this.inputFMI !== '') {
-      this.service.getInteresadosQuery('fmi', this.inputFMI).subscribe(
+      this.serviceRDM.GetInformationPartyParcel(this.idMunicipality, 'fmi', this.inputFMI).subscribe(
         data => {
           this.interesadosInfo = data;
           // console.log(Object.values(this.interesadosInfo)[0]);
@@ -172,104 +210,6 @@ export class InstitutionalComponent implements OnInit {
           }
         }
       );
-    }
-  }
-
-  private drawGeometry(geom: any) {
-    // console.log("geom: ", geom);
-
-    this.centroid = turf.centroid(geom);
-
-    const vs = new VectorSource({
-      features: (new GeoJSON()).readFeatures(geom)
-    });
-
-    const sterreno = new TileWMS({
-      url: this.urlGeoserver + 'LADM/wms',
-      params: { LAYERS: 'LADM:sat_mapa_base', TILED: true },
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
-    });
-
-    const terreno = new LayerTile({
-      title: 'Terreno',
-      source: sterreno,
-      opacity: 1
-    });
-
-    const vl = new VectorLayer({
-      source: vs,
-      style: new Style({
-        fill: new Fill({
-          color: 'rgba(96, 58, 58, 0.1)'
-        }),
-        stroke: new Stroke({
-          color: '#ff2929',
-          width: 5
-        }),
-        image: new CircleStyle({
-          radius: 5,
-          fill: new Fill({
-            color: 'rgba(96, 58, 58, 0.2)'
-          }),
-          stroke: new Stroke({
-            color: '#319FD3',
-            width: 1
-          })
-        })
-      })
-    });
-
-    const v = new View({ projection: 'EPSG:3857' });
-    const polygon = vs.getFeatures()[0].getGeometry();
-    v.fit(polygon, { size: [500, 500] });
-    const m = new Map({
-      interactions: defaultInteractions({
-        doubleClickZoom: true,
-        dragAndDrop: true,
-        dragPan: true,
-        keyboardPan: true,
-        keyboardZoom: true,
-        mouseWheelZoom: false,
-        pointer: true,
-        select: true
-      }),
-      target: 'map',
-      layers: [
-        this.getBaseMap('googleLayerSatellite', 1),
-        this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        terreno,
-        vl
-      ],
-      view: v
-    });
-
-    return m;
-
-  }
-
-  private getBaseMap(type: string, op: number) {
-    let source = '';
-    switch (type) {
-      case 'googleLayerRoadNames': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerRoadmap': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerSatellite': source = 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid': source = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerTerrain': source = 'http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid2': source = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerOnlyRoad': source = 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}'; break;
-      case 'OSM': source = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
-    }
-    if (source !== '') {
-      return new LayerTile({
-        title: type,
-        source: new XYZ({
-          url: source
-        }),
-        opacity: op
-      });
-    } else {
-      return null;
     }
   }
 
@@ -285,6 +225,7 @@ export class InstitutionalComponent implements OnInit {
 
   public generatepdf() {
     const doc = new jspdf('portrait', 'px', 'a4');
+    doc.setFontSize(12);
     const newImg = new Image();
     // tslint:disable-next-line:space-before-function-paren
     newImg.onload = function () {
@@ -385,7 +326,24 @@ export class InstitutionalComponent implements OnInit {
         head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: bodyAfectaciones
       });
-
+      if (this.dataRecords.length > 0) {
+        let bodyAntecedentes = []
+        this.dataRecords.forEach(element => {
+          element.attributes.predio.forEach(item => {
+            bodyAntecedentes.push(
+              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
+            )
+          });
+        });
+        doc.text('Antecedentes', 20, 530);
+        doc.autoTable({
+          margin: 20,
+          tableWidth: 396.46,
+          headStyles: { fillColor: [165, 174, 183] }, // Gris Oscuro
+          head: [['Nombre', 'Nupre', 'FMI', 'Número predial', 'Número predial anterior', 'Área terreno']],
+          body: bodyAntecedentes
+        });
+      }
       doc.setFontSize(9);
       doc.text('Fuente de consulta: ', 15, 600);
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
@@ -421,8 +379,16 @@ export class InstitutionalComponent implements OnInit {
 
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
-    // tslint:disable-next-line:no-string-literal
-    newImg.src = this.service.getTerrainGeometryImage(this.physicalInfo['id']);
+
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']);
+  }
+  getRecord(tipo: string, idTipo: string) {
+    this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
+      data => {
+        this.dataRecords = data;
+        console.log("this.dataRecords", this.dataRecords);
+      }
+    );
   }
 
 }

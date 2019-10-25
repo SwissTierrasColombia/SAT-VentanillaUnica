@@ -9,7 +9,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,
@@ -17,6 +17,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  exports: [
   ]
 })
 export class GeneralModule { }

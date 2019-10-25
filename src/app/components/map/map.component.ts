@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, OnChanges, Input, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges, Input, ElementRef, ViewChild, AfterViewChecked, AfterViewInit } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerTile from 'ol/layer/Tile';
@@ -47,9 +47,9 @@ export class LayerList {
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnChanges {
+export class MapComponent implements OnChanges, AfterViewInit {
 
-  @Input() geom: string;
+  @Input() geom: any;
   @Input() baselayer: string;
   @Input() extralayers: any;
 
@@ -59,30 +59,44 @@ export class MapComponent implements OnChanges {
   private legendVars = 'wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:';
   map: Map = null;
   view: View;
-  layers: LayerList = new LayerList();
+  layers: LayerList;
   projection = 'EPSG:3857';
   centroid = {
     geometry: { coordinates: [0, 0] }
   };
   srclegend = '';
+  renderSignal = false;
 
   constructor() {
+    this.layers = new LayerList();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.baselayer && changes.baselayer.currentValue) {
-      this.srclegend = this.urlGeoserver + this.legendVars + this.baselayer;
+    if (this.renderSignal) {
+      if (changes.baselayer && changes.baselayer.currentValue) {
+        this.srclegend = this.urlGeoserver + this.legendVars + this.baselayer;
+      }
+      if (changes.geom && changes.geom.currentValue) {
+        this.render();
+      }
     }
-    if (changes.geom && changes.geom.currentValue) {
-      this.drawGeometry(this.geom);
-    }
+  }
 
-    if (changes.extralayers && changes.extralayers.currentValue) {
+  async ngAfterViewInit(): Promise<void> {
+    await this.initMap();
+    this.render();
+  }
+
+  private render() {
+    if (this.renderSignal) {
+      this.drawGeometry();
       for (const l of this.extralayers.versions) {
         const ol = this.getReferenceMap(l.layer);
         this.layers.add(l.name, ol);
         this.map.addLayer(ol);
       }
+    } else {
+      this.renderSignal = true;
     }
   }
 
@@ -110,17 +124,11 @@ export class MapComponent implements OnChanges {
     }
   }
 
-  private drawGeometry(geom: any) {
+  private drawGeometry() {
 
-    console.log(geom);
-
-
-    this.initMap();
-
-    this.centroid = turf.centroid(geom);
-
+    this.centroid = turf.centroid(this.geom);
     const vs = new VectorSource({
-      features: (new GeoJSON()).readFeatures(geom)
+      features: (new GeoJSON()).readFeatures(this.geom)
     });
 
     const vectorLayer = new VectorLayer({
@@ -145,14 +153,12 @@ export class MapComponent implements OnChanges {
         })
       })
     });
-
     const polygon = vs.getFeatures()[0].getGeometry();
-    this.view.fit(polygon.getExtent(), { size: [500, 500] });
+    this.map.getView().fit(polygon.getExtent(), { size: [500, 500] });
     this.map.addLayer(vectorLayer);
   }
 
   getReferenceMap(name) {
-    console.log(this.urlGeoserver);
     return new ImageLayer({
       source: new ImageWMS({
         ratio: 1,
@@ -167,7 +173,7 @@ export class MapComponent implements OnChanges {
     });
   }
 
-  initMap() {
+  async initMap() {
     if (this.omap) {
 
       const reference = this.getReferenceMap('LADM:sat_mapa_base');

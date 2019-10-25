@@ -12,9 +12,8 @@
                         </i>
                     </span>
                 </div>
-                <select class="custom-select" name="selectDepartament" select required
-                    [(ngModel)]="idSelectDepartament">
-                    <option (click)="changeDepartament()" *ngFor="let item of allDepartaments" name="item.department"
+                <select class="custom-select" (change)="changeDepartament()" name="selectDepartament" select required [(ngModel)]="idSelectDepartament">
+                    <option *ngFor="let item of allDepartaments" name="item.department"
                         [ngValue]="item._id">
                         {{item.department}}</option>
                 </select>
@@ -28,8 +27,8 @@
                         </i>
                     </span>
                 </div>
-                <select class="custom-select" name="selectMunicipio" select required [(ngModel)]="idMunicipality">
-                    <option (click)="selectMunicipality()" *ngFor="let item of allminucipalities"
+                <select class="custom-select" (change)="selectMunicipality()" name="selectMunicipio" select required [(ngModel)]="idMunicipality">
+                    <option *ngFor="let item of allminucipalities"
                         name="item.municipality" [ngValue]="item._id">
                         {{item.municipality}}</option>
                 </select>
@@ -48,27 +47,21 @@
         <div class="card-body row">
             <div class="form-group col-12">
                 <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
-                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input"
-                    (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
-                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
-                    (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
-                <input type="radio" name="buscarpor" aria-label="Radio button for following text input"
-                    (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input" (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
             </div>
             <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
                 <label for="inputNupre">NUPRE</label>
-                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputNupre"
-                    [(ngModel)]="inputNupre" placeholder="AAAA-00000000000-00">
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputNupre" [(ngModel)]="inputNupre" placeholder="AAAA-00000000000-00">
             </div>
             <div class="form-group col-12" [hidden]="tipoBusqueda!=2">
                 <label for="inputCadastralCode">Número Predial</label>
-                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputCadastralCode"
-                    [(ngModel)]="inputCadastralCode" placeholder="00000000000000000000">
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputCadastralCode" [(ngModel)]="inputCadastralCode" placeholder="00000000000000000000">
             </div>
             <div class="form-group col-12" [hidden]="tipoBusqueda!=3">
                 <label for="inputFMI">Folio de Matrícula Inmobiliaria</label>
-                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputFMI"
-                    [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
+                <input (keyup.enter)="onKey($event)" type="text" class="form-control" id="inputFMI" [(ngModel)]="inputFMI" placeholder="AAAAAAAAA">
             </div>
             <div class="text-center col-12">
                 <button (click)="search()" class="btn btn-primary" type="submit">Buscar</button>
@@ -88,23 +81,19 @@
 
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab"
-                            (click)="tab=1" aria-controls="home">
+                        <a class="nav-link" [ngClass]="{'active':tab === 1}" data-toggle="tab" role="tab" (click)="tab=1" aria-controls="home">
                             <i class="fa fa-legal fa-lg"></i> Verdad Jurídica</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab"
-                            (click)="tab=2" aria-controls="profile">
+                        <a class="nav-link" [ngClass]="{'active':tab === 2}" data-toggle="tab" role="tab" (click)="tab=2" aria-controls="profile">
                             <i class="fa fa-map-o fa-lg"></i> Verdad Física</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab"
-                            (click)="tab=3" aria-controls="messages">
+                        <a class="nav-link" [ngClass]="{'active':tab === 3}" data-toggle="tab" role="tab" (click)="tab=3" aria-controls="messages">
                             <i class="fa fa-group fa-lg"></i> Partes Interesadas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab"
-                            (click)="tab=4" aria-controls="messages">
+                        <a class="nav-link" [ngClass]="{'active':tab === 4}" data-toggle="tab" role="tab" (click)="tab=4" aria-controls="messages">
                             <i class="fa fa-institution fa-lg"></i> Verdad Administrativa</a>
                     </li>
                 </ul>
@@ -132,9 +121,9 @@
                                             <td>{{item.attributes['col_fuenteadministrativa'][0].attributes['Tipo de fuente administrativa']}}
                                             </td>
                                             <td>-</td>
-                                            <td><a
-                                                    href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i
-                                                        class="fa fa-file fa-lg"></i></a></td>
+                                            <td>
+                                                <a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i class="fa fa-file fa-lg"></i></a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                     <tbody *ngIf="legalInfo.FMI==null">
@@ -165,8 +154,7 @@
                                             <td scope="row">-</td>
                                             <td>{{item.attributes['Tipo de derecho']}}</td>
                                             <td>-</td>
-                                            <td><a
-                                                    href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i
+                                            <td><a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']}}"><i
                                                         class="fa fa-file fa-lg"></i></a></td>
                                         </tr>
                                     </tbody>
@@ -259,7 +247,7 @@
                                         <td>{{item.razon_social != null ? item.razon_social: item.nombre ? item.razon_social : '--'}}
                                         </td>
                                         <td>{{item.tipo_documento ? item.tipo_documento : '--'}}</td>
-                                        <td>{{item.documento_identidad ? item.documento_identidad  : '--'}}</td>
+                                        <td>{{item.documento_identidad ? item.documento_identidad : '--'}}</td>
                                         <td>{{item.interesado_juridico != null ? item.interesado_juridico: 'Natural'}}
                                         </td>
                                         <td>{{item.tipo ? item.tipo : '--' }}</td>
@@ -314,12 +302,9 @@
                 <h3>Mapa</h3>
             </div>
             <div class="card-body">
-                <div id="map" class="map mapa" tabindex="0"></div>
-                <img src="{{urlGeoserver}}wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=LADM:ladm_col_2_2_1"
-                    alt="">
-                <a href="https://ide.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
-                    type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal
-                </a>
+                <div class="col-xs-12 col-md-6 col-sm-12" *ngIf="extralayers">
+                    <app-map [geom]="geom" [extralayers]="extralayers" baselayer="ladm_col_2_2_1_p1"></app-map>
+                </div>
             </div>
         </div>
 
@@ -404,13 +389,10 @@
                                             {{item.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? item.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad']:'--'}}
                                         </td>
                                         <td>
-                                            <img *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] == null"
-                                                src="http://portal.proadmintierra.info:18888/filemanager/v1/file/Local?id=default.2019.2.18.10h18i&thumbnail=true"
-                                                style="width: 20px" alt="">
-                                            <a *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] != null"
-                                                href="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']}}">
-                                                <img src="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']+'&thumbnail=true'}}"
-                                                    style="width: 20px" alt=""></a></td>
+                                            <img *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] == null" src="http://portal.proadmintierra.info:18888/filemanager/v1/file/Local?id=default.2019.2.18.10h18i&thumbnail=true" style="width: 20px" alt="">
+                                            <a *ngIf="item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente'] != null" href="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']}}">
+                                                <img src="{{item.attributes['col_fuenteadministrativa']['0']['attributes']['Archivo fuente']+'&thumbnail=true'}}" style="width: 20px" alt=""></a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

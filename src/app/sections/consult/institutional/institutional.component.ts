@@ -58,6 +58,9 @@ export class InstitutionalComponent implements OnInit {
   allminucipalities: any;
   idMunicipality: string;
   dataRecords: any;
+  extralayers: any;
+  geom: any;
+
   constructor(
     private service: QueryService,
     private toastr: ToastrService,
@@ -136,7 +139,12 @@ export class InstitutionalComponent implements OnInit {
                         }
                       );
                     this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality, this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
-                      this.drawGeometry(geom);
+                      this.geom = geom;
+                      this.extralayers = this.allminucipalities.find((obj) => {
+                        if (obj._id === this.idMunicipality) {
+                          return obj;
+                        }
+                      });
                     });
                     this.showResult = true;
 
@@ -211,97 +219,6 @@ export class InstitutionalComponent implements OnInit {
           }
         }
       );
-    }
-  }
-
-  private drawGeometry(geom: any) {
-    // console.log("geom: ", geom);
-
-    this.centroid = turf.centroid(geom);
-
-    const vs = new VectorSource({
-      features: (new GeoJSON()).readFeatures(geom)
-    });
-
-    const sterreno = new TileWMS({
-      url: this.urlGeoserver + 'LADM/wms',
-      params: { LAYERS: 'LADM:sat_mapa_base', TILED: true },
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
-    });
-
-    const terreno = new LayerTile({
-      source: sterreno,
-      opacity: 1
-    });
-
-    const vl = new VectorLayer({
-      source: vs,
-      style: new Style({
-        fill: new Fill({
-          color: 'rgba(96, 58, 58, 0.1)'
-        }),
-        stroke: new Stroke({
-          color: '#ff2929',
-          width: 5
-        }),
-        image: new CircleStyle({
-          radius: 5,
-          fill: new Fill({
-            color: 'rgba(96, 58, 58, 0.2)'
-          }),
-          stroke: new Stroke({
-            color: '#319FD3',
-            width: 1
-          })
-        })
-      })
-    });
-
-    const v = new View({ projection: 'EPSG:3857' });
-    const polygon = vs.getFeatures()[0].getGeometry();
-    v.fit(polygon.getExtent(), { size: [500, 500] });
-    const m = new Map({
-      interactions: defaultInteractions({
-        doubleClickZoom: true,
-        dragPan: true,
-        mouseWheelZoom: false
-      }),
-      target: 'map',
-      layers: [
-        this.getBaseMap('googleLayerSatellite', 1),
-        this.getBaseMap('googleLayerOnlyRoad', 0.5),
-        terreno,
-        vl
-      ],
-      view: v
-    });
-
-    return m;
-
-  }
-
-  private getBaseMap(type: string, op: number) {
-    let source = '';
-    switch (type) {
-      case 'googleLayerRoadNames': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerRoadmap': source = 'http://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerSatellite': source = 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid': source = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerTerrain': source = 'http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerHybrid2': source = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'; break;
-      case 'googleLayerOnlyRoad': source = 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}'; break;
-      case 'OSM': source = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'; break;
-    }
-    if (source !== '') {
-      return new LayerTile({
-        source: new XYZ({
-          url: source
-        }),
-        opacity: op
-      });
-    } else {
-      return null;
     }
   }
 
@@ -418,13 +335,13 @@ export class InstitutionalComponent implements OnInit {
         head: [['Código', 'Objeto que afecta', 'Área afectada', '% de afectación', 'Fecha constitución', 'Fecha expiración', 'Estado']],
         body: bodyAfectaciones
       });
-      if (this.dataRecords.length>0) {
-        let bodyAntecedentes =[]
+      if (this.dataRecords.length > 0) {
+        let bodyAntecedentes = []
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {
             bodyAntecedentes.push(
-              [item.attributes.Nombre,item.attributes.NUPRE,item.attributes.FMI,item.attributes['Número predial'],item.attributes['Número predial anterior'],element.attributes['Área de terreno [m2]']]
-            ) 
+              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
+            )
           });
         });
         doc.text('Antecedentes', 20, 530);

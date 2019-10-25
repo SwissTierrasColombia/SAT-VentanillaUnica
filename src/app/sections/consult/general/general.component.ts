@@ -39,16 +39,16 @@ export class GeneralComponent implements OnInit {
   dataRecords: any;
   extralayers: any;
   constructor(private service: QueryService,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private serviceDepartament: DepartamentsService,
-    private serviceRDM: ParcelsService
+              private toastr: ToastrService,
+              private route: ActivatedRoute,
+              private serviceDepartament: DepartamentsService,
+              private serviceRDM: ParcelsService
   ) {
     this.departamento = false;
     this.idSelectDepartament = '';
     this.idMunicipality = '';
     this.extralayers = {
-      'versions': []
+      versions: []
     };
     this.dataRecords = [];
   }
@@ -59,17 +59,12 @@ export class GeneralComponent implements OnInit {
     this.serviceDepartament.GetDepartaments().subscribe(
       data => {
         this.allDepartaments = data;
-        console.log('this.allDepartaments: ', this.allDepartaments);
-
       }
     );
     this.route.queryParamMap.subscribe(
       params => {
         if (params.has('t_id')) {
-          // arams.get('tid')
-          console.log('llegue: ', params.get('t_id'));
           this.serviceRDM.GetInformationCatastralParcel(this.idMunicipality, Number(params.get('t_id'))).subscribe((result: any) => {
-            console.log(result);
             if (result) {
               this.selectTypeSearch(2);
               this.inputCadastralCode = result.numero_predial;
@@ -108,22 +103,22 @@ export class GeneralComponent implements OnInit {
       this.inputFMI = this.inputFMI.trim();
       this.inputCadastralCode = this.inputCadastralCode.trim();
       this.inputNupre = this.inputNupre.trim();
-      let promiseBasicInfo = this.getBasicInfo();
+      const promiseBasicInfo = this.getBasicInfo();
       Promise.all([promiseBasicInfo]).then(values => {
         if (this.inputNupre) {
           if (this.extralayers.versions.length > 1) {
-            this.getRecord('nupre', this.inputNupre)
+            this.getRecord('nupre', this.inputNupre);
           }
         } else if (this.inputCadastralCode) {
           if (this.extralayers.versions.length > 1) {
-            this.getRecord('cadastralCode', this.inputCadastralCode)
+            this.getRecord('cadastralCode', this.inputCadastralCode);
           }
         } else if (this.inputFMI) {
           if (this.extralayers.versions.length > 1) {
-            this.getRecord('fmi', this.inputFMI)
+            this.getRecord('fmi', this.inputFMI);
           }
         }
-      })
+      });
     } else {
       this.showResult = false;
     }
@@ -138,22 +133,19 @@ export class GeneralComponent implements OnInit {
             // tslint:disable-next-line:no-string-literal
             if (data['error']) {
               // tslint:disable-next-line:no-string-literal
-              //console.log(data['error']);
+              // console.log(data['error']);
               this.showResult = false;
               this.toastr.error('No se encontraron registros.');
             } else {
               this.basicConsult = [data[0]];
               this.serviceRDM.GetGeometryTerrain(this.idMunicipality, this.basicConsult[0].id).subscribe(geom => {
-                //this.drawGeometry(geom);
+                // this.drawGeometry(geom);
                 this.geom = geom;
-                console.log("this.geom: ", this.geom);
-
                 this.extralayers = this.allminucipalities.find((obj) => {
-                  if (obj._id = this.idMunicipality) {
+                  if (obj._id === this.idMunicipality) {
                     return obj;
                   }
                 });
-                console.log("this.extralayers: ", this.extralayers);
                 resolve();
               });
               this.showResult = true;
@@ -284,7 +276,7 @@ export class GeneralComponent implements OnInit {
         ]
       });
       if (this.extralayers.versions.length > 1 && this.dataRecords.length > 0) {
-        let bodyAntecedentes = []
+        let bodyAntecedentes = [];
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {
             bodyAntecedentes.push(
@@ -318,7 +310,6 @@ export class GeneralComponent implements OnInit {
     this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
       data => {
         this.dataRecords = data;
-        console.log("this.dataRecords", this.dataRecords);
       }
     );
   }

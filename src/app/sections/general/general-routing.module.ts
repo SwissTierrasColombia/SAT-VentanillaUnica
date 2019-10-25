@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainLayoutComponent } from 'src/app/layouts/main-layout/main-layout.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { MapOpenLayerComponent } from './map-open-layer/map-open-layer.component';
 
 
 const routes: Routes = [{
@@ -11,9 +10,6 @@ const routes: Routes = [{
   children: [
     {
       path: 'not-found', component: NotFoundComponent
-    },
-    {
-      path: 'ol', component: MapOpenLayerComponent
     }
   ]
 }];

@@ -57,6 +57,9 @@ export class InstitutionalComponent implements OnInit {
     this.departamento = false;
     this.idSelectDepartament = '';
     this.idMunicipality = '';
+    this.extralayers = {
+      versions: []
+    };
   }
 
   ngOnInit(): void {
@@ -131,6 +134,8 @@ export class InstitutionalComponent implements OnInit {
                           return obj;
                         }
                       });
+                      console.log(this.geom, this.extralayers);
+                      
                     });
                     this.showResult = true;
 

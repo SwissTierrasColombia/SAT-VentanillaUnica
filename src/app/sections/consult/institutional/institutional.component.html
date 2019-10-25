@@ -13,8 +13,7 @@
                     </span>
                 </div>
                 <select class="custom-select" (change)="changeDepartament()" name="selectDepartament" select required [(ngModel)]="idSelectDepartament">
-                    <option *ngFor="let item of allDepartaments" name="item.department"
-                        [ngValue]="item._id">
+                    <option *ngFor="let item of allDepartaments" name="item.department" [ngValue]="item._id">
                         {{item.department}}</option>
                 </select>
             </div>
@@ -28,8 +27,7 @@
                     </span>
                 </div>
                 <select class="custom-select" (change)="selectMunicipality()" name="selectMunicipio" select required [(ngModel)]="idMunicipality">
-                    <option *ngFor="let item of allminucipalities"
-                        name="item.municipality" [ngValue]="item._id">
+                    <option *ngFor="let item of allminucipalities" name="item.municipality" [ngValue]="item._id">
                         {{item.municipality}}</option>
                 </select>
             </div>
@@ -122,7 +120,8 @@
                                             </td>
                                             <td>-</td>
                                             <td>
-                                                <a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i class="fa fa-file fa-lg"></i></a>
+                                                <a href="{{item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']?item.attributes['col_fuenteadministrativa'][0].attributes['Archivo fuente']:'/#/consults/institutional-parcel-info'}}"><i
+                                                        class="fa fa-file fa-lg"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -302,7 +301,7 @@
                 <h3>Mapa</h3>
             </div>
             <div class="card-body">
-                <div class="col-xs-12 col-md-6 col-sm-12" *ngIf="extralayers">
+                <div class="col-12" *ngIf="extralayers" style="height: 300px;">
                     <app-map [geom]="geom" [extralayers]="extralayers" baselayer="ladm_col_2_2_1_p1"></app-map>
                 </div>
             </div>

@@ -302,8 +302,8 @@
                 <h3>Mapa</h3>
             </div>
             <div class="card-body">
-                <div class="col-xs-12 col-md-6 col-sm-12" *ngIf="extralayers">
-                    <app-map [geom]="geom" [extralayers]="extralayers" baselayer="ladm_col_2_2_1_p1"></app-map>
+                <div class="col-12" *ngIf="extralayers" style="height: 500px;">
+                    <app-map [geom]="geom"  [extralayers]="extralayers" baselayer="ladm_col_2_2_1_p1"></app-map>
                 </div>
             </div>
         </div>

@@ -1,23 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PhysicalParcelInfo } from 'src/app/models/physical-parcel-info.interface';
 
-// import PluggableMap from 'ol/PluggableMap.js';
-import Map from 'ol/Map';
-import View from 'ol/View';
-import LayerTile from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
-import { Vector as VectorSource } from 'ol/source.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js';
-import { defaults as defaultInteractions } from 'ol/interaction.js';
-// import { transform } from 'ol/proj';
-import TileWMS from 'ol/source/TileWMS.js';
 import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-import * as turf from '@turf/turf';
 import { Router } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
 import { DepartamentsService } from 'src/app/services/vu/departaments.service';
@@ -64,7 +51,6 @@ export class InstitutionalComponent implements OnInit {
   constructor(
     private service: QueryService,
     private toastr: ToastrService,
-    private route: Router,
     private serviceDepartament: DepartamentsService,
     private serviceRDM: ParcelsService
   ) {

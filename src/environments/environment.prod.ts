@@ -1,4 +1,4 @@
-const apiBaseUrl = 'http://192.168.98.69:8000';
+const apiBaseUrl = 'http://sat.proadmintierra.info/admin475f5nwtt';
 export const environment = {
   production: true,
   nameTokenSession: 'access_token_vu',

@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label><span>*</span><strong>Municipio</strong></label>
                 <select class="form-control" name="r_data_municipality" [(ngModel)]="municipality"
-                    (change)="getPopulation($event)">
+                    (change)="getPopulation()">
                     <option *ngFor="let mun of optionsMunicipalities;let i = index" value="{{mun.id}}">
                         {{mun.name}}
                     </option>

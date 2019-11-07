@@ -1,0 +1,168 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h3 class="text-center">CONCERTACIÓN</h3>
+
+            <div class="alert alert-secondary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+
+
+        <div class="col col-lg-12">
+
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="radio_default" value="option1"
+                    (change)="onChangeRadio($event, 'option1')" checked>
+                <label class="form-check-label">
+                    <span>*</span> <strong>APROBADO Y CONCERTADO POR CAR/AUTORIDAD AMBIENTAL?</strong>
+                </label>
+
+                <div *ngIf="showRadio1">
+                    <div>
+                        <label><span>*</span><strong>Fecha Límite</strong></label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_radio_option1_date_limit"
+                                [(ngModel)]="dateLimitRadioOption1" ngbDatepicker #d="ngbDatepicker" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                    <i class="material-icons">calendar_today</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><span>*</span><strong>Subir documento</strong></label>
+                        <input type="file" class="form-control-file" (change)="onFileRadioOption($event, 'option1')" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="radio" name="radio_default" value="option2"
+                    (change)="onChangeRadio($event, 'option2')">
+                <label class="form-check-label">
+                    <span>*</span> <strong>¿PRONUNCIAMIENTO POR PARTE DEL MADS?</strong>
+                </label>
+
+                <div *ngIf="showRadio2">
+                    <div>
+                        <label><span>*</span><strong>Fecha Límite</strong></label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_radio_option2_date_limit"
+                                [(ngModel)]="dateLimitRadioOption2" ngbDatepicker #f="ngbDatepicker" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="f.toggle()" type="button">
+                                    <i class="material-icons">calendar_today</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Subir documento</strong></label>
+                        <input type="file" class="form-control-file" (change)="onFileRadioOption($event, 'option2')" />
+                    </div>
+
+                </div>
+            </div>
+
+            <hr />
+
+            <div>
+                <div>
+                    <label><strong>¿EMITIÓ CONCEPTO EL CONSEJO TERRITORIAL DE PLANEACIÓN?</strong></label>
+                </div>
+                <label><strong>Fecha Límite</strong></label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_option3"
+                        [(ngModel)]="dateLimitOption3" ngbDatepicker #e="ngbDatepicker" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="e.toggle()" type="button">
+                            <i class="material-icons">calendar_today</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Subir documento</strong></label>
+                <input type="file" class="form-control-file" (change)="onFileRadioOption($event, 'option3')" />
+            </div>
+
+            <hr />
+            <hr />
+
+            <div>
+                <div>
+                    <label><span>*</span><strong>¿SE SOCIALIZO CON LA COMUNIDAD?</strong></label>
+                </div>
+                <label><span>*</span><strong>Fecha Límite</strong></label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_option4"
+                        [(ngModel)]="dateLimitOption4" ngbDatepicker #f="ngbDatepicker" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="f.toggle()" type="button">
+                            <i class="material-icons">calendar_today</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Subir documento</strong></label>
+                <input type="file" class="form-control-file" (change)="onFileRadioOption($event, 'option4')" />
+            </div>
+
+            <hr />
+
+            <div>
+                <div>
+                    <label><span>*</span><strong>¿SE SOCIALIZO CON LAS DIFERENTES INSTANCIAS DE
+                            PARTICIPACIÓN?</strong></label>
+                </div>
+                <label><span>*</span><strong>Fecha Límite</strong></label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_option5"
+                        [(ngModel)]="dateLimitOption5" ngbDatepicker #g="ngbDatepicker" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="g.toggle()" type="button">
+                            <i class="material-icons">calendar_today</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Subir documento</strong></label>
+                <input type="file" class="form-control-file" (change)="onFileRadioOption($event, 'option5')" />
+            </div>
+
+
+            <div class="col col-lg-12 text-center mt-3">
+                <img src="assets/resource_screen_4.jpg" class="img-fluid" />
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()"
+                    [disabled]="validateDisabled()">
+                    Avanzar Paso
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

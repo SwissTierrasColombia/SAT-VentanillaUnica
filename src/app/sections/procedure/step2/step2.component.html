@@ -1,0 +1,80 @@
+<div class="container">
+
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h3 class="text-center">CARACTERIZACIÓN Y DIAGNÓSTICO</h3>
+
+            <div class="alert alert-secondary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12 text-center">
+            
+            <img src="assets/resource_screen_2.png" class="img-fluid"/>
+
+        </div>
+
+        <div class="col col-lg-12 mt-5">
+            <h5 class="text-center">Ver Repositorio de Documentos e Información por Entidad</h5>
+        </div>
+
+        <div class="col col-lg-12">
+
+            <div class="row">
+
+                <div class="col col-lg-8">
+                    <div class="form-group">
+                        <label><span>*</span><strong>Entidad</strong></label>
+                        <select class="form-control" name="r_data_entity" [(ngModel)]="entity"
+                            (change)="onEntity($event)">
+                            <option *ngFor="let ent of optionsEntities;let i = index" value="{{ent.id}}">
+                                {{ent.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col col-lg-4">
+                    <label class="text-center"><strong>&nbsp;</strong></label>
+                    <a [href]="urlButton" target="_blank" disabled>
+                        <button type="button" class="btn btn-secondary btn-md btn-block">
+                            Ir a url o repositorio
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="text-center mb-5">
+                <label class="text-center"><strong>Modelos LADM</strong></label>
+                <a href="assets/modelo_pot.ili" download="modelo_pot.ili">
+                    <button type="button" class="btn btn-secondary btn-md btn-block">
+                        Descarga de modelo POT
+                    </button>
+                </a>
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()">
+                    Avanzar Paso
+                </button>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+</div>

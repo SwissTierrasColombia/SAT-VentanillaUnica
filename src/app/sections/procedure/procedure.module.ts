@@ -19,7 +19,11 @@ import { StartProcedureComponent } from './start-procedure/start-procedure.compo
 import { TasksComponent } from './tasks/tasks.component';
 import { ManageProcedureComponent } from './manage-procedure/manage-procedure.component';
 import { SearchProcedureComponent } from './search-procedure/search-procedure.component';
-
+import { Step1Component } from './step1/step1.component';
+import { Step2Component } from './step2/step2.component';
+import { Step3Component } from './step3/step3.component';
+import { Step4Component } from './step4/step4.component';
+import { Step5Component } from './step5/step5.component';
 @NgModule({
   declarations: [
     RoreComponent,
@@ -29,7 +33,12 @@ import { SearchProcedureComponent } from './search-procedure/search-procedure.co
     ManageProcedureComponent,
     UpdateObjectEspecialComponent,
     DialogBoxRegistroComponent,
-    SearchProcedureComponent
+    SearchProcedureComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component,
+    Step4Component,
+    Step5Component
   ],
   imports: [
     CommonModule,

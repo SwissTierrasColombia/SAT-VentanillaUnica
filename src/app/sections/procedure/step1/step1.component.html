@@ -1,0 +1,114 @@
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col col-lg-12">
+            <h3 class="text-center">PRELIMINAR</h3>
+
+            <div class="alert alert-secondary text-center" role="alert">
+                Recuerde que los campos marcados con * son obligatorios.
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row mt-4 mb-5">
+
+        <div class="col col-lg-12">
+
+            <div class="form-group">
+                <label><span>*</span><strong>Departamento</strong></label>
+                <select class="form-control" name="r_data_department" [(ngModel)]="department"
+                    (change)="getMunicipalities($event)">
+                    <option *ngFor="let dep of optionsDepartments;let i = index" value="{{dep.id}}">
+                        {{dep.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Municipio</strong></label>
+                <select class="form-control" name="r_data_municipality" [(ngModel)]="municipality"
+                    (change)="getPopulation($event)">
+                    <option *ngFor="let mun of optionsMunicipalities;let i = index" value="{{mun.id}}">
+                        {{mun.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Población</strong></label>
+                <input type="text" class="form-control" name="r_data_population" [(ngModel)]="population" readonly />
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Tipo POT</strong></label>
+                <select class="form-control" name="r_data_type_pot" [(ngModel)]="typePOT">
+                    <option *ngFor="let pot of optionsTypePOT;let i = index" value="{{pot.id}}">
+                        {{pot.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Tipo</strong></label>
+                <select class="form-control" name="r_data_type" [(ngModel)]="type">
+                    <option *ngFor="let typ of optionsType;let i = index" value="{{typ.id}}">
+                        {{typ.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label><span>*</span><strong>Fecha Inicio</strong></label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="r_data_date_start"
+                        [(ngModel)]="dateStart" ngbDatepicker #d="ngbDatepicker" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                            <i class="material-icons">calendar_today</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><strong>¿El municipio cuenta con expediente municipal? <br> Coloque la URL aquí. </strong></label>
+                <input type="text" class="form-control" name="r_data_municipal_file_url" placeholder="URL del Documento"
+                    [(ngModel)]="municipalFileURL" />
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Subir documento de memoria justificativa</strong></label>
+                <input type="file" name="r_data_justifying_memory" class="form-control-file"
+                    (change)="onFileChange($event)" />
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Alcance y/o observaciones</strong></label>
+                <textarea class="form-control" rows="4" name="r_data_observations" [(ngModel)]="observations"
+                    style="resize: none;" placeholder="Alcance y/o observaciones"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label><span>*</span><strong>Responsable</strong></label>
+                <input type="text" class="form-control" name="r_data_responsable" placeholder="Responsable"
+                    [(ngModel)]="responsable" />
+            </div>
+
+            <div class="text-center">
+                <button type="button" class="btn btn-info btn-md btn-block" (click)="nextStep()"
+                    [disabled]="!department || !municipality || !typePOT || !type || !dateStart || !observations || !responsable || !fileData">
+                    Avanzar Paso
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>

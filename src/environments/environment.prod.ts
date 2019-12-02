@@ -4,8 +4,8 @@ export const environment = {
   nameTokenSession: 'access_token_vu',
   apiBaseUrl,
   apiBaseUrlPrefix: apiBaseUrl + '/api',
-  url: 'http://192.168.98.69:9090/api',
+  url: 'http://sat1.proadmintierra.info/api',
   geoserver: 'http://192.168.98.69:7070/geoserver/',
   qr_base_url: 'http://192.168.98.69:4200/#/consults/basic-parcel-info',
-  urlRegistro: 'http://192.168.98.69:9091'
+  urlRegistro: 'http://sat2.proadmintierra.info'
 };

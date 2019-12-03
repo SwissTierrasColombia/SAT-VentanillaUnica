@@ -5,7 +5,7 @@ export const environment = {
   apiBaseUrl,
   apiBaseUrlPrefix: apiBaseUrl + '/api',
   url: 'http://sat1.proadmintierra.info/api',
-  geoserver: 'http://192.168.98.69:7070/geoserver/',
+  geoserver: 'http://sat.proadmintierra.info/geoserver/',
   qr_base_url: 'http://192.168.98.69:4200/#/consults/basic-parcel-info',
   urlRegistro: 'http://sat2.proadmintierra.info'
 };

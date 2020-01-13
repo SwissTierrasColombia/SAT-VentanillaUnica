@@ -45,9 +45,9 @@
         <div class="card-body row">
             <div class="form-group col-12">
                 <label for="inputNupre">Buscar por:</label>&nbsp;&nbsp;
-                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input" (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
+                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(1)">NUPRE&nbsp;&nbsp;
                 <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(2)"> Número Predial &nbsp;&nbsp;
-                <input type="radio" name="buscarpor" aria-label="Radio button for following text input" (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
+                <input type="radio" name="buscarpor" checked aria-label="Radio button for following text input" (click)="selectTypeSearch(3)"> Folio de Matrícula Inmobiliaria
             </div>
             <div class="form-group col-12" [hidden]="tipoBusqueda!=1">
                 <label for="inputNupre">NUPRE</label>

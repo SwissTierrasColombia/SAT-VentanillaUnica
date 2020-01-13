@@ -22,7 +22,7 @@ export class InstitutionalComponent implements OnInit {
   inputFMI;
   inputCadastralCode;
   tab = 1;
-  tipoBusqueda = 1;
+  tipoBusqueda: number;
   physicalInfo: PhysicalParcelInfo;
   basicData: any;
   legalInfo: any;
@@ -60,25 +60,29 @@ export class InstitutionalComponent implements OnInit {
     this.extralayers = {
       versions: []
     };
+    this.inputNupre = '';
+    this.inputCadastralCode = '';
+    this.inputFMI = '12040';
+    this.tipoBusqueda = 3;
   }
 
   ngOnInit(): void {
     this.serviceDepartament.GetDepartaments().subscribe(
       data => {
         this.allDepartaments = data;
-        console.log("this.allDepartaments: ", this.allDepartaments);
+        // console.log("this.allDepartaments: ", this.allDepartaments);
 
       }
-    )
+    );
   }
   changeDepartament() {
     this.serviceDepartament.GetMunicipalitiesByDeparment(this.idSelectDepartament).subscribe(
       data => {
         this.allminucipalities = data;
-        console.log("this.allminucipalities: ", this.allminucipalities);
+        // console.log("this.allminucipalities: ", this.allminucipalities);
 
       }
-    )
+    );
   }
   selectMunicipality() {
     this.departamento = true;
@@ -90,7 +94,7 @@ export class InstitutionalComponent implements OnInit {
 
   selectTypeSearch(id) {
     this.inputCadastralCode = '';
-    this.inputFMI = '';
+    this.inputFMI = '12040';
     this.inputNupre = '';
     this.tipoBusqueda = id;
   }
@@ -122,7 +126,7 @@ export class InstitutionalComponent implements OnInit {
                           }
                         },
                         error => {
-                          console.log(error);
+                          // console.log(error);
                           this.showResult = false;
                           this.toastr.error('Datos no encontrados');
                         }
@@ -134,8 +138,8 @@ export class InstitutionalComponent implements OnInit {
                           return obj;
                         }
                       });
-                      console.log(this.geom, this.extralayers);
-                      
+                      // console.log(this.geom, this.extralayers);
+
                     });
                     this.showResult = true;
 
@@ -143,7 +147,7 @@ export class InstitutionalComponent implements OnInit {
                 });
           },
           error => {
-            console.log(error);
+            // console.log(error);
             this.showResult = false;
             this.toastr.error('Datos no encontrados');
           }
@@ -386,7 +390,7 @@ export class InstitutionalComponent implements OnInit {
     this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(
       data => {
         this.dataRecords = data;
-        console.log("this.dataRecords", this.dataRecords);
+        // console.log("this.dataRecords", this.dataRecords);
       }
     );
   }

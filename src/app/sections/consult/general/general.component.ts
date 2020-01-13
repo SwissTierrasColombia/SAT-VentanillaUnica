@@ -20,7 +20,7 @@ export class GeneralComponent implements OnInit {
   // @ViewChild('buscarNumeroPredial') numPredialCheck: ElementRef;
   showResult = false;
   inputNupre = '';
-  inputFMI = '';
+  inputFMI: string;
   inputCadastralCode = '';
   basicConsult: any;
   image: any;
@@ -28,7 +28,7 @@ export class GeneralComponent implements OnInit {
   docG = new jspdf('portrait', 'px', 'a4');
   urlGeoserver: string = environment.geoserver;
   urlQR: string = environment.qr_base_url;
-  tipoBusqueda = 1;
+  tipoBusqueda: number;
   allDepartaments: any;
   idSelectDepartament: string;
   allminucipalities: any;
@@ -51,6 +51,8 @@ export class GeneralComponent implements OnInit {
       versions: []
     };
     this.dataRecords = [];
+    this.tipoBusqueda = 3;
+    this.inputFMI = '12040';
   }
 
   geom: any;
@@ -93,9 +95,10 @@ export class GeneralComponent implements OnInit {
   }
   selectTypeSearch(id) {
     this.inputCadastralCode = '';
-    this.inputFMI = '';
+    this.inputFMI = '12040';
     this.inputNupre = '';
     this.tipoBusqueda = id;
+
   }
   search() {
     // tslint:disable-next-line:triple-equals

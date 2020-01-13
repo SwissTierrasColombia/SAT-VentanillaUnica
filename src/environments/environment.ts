@@ -1,17 +1,18 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const apiBaseUrl = 'http://192.168.1.145:8000';
+const apiBaseUrl = 'http://odk.proadmintierra.info';
 export const environment = {
   production: false,
   nameTokenSession: 'access_token_vu',
   apiBaseUrl,
   apiBaseUrlPrefix: apiBaseUrl + '/api',
-  url: 'http://192.168.98.52:9090/api',
-  geoserver: 'http://192.168.98.69:7070/geoserver/',
-  qr_base_url: 'http://localhost:4200/#/consults/basic-parcel-info',
-  urlRegistro: 'http://192.168.98.69:9091'
+  url: 'http://sat1.proadmintierra.info/api',
+  geoserver: 'http://sat.proadmintierra.info/geoserver/',
+  qr_base_url: 'http://192.168.98.69:4200/#/consults/basic-parcel-info',
+  urlRegistro: 'http://sat2.proadmintierra.info'
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

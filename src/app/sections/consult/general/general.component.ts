@@ -97,16 +97,12 @@ export class GeneralComponent implements OnInit {
     this.departamento = false;
   }
   selectTypeSearch(id) {
-    this.inputCadastralCode = '705080300000000080007000000000';
-    this.inputFMI = '12040';
-    this.inputNupre = '';
     this.tipoBusqueda = id;
-
   }
   search() {
     if (this.tipoBusqueda === 1) {
       this.inputNupre = this.inputNupre.trim();
-      const promiseBasicInfo = this.getBasicInfo();
+      const promiseBasicInfo = this.getBasicInfo(this.inputNupre, '', '');
       Promise.all([promiseBasicInfo]).then(values => {
         if (this.inputNupre) {
           if (this.extralayers.versions.length > 1) {
@@ -118,8 +114,9 @@ export class GeneralComponent implements OnInit {
       this.showResult = false;
     }
     if (this.tipoBusqueda === 2) {
+
       this.inputCadastralCode = this.inputCadastralCode.trim();
-      const promiseBasicInfo = this.getBasicInfo();
+      const promiseBasicInfo = this.getBasicInfo('', this.inputCadastralCode, '');
       Promise.all([promiseBasicInfo]).then(values => {
         if (this.inputCadastralCode) {
           if (this.extralayers.versions.length > 1) {
@@ -132,7 +129,7 @@ export class GeneralComponent implements OnInit {
     }
     if (this.tipoBusqueda === 3) {
       this.inputFMI = this.inputFMI.trim();
-      const promiseBasicInfo = this.getBasicInfo();
+      const promiseBasicInfo = this.getBasicInfo('', '', this.inputFMI);
       Promise.all([promiseBasicInfo]).then(values => {
         if (this.inputFMI) {
           if (this.extralayers.versions.length > 1) {
@@ -145,16 +142,15 @@ export class GeneralComponent implements OnInit {
     }
   }
 
-  getBasicInfo() {
+  getBasicInfo(inputNupre: string, inputCadastralCode: string, inputFMI: string) {
     return new Promise((resolve) => {
       this.serviceRDM
-        .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
+        .GetBasicInformationParcel(this.idMunicipality, inputNupre, inputCadastralCode, inputFMI)
         .subscribe(
           data => {
             // tslint:disable-next-line:no-string-literal
             if (data['error']) {
               // tslint:disable-next-line:no-string-literal
-              // console.log(data['error']);
               this.showResult = false;
               this.toastr.error('No se encontraron registros.');
             } else {

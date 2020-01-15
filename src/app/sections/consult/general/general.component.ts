@@ -19,9 +19,9 @@ import { ParcelsService } from 'src/app/services/RDM/parcels.service';
 export class GeneralComponent implements OnInit {
   // @ViewChild('buscarNumeroPredial') numPredialCheck: ElementRef;
   showResult = false;
-  inputNupre = '';
+  inputNupre: string;
   inputFMI: string;
-  inputCadastralCode = '';
+  inputCadastralCode: string;
   basicConsult: any;
   image: any;
   departamento: boolean;
@@ -38,11 +38,12 @@ export class GeneralComponent implements OnInit {
   };
   dataRecords: any;
   extralayers: any;
-  constructor(private service: QueryService,
-              private toastr: ToastrService,
-              private route: ActivatedRoute,
-              private serviceDepartament: DepartamentsService,
-              private serviceRDM: ParcelsService
+  constructor(
+    private service: QueryService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private serviceDepartament: DepartamentsService,
+    private serviceRDM: ParcelsService
   ) {
     this.departamento = false;
     this.idSelectDepartament = '';
@@ -51,8 +52,10 @@ export class GeneralComponent implements OnInit {
       versions: []
     };
     this.dataRecords = [];
-    this.tipoBusqueda = 3;
+    this.tipoBusqueda = 2;
+    this.inputNupre = '';
     this.inputFMI = '12040';
+    this.inputCadastralCode = '705080300000000080007000000000';
   }
 
   geom: any;
@@ -94,17 +97,14 @@ export class GeneralComponent implements OnInit {
     this.departamento = false;
   }
   selectTypeSearch(id) {
-    this.inputCadastralCode = '';
+    this.inputCadastralCode = '705080300000000080007000000000';
     this.inputFMI = '12040';
     this.inputNupre = '';
     this.tipoBusqueda = id;
 
   }
   search() {
-    // tslint:disable-next-line:triple-equals
-    if (this.inputNupre != '' || this.inputCadastralCode != '' || this.inputFMI != '') {
-      this.inputFMI = this.inputFMI.trim();
-      this.inputCadastralCode = this.inputCadastralCode.trim();
+    if (this.tipoBusqueda === 1) {
       this.inputNupre = this.inputNupre.trim();
       const promiseBasicInfo = this.getBasicInfo();
       Promise.all([promiseBasicInfo]).then(values => {
@@ -112,11 +112,29 @@ export class GeneralComponent implements OnInit {
           if (this.extralayers.versions.length > 1) {
             this.getRecord('nupre', this.inputNupre);
           }
-        } else if (this.inputCadastralCode) {
+        }
+      });
+    } else {
+      this.showResult = false;
+    }
+    if (this.tipoBusqueda === 2) {
+      this.inputCadastralCode = this.inputCadastralCode.trim();
+      const promiseBasicInfo = this.getBasicInfo();
+      Promise.all([promiseBasicInfo]).then(values => {
+        if (this.inputCadastralCode) {
           if (this.extralayers.versions.length > 1) {
             this.getRecord('cadastralCode', this.inputCadastralCode);
           }
-        } else if (this.inputFMI) {
+        }
+      });
+    } else {
+      this.showResult = false;
+    }
+    if (this.tipoBusqueda === 3) {
+      this.inputFMI = this.inputFMI.trim();
+      const promiseBasicInfo = this.getBasicInfo();
+      Promise.all([promiseBasicInfo]).then(values => {
+        if (this.inputFMI) {
           if (this.extralayers.versions.length > 1) {
             this.getRecord('fmi', this.inputFMI);
           }
@@ -279,12 +297,13 @@ export class GeneralComponent implements OnInit {
         ]
       });
       if (this.extralayers.versions.length > 1 && this.dataRecords.length > 0) {
-        let bodyAntecedentes = [];
+        const bodyAntecedentes = [];
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {
             bodyAntecedentes.push(
-              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
-            )
+              [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI,
+              item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
+            );
           });
         });
         doc.text('Antecedentes', 20, 495);

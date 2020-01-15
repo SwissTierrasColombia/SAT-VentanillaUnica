@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { QueryService } from 'src/app/services/vu/query.service';
 import { DepartamentsService } from 'src/app/services/vu/departaments.service';
 import { ParcelsService } from 'src/app/services/RDM/parcels.service';
@@ -61,9 +60,9 @@ export class InstitutionalComponent implements OnInit {
       versions: []
     };
     this.inputNupre = '';
-    this.inputCadastralCode = '';
+    this.inputCadastralCode = '705080300000000080007000000000';
     this.inputFMI = '12040';
-    this.tipoBusqueda = 3;
+    this.tipoBusqueda = 2;
   }
 
   ngOnInit(): void {
@@ -93,18 +92,23 @@ export class InstitutionalComponent implements OnInit {
   /**/
 
   selectTypeSearch(id) {
-    this.inputCadastralCode = '';
-    this.inputFMI = '12040';
     this.inputNupre = '';
+    this.inputCadastralCode = '705080300000000080007000000000';
+    this.inputFMI = '12040';
     this.tipoBusqueda = id;
   }
 
   search() {
     this.showResult = false;
-    this.inputFMI = this.inputFMI.trim();
-    this.inputCadastralCode = this.inputCadastralCode.trim();
     this.inputNupre = this.inputNupre.trim();
-    if (this.inputNupre || this.inputFMI || this.inputCadastralCode) {
+    this.inputCadastralCode = this.inputCadastralCode.trim();
+    this.inputFMI = this.inputFMI.trim();
+    // Nupre
+    if (this.tipoBusqueda === 1) {
+      this.inputCadastralCode = '';
+      this.inputFMI = '';
+      this.inputCadastralCode = this.inputCadastralCode.trim();
+      this.inputFMI = this.inputFMI.trim();
       this.getInteresadosInfo();
       this.serviceRDM
         .GetInformationPhysicalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
@@ -131,16 +135,91 @@ export class InstitutionalComponent implements OnInit {
                           this.toastr.error('Datos no encontrados');
                         }
                       );
-                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality, this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
-                      this.geom = geom;
-                      this.extralayers = this.allminucipalities.find((obj) => {
-                        if (obj._id === this.idMunicipality) {
-                          return obj;
-                        }
-                      });
-                      // console.log(this.geom, this.extralayers);
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality,
+                      this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                        this.geom = geom;
+                        this.extralayers = this.allminucipalities.find((obj) => {
+                          if (obj._id === this.idMunicipality) {
+                            return obj;
+                          }
+                        });
+                        // console.log(this.geom, this.extralayers);
 
-                    });
+                      });
+                    this.showResult = true;
+
+                  }
+                });
+          },
+          error => {
+            // console.log(error);
+            this.showResult = false;
+            this.toastr.error('Datos no encontrados');
+          }
+        );
+
+      this.serviceRDM
+        .GetInformationLegalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
+        .subscribe(
+          (data: any) => {
+            if (data.length) {
+              // tslint:disable-next-line:no-string-literal
+              this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+              // tslint:disable-next-line:no-string-literal
+              this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'];
+              // tslint:disable-next-line:no-string-literal
+              // console.log(data[0]['attributes']['predio'][0]);
+            }
+          }
+        );
+      if (this.inputNupre) {
+        this.getRecord('nupre', this.inputNupre);
+      }
+
+    }
+    // Número predial
+    else if (this.tipoBusqueda === 2) {
+      this.inputNupre = '';
+      this.inputFMI = '';
+      this.inputNupre = this.inputNupre.trim();
+      this.inputFMI = this.inputFMI.trim();
+      this.getInteresadosInfo();
+      this.serviceRDM
+        .GetInformationPhysicalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
+        .subscribe(
+          data => {
+            this.serviceRDM
+              .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
+              .subscribe(
+                basicData => {
+                  this.physicalInfo = data[0] ? data[0] : [];
+                  this.basicData = basicData ? basicData : [];
+                  if (this.physicalInfo.hasOwnProperty('attributes')) {
+                    this.service
+                      .getAdministrativeQuery(this.physicalInfo.id)
+                      .subscribe(
+                        (admData: any) => {
+                          if (admData.length) {
+                            this.admInfo = admData;
+                          }
+                        },
+                        error => {
+                          // console.log(error);
+                          this.showResult = false;
+                          this.toastr.error('Datos no encontrados');
+                        }
+                      );
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality,
+                      this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                        this.geom = geom;
+                        this.extralayers = this.allminucipalities.find((obj) => {
+                          if (obj._id === this.idMunicipality) {
+                            return obj;
+                          }
+                        });
+                        // console.log(this.geom, this.extralayers);
+
+                      });
                     this.showResult = true;
 
                   }
@@ -168,15 +247,87 @@ export class InstitutionalComponent implements OnInit {
             }
           }
         );
-      if (this.inputNupre) {
-        this.getRecord('nupre', this.inputNupre)
-      } else if (this.inputCadastralCode) {
-        this.getRecord('cadastralCode', this.inputCadastralCode)
-      } else if (this.inputFMI) {
-        this.getRecord('fmi', this.inputFMI)
+      if (this.inputCadastralCode) {
+        this.getRecord('cadastralCode', this.inputCadastralCode);
       }
 
-    } else {
+    }
+    // FMI
+    else if (this.tipoBusqueda === 3) {
+      this.inputCadastralCode = '';
+      this.inputNupre = '';
+      this.inputCadastralCode = this.inputCadastralCode.trim();
+      this.inputNupre = this.inputNupre.trim();
+      this.getInteresadosInfo();
+      this.serviceRDM
+        .GetInformationPhysicalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
+        .subscribe(
+          data => {
+            this.serviceRDM
+              .GetBasicInformationParcel(this.idMunicipality, this.inputNupre, this.inputCadastralCode, this.inputFMI)
+              .subscribe(
+                basicData => {
+                  this.physicalInfo = data[0] ? data[0] : [];
+                  this.basicData = basicData ? basicData : [];
+                  if (this.physicalInfo.hasOwnProperty('attributes')) {
+                    this.service
+                      .getAdministrativeQuery(this.physicalInfo.id)
+                      .subscribe(
+                        (admData: any) => {
+                          if (admData.length) {
+                            this.admInfo = admData;
+                          }
+                        },
+                        error => {
+                          // console.log(error);
+                          this.showResult = false;
+                          this.toastr.error('Datos no encontrados');
+                        }
+                      );
+                    this.serviceRDM.GetGeometryInformationParcel(this.idMunicipality,
+                      this.physicalInfo.attributes.predio[0].id).subscribe(geom => {
+                        this.geom = geom;
+                        this.extralayers = this.allminucipalities.find((obj) => {
+                          if (obj._id === this.idMunicipality) {
+                            return obj;
+                          }
+                        });
+                        // console.log(this.geom, this.extralayers);
+
+                      });
+                    this.showResult = true;
+
+                  }
+                });
+          },
+          error => {
+            // console.log(error);
+            this.showResult = false;
+            this.toastr.error('Datos no encontrados');
+          }
+        );
+
+      this.serviceRDM
+        .GetInformationLegalParcel(this.idMunicipality, this.inputFMI, this.inputCadastralCode, this.inputNupre)
+        .subscribe(
+          (data: any) => {
+            if (data.length) {
+              // tslint:disable-next-line:no-string-literal
+              this.legalInfo = data[0]['attributes']['predio'][0]['attributes'];
+              // tslint:disable-next-line:no-string-literal
+              this.lealInfoDercho = data[0]['attributes']['predio'][0]['attributes']['col_derecho'];
+              // tslint:disable-next-line:no-string-literal
+              // console.log(data[0]['attributes']['predio'][0]);
+
+            }
+          }
+        );
+      if (this.inputFMI) {
+        this.getRecord('fmi', this.inputFMI);
+      }
+
+    }
+    else {
       this.showResult = false;
       this.toastr.error('Datos no encontrados');
     }
@@ -291,14 +442,18 @@ export class InstitutionalComponent implements OnInit {
           ['654654', '565654654', '2016-05-06', 'RADICADO', 'Compraventa Total', 'No', 'Si', 'Finalizado']
         ]
       });
+      // tslint:disable-next-line:prefer-const
       let Derecho = '--';
+      // tslint:disable-next-line: prefer-const
       let Vigencia = '--';
       let Estado = '--';
-      var bodyDerechos = []
+      // tslint:disable-next-line:prefer-const
+      let bodyDerechos = [];
       this.lealInfoDercho.forEach(element => {
         bodyDerechos.push(
-          [element.attributes['Código registral'] ? element.attributes['Código registral'] : '--', element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Nombre'] : '--', Derecho, Vigencia, element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Tipo de fuente administrativa'] : '--', element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] ? element.attributes['col_fuenteadministrativa']['0']['attributes']['Estado disponibilidad'] : '--']
-        )
+          // tslint:disable-next-line:max-line-length
+          [element.attributes['Código registral'] ? element.attributes['Código registral'] : '--', element.attributes.col_fuenteadministrativa['0'].attributes.Nombre ? element.attributes.col_fuenteadministrativa['0'].attributes.Nombre : '--', Derecho, Vigencia, element.attributes.col_fuenteadministrativa['0'].attributes['Tipo de fuente administrativa'] ? element.attributes.col_fuenteadministrativa['0'].attributes['Tipo de fuente administrativa'] : '--', element.attributes.col_fuenteadministrativa['0'].attributes['Estado disponibilidad'] ? element.attributes.col_fuenteadministrativa['0'].attributes['Estado disponibilidad'] : '--']
+        );
       });
       doc.text('Derechos', 20, 425);
       doc.autoTable({
@@ -311,13 +466,18 @@ export class InstitutionalComponent implements OnInit {
         head: [['ID', 'Nombre Completo', 'Tipo Derecho', '% Derecho', 'Vigencia', 'Tipo Documento', 'Estado']],
         body: bodyDerechos
       });
+      // tslint:disable-next-line:variable-name
       const Fecha_constitución = '--';
+      // tslint:disable-next-line:variable-name
       const Fecha_expiracion = '--';
+      // tslint:disable-next-line:variable-name
       const Estado_Afectaciones = 'Activo';
-      var bodyAfectaciones = []
+      const bodyAfectaciones = [];
 
       this.admInfo.forEach(element => {
-        bodyAfectaciones.push([element.t_id ? element.t_id : '--', element.objeto ? element.objeto : '--', element.area ? element.area : '--', element.proportion ? element.proportion : '--', Fecha_constitución, Fecha_expiracion, Estado_Afectaciones])
+        bodyAfectaciones.push([element.t_id ? element.t_id : '--', element.objeto ? element.objeto : '--',
+        element.area ? element.area : '--', element.proportion ? element.proportion : '--', Fecha_constitución,
+          Fecha_expiracion, Estado_Afectaciones]);
       });
       doc.text('Afectaciones', 20, 480);
       doc.autoTable({
@@ -331,12 +491,13 @@ export class InstitutionalComponent implements OnInit {
         body: bodyAfectaciones
       });
       if (this.dataRecords.length > 0) {
-        let bodyAntecedentes = []
+        const bodyAntecedentes = [];
         this.dataRecords.forEach(element => {
           element.attributes.predio.forEach(item => {
             bodyAntecedentes.push(
+              // tslint:disable-next-line:max-line-length
               [item.attributes.Nombre, item.attributes.NUPRE, item.attributes.FMI, item.attributes['Número predial'], item.attributes['Número predial anterior'], element.attributes['Área de terreno [m2]']]
-            )
+            );
           });
         });
         doc.text('Antecedentes', 20, 530);
@@ -353,13 +514,20 @@ export class InstitutionalComponent implements OnInit {
       doc.text('http://localhost:4200/#/consults/institutional-parcel-info?fmi=' + this.inputFMI, 15, 609.4175);
       doc.text('Código de verificación: XXX-XXXXXX', 310, 25);
 
+      // tslint:disable-next-line: variable-name
       const Delegacion_Catastral = 'SUCRE';
+      // tslint:disable-next-line: variable-name
       const Municipio_del_Predio = 'OVEJAS';
+      // tslint:disable-next-line: variable-name
       const Ubicación_del_Predio = '--';
+      // tslint:disable-next-line: variable-name
       const Dirección_del_Predio = '311_2_nombre_calle';
+      // tslint:disable-next-line: variable-name
       const Numero_Catastral = this.physicalInfo.attributes.predio[0].attributes['Número predial'];
+      // tslint:disable-next-line: variable-name
       const Area_Catastral = '--' + this.physicalInfo.attributes['Área calculada [m2]'];
-      const Tipo_de_Parcela = this.physicalInfo.attributes.predio[0].attributes['Tipo'];
+      // tslint:disable-next-line: variable-name
+      const Tipo_de_Parcela = this.physicalInfo.attributes.predio[0].attributes.Tipo;
       Estado = 'ACTIVO';
       doc.text(Delegacion_Catastral, 100, 130);
       doc.text(Municipio_del_Predio, 100, 155);
@@ -384,7 +552,7 @@ export class InstitutionalComponent implements OnInit {
       doc.save('ConsultaInstitucional.pdf'); // Generated PDF
     }.bind(this);
 
-    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo['id']);
+    newImg.src = this.serviceRDM.GetImageGeometryParcel(this.idMunicipality, this.physicalInfo.id);
   }
   getRecord(tipo: string, idTipo: string) {
     this.serviceRDM.GetBasicInformationParcelRecord(this.idMunicipality, tipo, idTipo).subscribe(

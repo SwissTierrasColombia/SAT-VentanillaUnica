@@ -2,8 +2,8 @@
     <div #omap class="map" tabindex="0"></div>
     <div class="maplayers">
         <div><strong>Capas:</strong></div>
-        <div class="maplayers-item" *ngFor="let title of layers.titles">
-            <input type="checkbox" (click)="toogleLayer(title, $event)" checked/>{{title}}
+        <div class="maplayers-item" *ngFor="let title of legendToShowList">
+            <input type="checkbox" (click)="toogleLayer(title, $event)" [checked]="title!='Google Road'"/>{{legendToShow[title]}}
         </div>
     </div>
     <img [src]="srclegend" class="maplegend">

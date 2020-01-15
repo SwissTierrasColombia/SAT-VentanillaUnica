@@ -66,7 +66,22 @@ export class MapComponent implements OnChanges, AfterViewInit {
   };
   srclegend = '';
   renderSignal = false;
+  legendToShow={
+    "P1":'Predial OFICIAL',
+    "P2" :'Barrido Predial',
+    "Mapa de Referencia":'Objeto Régimen Especial (RRR)',
+    "Google Road":'Google Road',
+    "Google Satelite":'Google Satelite'
+  };
 
+  legendToShowList=[
+    "P1",
+    "P2",
+    "Mapa de Referencia",
+    "Google Road",
+    "Google Satelite"
+  ];
+  
   constructor() {
     this.layers = new LayerList();
   }
@@ -206,6 +221,8 @@ export class MapComponent implements OnChanges, AfterViewInit {
         layers: this.layers.getLayers(),
         view: this.view
       });
+
+      this.layers.getLayerByTitle("Google Road").setVisible(false);
     }
   }
 

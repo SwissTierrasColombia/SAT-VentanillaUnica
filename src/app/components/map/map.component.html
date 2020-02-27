@@ -3,9 +3,11 @@
     <div class="maplayers">
         <div><strong>Capas:</strong></div>
         <div class="maplayers-item" *ngFor="let title of legendToShowList">
-            <input type="checkbox" (click)="toogleLayer(title, $event)" [checked]="title!='Google Road'"/>{{legendToShow[title]}}
+            <input type="checkbox" (click)="toogleLayer(title, $event)"
+                [checked]="title!='Google Road'" />{{legendToShow[title]}}
         </div>
     </div>
     <img [src]="srclegend" class="maplegend">
-    <a href="https://ide.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19" type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal</a>
+    <a href="https://ideat.proadmintierra.info/geoportal/main?config=14&lat={{ centroid.geometry.coordinates[1] }}&lon={{ centroid.geometry.coordinates[0] }}&zoom=19"
+        type="button" class="btn btn-dark botonGeopotal" target="_blank">Ver en Geoportal</a>
 </div>
